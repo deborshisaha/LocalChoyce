@@ -1,6 +1,8 @@
 # ModaRenta
 
 * [ ] Setup Parse for ModaRenta
+* [ ] Integrate Facebook login
+* [ ] Create models and relationships
 * [ ] List dummy results in Home page
 * [ ] On click take the user to details page of the product
 * [ ] Design data structure
