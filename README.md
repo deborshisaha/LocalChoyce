@@ -6,10 +6,10 @@
 * [ ] Design data structure
 * [ ] Create screen mockups
 * [ ] Detail page has the following
-	** [ ] Meta data of the item
-	** [ ] Map snapshot
-	** [ ] Dummy Product reviews
-	** [ ] Dummy suggestions
+	* [ ] Meta data of the item
+	* [ ] Map snapshot
+	* [ ] Dummy Product reviews
+	* [ ] Dummy suggestions
 * [ ] Map should point all the results
 * [ ] Horizontal scroller to go through meta data
 * [ ] Swiping right or left should change the result in focus and change the marker on the map
