@@ -149,7 +149,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void getUserDetailsFromFB() {
 
-        // Suggested by https://disqus.com/by/dominiquecanlas/
         Bundle parameters = new Bundle();
         parameters.putString("fields", "email,name,picture");
 

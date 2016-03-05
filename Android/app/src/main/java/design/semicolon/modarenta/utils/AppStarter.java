@@ -14,14 +14,16 @@ public class AppStarter extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // [Optional] Power your app with Local Datastore. For more info, go to
         // https://parse.com/docs/android/guide#local-datastore
         Parse.enableLocalDatastore(this);
 
         Parse.initialize(this);
+
         FacebookSdk.sdkInitialize(getApplicationContext());
         ParseFacebookUtils.initialize(this);
+
         ParseUser.enableAutomaticUser();
+
         ParseACL defaultACL = new ParseACL();
         // Optionally enable public read access.
         // defaultACL.setPublicReadAccess(true);
