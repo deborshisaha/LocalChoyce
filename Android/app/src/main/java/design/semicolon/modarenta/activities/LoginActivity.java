@@ -158,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
                 "/me",
                 parameters,
                 HttpMethod.GET,
-                new GraphRequest.Callback() {
+                 new GraphRequest.Callback() {
                     public void onCompleted(GraphResponse response) {
             /* handle the result */
                         try {
