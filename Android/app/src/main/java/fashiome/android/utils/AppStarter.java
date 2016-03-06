@@ -1,4 +1,4 @@
-package design.semicolon.modarenta.utils;
+package fashiome.android.utils;
 
 import android.app.Application;
 

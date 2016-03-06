@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">BuyInn</string>
     <string name="parse_app_id">r2O85jyiF0QzqTVVbkbncJ8hyEsNY7AWj9oiWzlF</string>
     <string name="parse_client_key">wCopnOI0zadwK9cXkcRxy7Z9gaiWjS1DEr68FjuU</string>
     <string name="facebook_app_id">1090385134317977</string>
+    <string name="app_name">Fashiome</string>
     <string name="action_settings">Settings</string>
 </resources>
