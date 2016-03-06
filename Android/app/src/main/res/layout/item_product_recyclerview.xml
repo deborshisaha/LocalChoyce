@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/tools">
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardViewProduct"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardElevation="4dp"
+        card_view:cardCornerRadius="2dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/rivProductPrimaryImage"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/beach_flipflop"
+                app:riv_corner_radius_top_left="2dp"
+                app:riv_corner_radius_top_right="2dp"
+                app:riv_mutate_background="true"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:id="@+id/about_product_container"
+                android:background="#ffffff"
+                android:layout_below="@+id/rivProductPrimaryImage" >
+
+                <TextView
+                    android:id="@+id/tvProductTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#000000"/>
+
+                <TextView
+                    android:id="@+id/tvProductDescription"
+                    android:layout_below="@+id/tvProductTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textStyle="normal"
+                    android:textSize="12sp"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>

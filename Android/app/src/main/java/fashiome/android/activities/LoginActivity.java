@@ -1,4 +1,4 @@
-package design.semicolon.modarenta.activities;
+package fashiome.android.activities;
 
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -8,8 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -29,8 +30,10 @@ import com.parse.ParseFacebookUtils;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,8 +44,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
-import design.semicolon.modarenta.R;
+import fashiome.android.*;
 
 public class LoginActivity extends AppCompatActivity {
 
