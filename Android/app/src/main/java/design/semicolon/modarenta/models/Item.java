@@ -61,7 +61,7 @@ public class Item {
         items.add(new Item("Gown",new LatLng(37.385015,-122.014943)));
         for (int i=0;i<40;i++){
             Item item = new Item();
-            item.setPoint(getLocation(37.371859,-122.021234,20));
+            item.setPoint(getLocation(37.371859,-122.021234,1000));
             item.setName(randomString(10));
             items.add(item);
         }
@@ -93,8 +93,8 @@ public class Item {
         // Adjust the x-coordinate for the shrinking of the east-west distances
         double new_x = x / Math.cos(y0);
 
-        double foundLongitude = new_x + x0;
-        double foundLatitude = y + y0;
+        double foundLatitude = new_x + x0;
+        double foundLongitude = y + y0;
         System.out.println("Longitude: " + foundLongitude + "  Latitude: " + foundLatitude );
         return new LatLng(foundLatitude,foundLongitude);
     }
