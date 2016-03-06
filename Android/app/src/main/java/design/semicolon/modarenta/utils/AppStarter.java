@@ -1,6 +1,7 @@
 package design.semicolon.modarenta.utils;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.facebook.FacebookSdk;
 import com.parse.Parse;
@@ -10,10 +11,12 @@ import com.parse.ParseUser;
 
 public class AppStarter extends Application {
 
+    private static Context sContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
-
+        sContext = this;
         // https://parse.com/docs/android/guide#local-datastore
         Parse.enableLocalDatastore(this);
 
@@ -30,5 +33,7 @@ public class AppStarter extends Application {
         ParseACL.setDefaultACL(defaultACL, true);
 
     }
-
+    public static Context getAppContext() {
+        return sContext;
+    }
 }
