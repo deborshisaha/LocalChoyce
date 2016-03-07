@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         //  Use this to output your Facebook Key Hash to Logs
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
-                    "design.semicolon.modarenta",
+                    "fashiome.android",
                     PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");

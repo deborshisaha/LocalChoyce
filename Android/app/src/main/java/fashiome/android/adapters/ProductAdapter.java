@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,11 +27,10 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.models.Address;
 import fashiome.android.models.Product;
+import fashiome.android.models.User;
 
-/**
- * Created by dsaha on 3/5/16.
- */
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     /**
@@ -101,24 +104,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         List<Product> mProducts = new ArrayList<Product>();
 
-        Product p1 = new Product("Beach flipflops", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the ...");
-        Product p2 = new Product("Coat", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the ...");
-        Product p3 = new Product("Coat", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the ...");
-        Product p4 = new Product("Coat", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the ...");
+        Product p2 = new Product();
+        p2.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.d("DEBUG", "Saved Product");
+                } else {
+                    Log.d("DEBUG", e.getMessage());
+                }
+            }
+        });
 
-        Product p5 = new Product("Beach flipflops", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the ...");
-        Product p6 = new Product("Coat", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the ...");
-        Product p7 = new Product("Coat", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the ...");
-        Product p8 = new Product("Coat", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the ...");
-
-        mProducts.add(p1);
         mProducts.add(p2);
-        mProducts.add(p3);
-        mProducts.add(p4);
-        mProducts.add(p5);
-        mProducts.add(p6);
-        mProducts.add(p7);
-        mProducts.add(p8);
 
         return mProducts;
     }
@@ -154,7 +152,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         public void configure(Product product) {
 
-            tvProductTitle.setText(product.getProductTitle());
+            tvProductTitle.setText(product.getProductName());
             tvProductDescription.setText(product.getProductDescription());
         }
     }
