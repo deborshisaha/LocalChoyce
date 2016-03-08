@@ -1,4 +1,4 @@
-package design.semicolon.modarenta;
+package fashiome.android;
 
 import org.junit.Test;
 
