@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape  xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient android:startColor="@android:color/holo_red_dark"
+              android:endColor="@android:color/holo_orange_light"
+            android:angle="45"/>
+    <padding android:bottom="@dimen/activity_vertical_margin"
+            android:left="@dimen/activity_vertical_margin"/>
+    <corners android:radius="40dp"/>
+    <!--solid android:color="@color/colorAccent"/-->
+    <stroke android:color="#23efac"
+            android:width="4dp"/>
+</shape>

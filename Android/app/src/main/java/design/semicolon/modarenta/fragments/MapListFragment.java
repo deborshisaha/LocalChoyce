@@ -21,9 +21,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -54,6 +56,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,10 +65,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.BounceInterpolator;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MapListFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         SlidingUpPanelLayout.PanelSlideListener, LocationListener, HeaderAdapter.ItemClickListener {
@@ -75,7 +80,10 @@ public class MapListFragment extends Fragment implements GoogleApiClient.Connect
     // private LockableListView mListView;
     private LockableRecyclerView mListView;
     private SlidingUpPanelLayout mSlidingUpPanelLayout;
+
+    //data of items to be shown
     private ArrayList<Item> mItems;
+    private HashMap<String, Item> mMarkers= new HashMap<String, Item>();
 
     // ListView stuff
     //private View mTransparentHeaderView;
@@ -230,7 +238,55 @@ public class MapListFragment extends Fragment implements GoogleApiClient.Connect
             }
         }
     }
+    private void dropPinEffect(final Marker marker) {
+        // Handler allows us to repeat a code block after a specified delay
+        final android.os.Handler handler = new android.os.Handler();
+        final long start = SystemClock.uptimeMillis();
+        final long duration = 1500;
 
+        // Use the bounce interpolator
+        final android.view.animation.Interpolator interpolator =
+                new BounceInterpolator();
+
+        // Animate marker with a bounce updating its position every 15ms
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                // Calculate t for bounce based on elapsed time
+                float t = Math.max(
+                        1 - interpolator.getInterpolation((float) elapsed
+                                / duration), 0);
+                // Set the anchor
+                marker.setAnchor(0.5f, 1.0f + 14 * t);
+
+                if (t > 0.0) {
+                    // Post this event again 15ms from now.
+                    handler.postDelayed(this, 15);
+                } else { // done elapsing, show window
+                    marker.showInfoWindow();
+                }
+            }
+        });
+    }
+    public void loadMarkersFromItems(ArrayList<Item> items){
+        for(int i=0;i<items.size();i++) {
+            Item item = items.get(i);
+            BitmapDescriptor defaultMarker =
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
+
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(item.getPoint())
+                    .title(item.getName())
+                    .snippet(item.getName())
+                    .icon(defaultMarker));
+            mMarkers.put(marker.getId(),item);
+            LatLng latLng = new LatLng(item.getPoint().latitude, item.getPoint().longitude);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 12);
+            mMap.animateCamera(cameraUpdate);
+            dropPinEffect(marker);
+        }
+    }
     @Override
     public void onResume() {
         super.onResume();

@@ -63,6 +63,7 @@ public class Item {
             Item item = new Item();
             item.setPoint(getLocation(37.371859,-122.021234,1000));
             item.setName(randomString(10));
+            item.setDesc(randomString(100));
             items.add(item);
         }
         return  items;
