@@ -23,4 +23,9 @@
         <item name="android:background">#c4c3c3</item>
     </style>
 
+    <style name="CustomButton" >
+        <item name="android:background">@drawable/state_button</item>
+        <item name="android:layout_gravity">bottom|end</item>
+    </style>
+
 </resources>
