@@ -33,7 +33,7 @@ public class MapListActivity extends AppCompatActivity implements  MapListFragme
     @Override
     public void OnClick(Item item) {
         //Toast.makeText(TimelinesActivity.this, "Inside onclick in activity", Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(this,ItemDetailsActivity.class);
+        Intent i = new Intent(this,ProductDetailsActivity.class);
         i.putExtra("item", Parcels.wrap(item));
         startActivity(i);
     }
