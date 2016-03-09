@@ -70,4 +70,6 @@ public class MapListActivity extends AppCompatActivity implements  MapListFragme
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

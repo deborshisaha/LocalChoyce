@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import fashiome.android.R;
 import fashiome.android.adapters.ProductPagerAdapter;
 
@@ -193,4 +195,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     }
 
 
+    public void processPayment(View view) {
+        Intent i = new Intent(ProductDetailsActivity.this, PaymentActivity.class);
+        startActivity(i);
+    }
 }

@@ -65,6 +65,7 @@ import java.util.HashMap;
 
 import fashiome.android.R;
 import fashiome.android.activities.MapFullScreenActivity;
+import fashiome.android.activities.ProductDetailsActivity;
 import fashiome.android.adapters.HeaderAdapter;
 import fashiome.android.helpers.ItemClickSupport;
 import fashiome.android.helpers.LockableRecyclerView;
@@ -198,8 +199,10 @@ public class MapListFragment extends Fragment implements GoogleApiClient.Connect
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                         // do it
-                        Item item = mItems.get(position);
-                        moveToLocation(item.getPoint(), true);
+                        //Item item = mItems.get(position);
+                        //moveToLocation(item.getPoint(), true);
+                        Intent i = new Intent(getActivity(),ProductDetailsActivity.class);
+                        startActivity(i);
                     }
                 }
         );
