@@ -4,10 +4,16 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,19 +60,32 @@ public class ProductsRecyclerViewFragment extends Fragment {
 
         mProductsAdapter = new ProductAdapter(getContext());
         mProductRecyclerView.setAdapter(mProductsAdapter);
-        mProductRecyclerView.setItemAnimator(new ProductResultsAnimator());
+
+        ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
+        query.setLimit(10);
+        query.findInBackground(new FindCallback<Product>() {
+            @Override
+            public void done(List<Product> products, ParseException e) {
+                if (e == null) {
+                    Log.d("DEBUG", "Retrieved " + products.size() + " products");
+                    mProductsAdapter.updateItems(true, products);
+                } else {
+                    Log.d("DEBUG", "Error: " + e.getMessage());
+                }
+            }
+        });
 
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        startContentAnimation();
-    }
-
-    private void startContentAnimation() {
-        mProductsAdapter.updateItems(true);
-    }
+//    @Override
+//    public void onViewCreated(View view, Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        startContentAnimation();
+//    }
+//
+//    private void startContentAnimation() {
+//        mProductsAdapter.updateItems(true);
+//    }
 
 }

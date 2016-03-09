@@ -30,6 +30,9 @@ apply plugin: 'android-apt'
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
+    /* Cloudinary */
+    compile 'com.cloudinary:cloudinary-android:1.1.2'
+
     /* Junit test */
     testCompile 'junit:junit:4.12'
 
@@ -66,34 +69,35 @@ dependencies {
 
     /* Custom library for recyclerview animations */
        compile 'jp.wasabeef:recyclerview-animators:2.2.0'
+    
+
+    /* Recycler view */
+    /* Note avoid using + in the version numbers can lead to unpredictable builds
+       and 23.1.1 is newest */
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+
+    /* Butterknife - view binding library */
+    compile 'com.jakewharton:butterknife:7.0.1'
 
 
-
-       /* Recycler view */
-       /* Note avoid using + in the version numbers can lead to unpredictable builds
-          and 23.1.1 is newest */
-       compile 'com.android.support:recyclerview-v7:23.1.1'
-
-       /* Butterknife - view binding library */
-       compile 'com.jakewharton:butterknife:7.0.1'
+    /* Glide */
+    compile 'com.github.bumptech.glide:glide:3.5.2'
+    compile 'com.android.support:support-v4:23.1.1'
 
 
-
-       /* Glide */
-       compile 'com.github.bumptech.glide:glide:3.5.2'
-       compile 'com.android.support:support-v4:23.1.1'
-
-
-       //play store
-       compile 'com.google.android.gms:play-services-maps:8.4.0'
-       compile 'com.google.android.gms:play-services-location:8.4.0'
+    //play store
+    compile 'com.google.android.gms:play-services-maps:8.4.0'
+    compile 'com.google.android.gms:play-services-location:8.4.0'
 
 
-       //parceler
-       compile 'org.parceler:parceler-api:1.0.4'
-       apt 'org.parceler:parceler:1.0.4'
+    //parceler
+    compile 'org.parceler:parceler-api:1.0.4'
+    apt 'org.parceler:parceler:1.0.4'
 
-       //sliding up panel
-       compile 'com.sothree.slidinguppanel:library:3.2.1'
+    /* Camera */
+    compile 'com.github.boxme:squarecamera:1.1.0'
+
+    /* Sliding up Panel */
+    compile 'com.sothree.slidinguppanel:library:3.2.1'
 
 }
