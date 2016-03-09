@@ -1,5 +1,8 @@
 package fashiome.android.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
@@ -9,20 +12,20 @@ import java.util.HashMap;
  * Created by dsaha on 3/6/16.
  */
 @ParseClassName("Address")
-public class Address extends ParseObject {
+public class Address extends ParseObject implements Parcelable {
 
     public Address() {
-        setPostalCode("95136");
-        setFeatureName("Facebook HQ");
-        setLatitude(72.98);
-        setLongitude(122.31);
-        setLocality("");
-        setAdminArea("San Jose");
-        setCountryName("USA");
-        setSubAdminArea("Santa Clara County");
-        setSubLocality("Santa Clara");
-        setThoroughfare("");
-        setSubThoroughfare("");
+//        setPostalCode("95136");
+//        setFeatureName("Facebook HQ");
+//        setLatitude(72.98);
+//        setLongitude(122.31);
+//        setLocality("");
+//        setAdminArea("San Jose");
+//        setCountryName("USA");
+//        setSubAdminArea("Santa Clara County");
+//        setSubLocality("Santa Clara");
+//        setThoroughfare("");
+//        setSubThoroughfare("");
     }
 
     public String getFeatureName() {
@@ -148,4 +151,53 @@ public class Address extends ParseObject {
     private boolean mHasLatitude = false;
     private boolean mHasLongitude = false;
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mFeatureName);
+        dest.writeString(this.mAdminArea);
+        dest.writeString(this.mSubAdminArea);
+        dest.writeString(this.mLocality);
+        dest.writeString(this.mSubLocality);
+        dest.writeString(this.mThoroughfare);
+        dest.writeString(this.mSubThoroughfare);
+        dest.writeString(this.mPostalCode);
+        dest.writeString(this.mCountryCode);
+        dest.writeString(this.mCountryName);
+        dest.writeDouble(this.mLatitude);
+        dest.writeDouble(this.mLongitude);
+        dest.writeByte(mHasLatitude ? (byte) 1 : (byte) 0);
+        dest.writeByte(mHasLongitude ? (byte) 1 : (byte) 0);
+    }
+
+    protected Address(Parcel in) {
+        this.mFeatureName = in.readString();
+        this.mAdminArea = in.readString();
+        this.mSubAdminArea = in.readString();
+        this.mLocality = in.readString();
+        this.mSubLocality = in.readString();
+        this.mThoroughfare = in.readString();
+        this.mSubThoroughfare = in.readString();
+        this.mPostalCode = in.readString();
+        this.mCountryCode = in.readString();
+        this.mCountryName = in.readString();
+        this.mLatitude = in.readDouble();
+        this.mLongitude = in.readDouble();
+        this.mHasLatitude = in.readByte() != 0;
+        this.mHasLongitude = in.readByte() != 0;
+    }
+
+    public static final Parcelable.Creator<Address> CREATOR = new Parcelable.Creator<Address>() {
+        public Address createFromParcel(Parcel source) {
+            return new Address(source);
+        }
+
+        public Address[] newArray(int size) {
+            return new Address[size];
+        }
+    };
 }

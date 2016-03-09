@@ -7,5 +7,9 @@
     <string name="action_message">Message</string>
     <string name="action_share">Share</string>
     <string name="action_like">Like</string>
+    <string name="product_ask_price">Price</string>
+    <string name="product_description">Product Description</string>
+    <string name="product_name">Product name</string>
+    <string name="save">Save</string>
 
 </resources>

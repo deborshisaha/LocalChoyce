@@ -1,5 +1,8 @@
 package fashiome.android.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -8,7 +11,7 @@ import com.parse.ParseUser;
  * Created by dsaha on 3/6/16.
  */
 @ParseClassName("_User")
-public class User extends ParseUser {
+public class User extends ParseUser implements Parcelable {
 
     public User() {}
 
@@ -62,4 +65,39 @@ public class User extends ParseUser {
     private String profilePictureURL;
     private double rating;
     private String email;
+
+    /**
+     * Parcelable
+     */
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.firstName);
+        dest.writeString(this.lastName);
+        dest.writeString(this.profilePictureURL);
+        dest.writeDouble(this.rating);
+        dest.writeString(this.email);
+    }
+
+    protected User(Parcel in) {
+        this.firstName = in.readString();
+        this.lastName = in.readString();
+        this.profilePictureURL = in.readString();
+        this.rating = in.readDouble();
+        this.email = in.readString();
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

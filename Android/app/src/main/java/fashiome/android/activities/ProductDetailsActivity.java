@@ -24,7 +24,7 @@ import fashiome.android.R;
 import fashiome.android.adapters.ProductPagerAdapter;
 
 
-public class ItemDetailsActivity extends AppCompatActivity {
+public class ProductDetailsActivity extends AppCompatActivity {
 
     private LinearLayout dotsLayout;
     private int dotsCount;

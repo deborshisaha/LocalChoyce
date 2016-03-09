@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/productImagesHolder">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rivProductPrimaryImage"
+            android:layout_width="165dp"
+            android:layout_height="100dp"
+            android:padding="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/upload_product_image_placeholder"
+            android:layout_alignParentLeft="true"
+            app:riv_corner_radius ="2dp"
+            app:riv_mutate_background="true"/>
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rivProductSecondaryImage"
+            android:layout_width="165dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/upload_product_image_placeholder"
+            android:padding="4dp"
+            android:layout_toRightOf="@+id/rivProductPrimaryImage"
+            app:riv_corner_radius="2dp"
+            app:riv_mutate_background="true"/>
+
+    </RelativeLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/productNameWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:layout_below="@+id/productImagesHolder">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etProductName"
+            android:textSize="16sp"
+            android:hint="@string/product_name"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/productDescriptionWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productNameWrapper"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etProductDescription"
+            android:textSize="16sp"
+            android:hint="@string/product_description"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/productAskPriceWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productDescriptionWrapper"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etProductAskPrice"
+            android:hint="@string/product_ask_price"
+            android:textSize="16sp"
+            android:inputType="numberDecimal"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:onClick="saveProduct"
+        android:layout_below="@+id/productAskPriceWrapper"
+        android:backgroundTint="@color/colorAccent"/>
+
+</RelativeLayout>

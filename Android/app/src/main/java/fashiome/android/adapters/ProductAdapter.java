@@ -19,6 +19,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.parse.SignUpCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,10 +80,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public int getItemCount() {
-        return this.mProducts.size();
+
+        if (mProducts != null) {
+            return this.mProducts.size();
+        }
+
+        return 0;
     }
 
-    public void updateItems(boolean animated) {
+    public void updateItems(boolean animated, List<Product> products) {
 
         if (mProducts == null) {
             mProducts = new ArrayList<Product>();
@@ -92,7 +98,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             mProducts.clear();
         }
 
-        mProducts.addAll(getDummyProducts());
+        if (products !=null) {
+            mProducts.addAll(products);
+        }
+
         if (animated) {
             notifyItemRangeInserted(0, mProducts.size());
         } else {
@@ -100,26 +109,39 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
     }
 
+    /*
     private List<Product> getDummyProducts () {
 
-        List<Product> mProducts = new ArrayList<Product>();
-
-        Product p2 = new Product();
-        p2.saveInBackground(new SaveCallback() {
+        final List<Product> mProducts = new ArrayList<Product>();
+        final User user = new User();
+        user.setPassword("test!@#");
+        user.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Log.d("DEBUG", "Saved Product");
+                    Log.d("DEBUG", "Saved User");
+                    final Product p2 = new Product();
+                    p2.setProductPostedBy(user);
+                    p2.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                mProducts.add(p2);
+                                Log.d("DEBUG", "Associated");
+                            } else {
+                                Log.d("DEBUG", e.getMessage());
+                            }
+                        }
+                    });
                 } else {
-                    Log.d("DEBUG", e.getMessage());
+                    Log.d("DEBUG", "Error >>" + e.getMessage());
                 }
             }
         });
 
-        mProducts.add(p2);
-
         return mProducts;
     }
+    */
 
     /**
      * Inner class

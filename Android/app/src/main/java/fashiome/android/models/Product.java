@@ -1,34 +1,40 @@
 package fashiome.android.models;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
-/**
- * Created by dsaha on 3/5/16.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 @ParseClassName("Product")
-public class Product extends ParseObject {
+public class Product extends ParseObject implements Parcelable {
 
     private String productDescription;
     private String productName;
     private String productPrimaryImageCloudinaryPublicId;
-    private float productRating;
     private String productSKU;
+    private String currency;
+
     private Address address;
     private User productPostedBy;
+
+    private float productRating;
     private int numberOfReviews;
     private int numberOfViews;
     private int numberOfFavorites;
     private double price;
-    private String currency;
+    private final String BASE_URL = "http://res.cloudinary.com/fashiome/image/upload/";
 
     public String getProductPrimaryImageCloudinaryPublicId() {
-        return productPrimaryImageCloudinaryPublicId;
-    }
 
-    public void setProductPrimaryImageCloudinaryPublicId(String productPrimaryImageCloudinaryPublicId) {
-        this.productPrimaryImageCloudinaryPublicId = productPrimaryImageCloudinaryPublicId;
+        List<String> arrOfPublicCloudinaryIds = getList("photos");
+        return BASE_URL+arrOfPublicCloudinaryIds.get(0)+".jpg";
     }
 
     public Address getAddress() {
@@ -129,8 +135,8 @@ public class Product extends ParseObject {
         return (User) getParseObject("user");
     }
 
-    public void setProductPostedBy(User productPostedBy) {
-        this.productPostedBy = productPostedBy;
+    public void setProductPostedBy(ParseUser productPostedBy) {
+        this.productPostedBy = (User) productPostedBy;
         put("user", productPostedBy);
     }
 
@@ -138,10 +144,63 @@ public class Product extends ParseObject {
      * Default constructor
      */
     public Product() {
-        setProductName("Beach flipflops");
-        setProductDescription("Greate Beach flipflops");
-        setProductRating((float) 4.3);
-        setProductSKU("asdwSA");
-        setProductPrimaryImageCloudinaryPublicId(getProductSKU());
+        super();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.productDescription);
+        dest.writeString(this.productName);
+        dest.writeString(this.productPrimaryImageCloudinaryPublicId);
+        dest.writeFloat(this.productRating);
+        dest.writeString(this.productSKU);
+        dest.writeParcelable(this.address, 0);
+        dest.writeParcelable(this.productPostedBy, 0);
+        dest.writeInt(this.numberOfReviews);
+        dest.writeInt(this.numberOfViews);
+        dest.writeInt(this.numberOfFavorites);
+        dest.writeDouble(this.price);
+        dest.writeString(this.currency);
+    }
+
+    protected Product(Parcel in) {
+        this.productDescription = in.readString();
+        this.productName = in.readString();
+        this.productPrimaryImageCloudinaryPublicId = in.readString();
+        this.productRating = in.readFloat();
+        this.productSKU = in.readString();
+        this.address = in.readParcelable(Address.class.getClassLoader());
+        this.productPostedBy = in.readParcelable(User.class.getClassLoader());
+        this.numberOfReviews = in.readInt();
+        this.numberOfViews = in.readInt();
+        this.numberOfFavorites = in.readInt();
+        this.price = in.readDouble();
+        this.currency = in.readString();
+    }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        public Product createFromParcel(Parcel source) {
+            return new Product(source);
+        }
+
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
+
+    public void setPhotos(ArrayList<String> photoCloudinaryPublicIdList) {
+
+        List<String> photos = getList("photos");
+
+        if (photos != null) {
+            removeAll("photos", photos);
+        }
+
+        addAll("photos", photoCloudinaryPublicIdList);
     }
 }
