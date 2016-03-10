@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="fashiome.android.activities.BookingDetailsActivity"
+    tools:showIn="@layout/activity_booking_details">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#edecec">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Surf Board $10/day"
+        android:id="@+id/tvName"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="26sp"
+        android:textColor="#000000"/>
+
+    <RelativeLayout
+        android:id="@+id/rl1"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFAFAFA"
+        android:elevation="5dp">
+
+
+        <ImageView
+            android:layout_width="140dp"
+            android:layout_height="90dp"
+            android:id="@+id/iv1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/surf1"/>
+
+        <ImageView
+            android:layout_width="140dp"
+            android:layout_height="90dp"
+            android:id="@+id/iv2"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/surf3"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick dates"
+        android:id="@+id/tvDate"
+        android:layout_below="@+id/rl1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textSize="22sp"
+        android:textColor="#000000"/>
+
+    <RelativeLayout
+        android:id="@+id/rl2"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFAFAFA"
+        android:elevation="5dp">
+
+
+        <!--TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="40dp"
+            android:text="Start date"
+            android:id="@+id/tvStartDate"/-->
+
+        <!--TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvStartDate"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginBottom="10dp"
+            android:text="Select date"
+            android:textColor="#2ecc71"
+            android:id="@+id/tvSelectStartDate"/-->
+
+        <Button
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/bStartDate"
+            android:padding="5dp"
+            android:text="  Start date "
+            android:textColor="#ffffff"
+            android:background="#2ecc71"
+            android:drawableLeft="@drawable/ic_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <!--View style="@style/DividerVertical"
+            android:id="@+id/vDivider1"
+            android:layout_marginLeft="28dp"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@+id/bStartDate"/-->
+
+        <Button
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/bEndDate"
+            android:padding="5dp"
+            android:text="  End date "
+            android:textColor="#ffffff"
+            android:background="#2ecc71"
+            android:drawableLeft="@drawable/ic_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+        <!--TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:text="End date"
+            android:id="@+id/textView2"/-->
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total days = 2"
+        android:id="@+id/tvDays"
+        android:layout_below="@+id/rl2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textSize="22sp"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quantity"
+        android:id="@+id/tvQuantity"
+        android:layout_below="@+id/tvDays"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textSize="22sp"
+        android:textColor="#000000"/>
+
+
+    <RelativeLayout
+        android:id="@+id/rl3"
+        android:padding="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tvQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFAFAFA"
+        android:elevation="5dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/ivStepdown"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="#2ecc71"
+            android:src="@drawable/ic_stepdown"/>
+
+        <View style="@style/DividerHorizontal"
+            android:id="@+id/vDivider1"
+            android:layout_marginTop="20dp"
+              android:layout_marginRight="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="2dp"
+            android:background="#2ecc71"
+            android:layout_toRightOf="@+id/ivStepdown"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/ivStepup"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="#2ecc71"
+            android:src="@drawable/ic_stepup"/>
+
+
+        <!--Button
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/bStepdown"
+            android:textColor="#ffffff"
+            android:background="#2ecc71"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/-->
+
+        <!--View style="@style/DividerVertical"
+              android:id="@+id/vDivider2"
+              android:layout_marginLeft="28dp"
+              android:layout_centerHorizontal="true"
+              android:layout_toRightOf="@+id/bStepdown"/-->
+
+        <!--Button
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/bStepup"
+            android:padding="5dp"
+            android:textColor="#ffffff"
+            android:background="#2ecc71"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/-->
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total $40"
+        android:id="@+id/tvTotal"
+        android:layout_below="@+id/rl3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textSize="22sp"
+        android:textColor="#000000"/>
+
+    <RelativeLayout
+        android:layout_below="@+id/tvTotal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+    </RelativeLayout>
+
+</RelativeLayout>
+</ScrollView>

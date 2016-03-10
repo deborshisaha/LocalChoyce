@@ -126,7 +126,7 @@
                         android:layout_marginLeft="5dp"
                         android:textSize="12sp"/>
 
-                    <View style="@style/Divider"
+                    <View style="@style/DividerHorizontal"
                           android:layout_marginTop="10dp"
                           android:layout_below="@+id/tvRelativeTimestamp"
                           android:id="@+id/vDivider" />
