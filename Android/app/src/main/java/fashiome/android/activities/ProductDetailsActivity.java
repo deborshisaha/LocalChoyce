@@ -196,7 +196,17 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
 
     public void processPayment(View view) {
-        Intent i = new Intent(ProductDetailsActivity.this, PaymentActivity.class);
+        //Intent i = new Intent(ProductDetailsActivity.this, PaymentActivity.class);
+        Intent i = new Intent(ProductDetailsActivity.this, BookingDetailsActivity.class);
         startActivity(i);
     }
+
+    /* this method is overridden to prevent the UP/BACK button_hollow from creating a new activity
+instead of showing the old activity */
+    @Override
+    public Intent getSupportParentActivityIntent() {
+        finish();
+        return null;
+    }
+
 }
