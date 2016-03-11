@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient android:startColor="@android:color/transparent" android:endColor="@color/cardview_dark_background" android:angle="270"/>
-    <corners android:bottomRightRadius="4dp" android:bottomLeftRadius="4dp" />
 </shape>
