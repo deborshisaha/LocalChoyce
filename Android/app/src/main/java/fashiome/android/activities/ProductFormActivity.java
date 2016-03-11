@@ -1,22 +1,28 @@
 package fashiome.android.activities;
 
 import android.content.Intent;
+import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.android.Utils;
 import com.cloudinary.utils.ObjectUtils;
 import com.desmond.squarecamera.CameraActivity;
-import com.makeramen.roundedimageview.RoundedDrawable;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
@@ -25,20 +31,19 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.models.Product;
-import fashiome.android.models.User;
 
 /**
  * Created by dsaha on 3/8/16.
  */
-public class ProductFormActivity extends AppCompatActivity {
+public class ProductFormActivity extends AppCompatActivity{
 
+    private static final String TAG = "ProductFormActivity";
     @Bind(R.id.etProductName)
     EditText etProductName;
 
@@ -57,6 +62,10 @@ public class ProductFormActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA = 0;
     private int  imageTapped = -1;
     private List<Bitmap> arrayOfBitmaps = new ArrayList<Bitmap>();
+    //private GoogleApiClient mGoogleApiClient;
+
+    private static final int RESOLVE_CONNECTION_REQUEST_CODE = 420;
+    private static final int REQUEST_CODE_RESOLUTION = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +80,8 @@ public class ProductFormActivity extends AppCompatActivity {
             public void onClick(View v) {
                 imageTapped = v.getId();
                 launchCamera(v);
+//                Intent intent = new Intent(ProductFormActivity.this, GoogleDriveFilesListActivity.class);
+//                startActivity(intent);
             }
         };
 
@@ -79,6 +90,26 @@ public class ProductFormActivity extends AppCompatActivity {
 
         rivProductSecondaryImage.setVisibility(View.GONE);
 
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+
+        if (resultCode != RESULT_OK) return;
+
+        Uri takenPhotoUri = null;
+
+        switch (requestCode) {
+            case RESOLVE_CONNECTION_REQUEST_CODE:
+                //mGoogleApiClient.connect();
+                break;
+            case REQUEST_CAMERA:{
+                takenPhotoUri = data.getData();
+                Bitmap takenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
+                addImage(takenImage);
+                break;
+            }
+        }
     }
 
     private void launchCamera(View v) {
@@ -106,10 +137,10 @@ public class ProductFormActivity extends AppCompatActivity {
                         @Override
                         protected String doInBackground(String... params) {
                             try {
-                                int i=0;
-                                for (Bitmap bmp:arrayOfBitmaps) {
-                                    Log.d("DEBUG", "image>>>>"+product.getObjectId()+getPhotoCloudinaryPublicIdList().get(i));
-                                    cloudinaryObject.uploader().upload(getInputStream(bmp), ObjectUtils.asMap("public_id", product.getObjectId()+getPhotoCloudinaryPublicIdList().get(i)));
+                                int i = 0;
+                                for (Bitmap bmp : arrayOfBitmaps) {
+                                    Log.d("DEBUG", "image>>>>" + product.getObjectId() + getPhotoCloudinaryPublicIdList().get(i));
+                                    cloudinaryObject.uploader().upload(getInputStream(bmp), ObjectUtils.asMap("public_id", product.getObjectId() + getPhotoCloudinaryPublicIdList().get(i)));
                                     i++;
                                 }
 
@@ -117,6 +148,12 @@ public class ProductFormActivity extends AppCompatActivity {
                                 ioException.printStackTrace();
                             }
                             return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(String s) {
+                            super.onPostExecute(s);
+                            Toast.makeText(ProductFormActivity.this, "Wohoo!", Toast.LENGTH_LONG).show();
                         }
                     };
 
@@ -127,23 +164,6 @@ public class ProductFormActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode != RESULT_OK) return;
-
-        Uri takenPhotoUri = null;
-
-        if (requestCode == REQUEST_CAMERA) {
-            takenPhotoUri = data.getData();
-        }
-
-        Bitmap takenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
-        addImage(takenImage);
     }
 
     private void addImage(Bitmap takenImage) {
@@ -208,4 +228,5 @@ public class ProductFormActivity extends AppCompatActivity {
 
         return inputStream;
     }
+
 }

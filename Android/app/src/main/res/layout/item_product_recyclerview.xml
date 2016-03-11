@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp">
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="2dp"
+    android:clipToPadding="false">
 
     <com.makeramen.roundedimageview.RoundedImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,14 +14,14 @@
         android:layout_height="250dp"
         android:scaleType="centerCrop"
         android:src="@drawable/beach_flipflop"
-        app:riv_corner_radius="2dp"
+        app:riv_corner_radius="4dp"
         app:riv_mutate_background="true"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
-        android:paddingTop="16dp"
+        android:paddingTop="12dp"
         android:paddingBottom="50dp"
         android:background="@drawable/black_to_transparent"
         android:layout_alignParentTop="true">
@@ -28,7 +30,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="4dp"
             android:layout_marginTop="0dp"
             android:scaleType="centerCrop"
             android:src="@drawable/beach_flipflop"
@@ -67,7 +69,7 @@
         android:paddingTop="32dp"
         android:paddingRight="8dp"
         android:paddingBottom="8dp"
-        android:paddingLeft="8dp"
+        android:paddingLeft="4dp"
         android:id="@+id/about_product_container"
         android:background="@drawable/transparent_to_black"
         android:layout_alignParentBottom="true" >

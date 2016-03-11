@@ -16,16 +16,18 @@ import java.util.List;
 @ParseClassName("Product")
 public class Product extends ParseObject implements Parcelable {
 
+    public static final String PRODUCT_KEY = "fashiome.product";
+
     private String productDescription;
     private String productName;
-    private String productPrimaryImageCloudinaryPublicId;
     private String productSKU;
     private String currency;
+    private List<String> photos;
 
     private Address address;
     private User productPostedBy;
 
-    private float productRating;
+    private double productRating;
     private int numberOfReviews;
     private int numberOfViews;
     private int numberOfFavorites;
@@ -34,13 +36,13 @@ public class Product extends ParseObject implements Parcelable {
 
     public String getProductPrimaryImageCloudinaryPublicId() {
 
-        List<String> arrOfPublicCloudinaryIds = getList("photos");
+        photos = getList("photos");
 
-        if (arrOfPublicCloudinaryIds == null || arrOfPublicCloudinaryIds.size() == 0) {
+        if (photos == null || photos.size() == 0) {
             return "";
         }
 
-        return this.getObjectId() + arrOfPublicCloudinaryIds.get(0);
+        return this.getObjectId() + photos.get(0);
     }
 
     public Address getAddress() {
@@ -97,12 +99,13 @@ public class Product extends ParseObject implements Parcelable {
         put("currency", currency);
     }
 
-    public String getProductPrimaryImageURL() {
-        return getString("productPrimaryImageCloudinaryPublicId");
-    }
-
     public String getProductDescription() {
-        return getString("productDescription");
+
+        if (this.productDescription == null) {
+            this.productDescription = getString("productDescription");
+        }
+        String string= this.productDescription;
+        return string;
     }
 
     public void setProductDescription(String mProductDescription) {
@@ -111,7 +114,12 @@ public class Product extends ParseObject implements Parcelable {
     }
 
     public String getProductName() {
-        return getString("productName");
+
+        if (this.productName == null) {
+            this.productName = getString("productName");
+        }
+        String string= this.productName;
+        return string;
     }
 
     public void setProductName(String mProductName) {
@@ -154,6 +162,21 @@ public class Product extends ParseObject implements Parcelable {
         super();
     }
 
+    public void setPhotos(ArrayList<String> photoCloudinaryPublicIdList) {
+
+        photos = getList("photos");
+
+        if (photos != null) {
+            removeAll("photos", photos);
+        }
+
+        addAll("photos", photoCloudinaryPublicIdList);
+    }
+
+    public List<String> getPhotos() {
+        return photos;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -161,33 +184,35 @@ public class Product extends ParseObject implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.productDescription);
-        dest.writeString(this.productName);
-        dest.writeString(this.productPrimaryImageCloudinaryPublicId);
-        dest.writeFloat(this.productRating);
-        dest.writeString(this.productSKU);
+        dest.writeString(getObjectId());
+        dest.writeString(getProductDescription());
+        dest.writeString(getProductName());
+        dest.writeString(getProductSKU());
+        dest.writeString(getCurrency());
+        dest.writeStringList(getPhotos());
         dest.writeParcelable(this.address, 0);
-        dest.writeParcelable(this.productPostedBy, 0);
-        dest.writeInt(this.numberOfReviews);
-        dest.writeInt(this.numberOfViews);
-        dest.writeInt(this.numberOfFavorites);
-        dest.writeDouble(this.price);
-        dest.writeString(this.currency);
+        dest.writeParcelable(getProductPostedBy(), 0);
+        dest.writeDouble(getProductRating());
+        dest.writeInt(getNumberOfFavorites());
+        dest.writeInt(getNumberOfViews());
+        dest.writeInt(getNumberOfReviews());
+        dest.writeDouble(getPrice());
     }
 
     protected Product(Parcel in) {
+        this.setObjectId(in.readString());
         this.productDescription = in.readString();
         this.productName = in.readString();
-        this.productPrimaryImageCloudinaryPublicId = in.readString();
-        this.productRating = in.readFloat();
         this.productSKU = in.readString();
+        this.currency = in.readString();
+        this.photos = in.createStringArrayList();
         this.address = in.readParcelable(Address.class.getClassLoader());
         this.productPostedBy = in.readParcelable(User.class.getClassLoader());
-        this.numberOfReviews = in.readInt();
-        this.numberOfViews = in.readInt();
+        this.productRating = in.readDouble();
         this.numberOfFavorites = in.readInt();
+        this.numberOfViews = in.readInt();
+        this.numberOfReviews = in.readInt();
         this.price = in.readDouble();
-        this.currency = in.readString();
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -200,14 +225,12 @@ public class Product extends ParseObject implements Parcelable {
         }
     };
 
-    public void setPhotos(ArrayList<String> photoCloudinaryPublicIdList) {
+    public String getImageCloudinaryPublicId(int position) {
 
-        List<String> photos = getList("photos");
-
-        if (photos != null) {
-            removeAll("photos", photos);
+        if (this.photos.size() < position) {
+            return null;
         }
 
-        addAll("photos", photoCloudinaryPublicIdList);
+        return this.getObjectId() + this.photos.get(position);
     }
 }

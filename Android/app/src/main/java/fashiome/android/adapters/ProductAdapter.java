@@ -90,6 +90,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return 0;
     }
 
+    public Product getProductAtIndex(int index) {
+
+        if (getItemCount() < index) {
+            return null;
+        }
+
+        return mProducts.get(index);
+    }
+
     public void updateItems(boolean animated, List<Product> products) {
 
         if (mProducts == null) {

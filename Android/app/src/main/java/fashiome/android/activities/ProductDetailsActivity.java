@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,8 +23,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.adapters.ProductPagerAdapter;
+import fashiome.android.models.Product;
 
 
 public class ProductDetailsActivity extends AppCompatActivity {
@@ -34,17 +38,26 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private ProductPagerAdapter productPagerAdapter;
     private ShareActionProvider miShareAction;
+    private Product mProduct;
 
     GoogleMap googleMap;
+
+    @Bind(R.id.tvProductTitle)
+    TextView tvProductTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
+
+        ButterKnife.bind(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
+
+        mProduct = getIntent().getExtras().getParcelable(Product.PRODUCT_KEY);
 
         // Get Intent for a product here
         int numberOfRatings = 5;
@@ -90,17 +103,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 googleMap.addMarker(markerOptions);
             }
         });
-
-/*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-*/
+        
+        tvProductTitle.setText(mProduct.getProductName());
 
         setViewPagerItemsWithAdapter();
         setUiPageViewController();
@@ -125,7 +129,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     private void setViewPagerItemsWithAdapter() {
 
-        productPagerAdapter = new ProductPagerAdapter(this);
+        productPagerAdapter = new ProductPagerAdapter(this, mProduct);
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(productPagerAdapter);
@@ -179,15 +183,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
         switch(id) {
 
             case R.id.menu_item_like:
-
                 break;
 
-            // case R.id.menu_item_message:
-
-            //    break;
-
             case R.id.menu_item_share:
-
                 break;
         }
 

@@ -1,5 +1,6 @@
 package fashiome.android.fragments;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,8 +22,10 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.activities.ProductDetailsActivity;
 import fashiome.android.adapters.ProductAdapter;
 import fashiome.android.animators.ProductResultsAnimator;
+import fashiome.android.helpers.ItemClickSupport;
 import fashiome.android.models.Product;
 
 /**
@@ -60,6 +63,22 @@ public class ProductsRecyclerViewFragment extends Fragment {
 
         mProductsAdapter = new ProductAdapter(getContext());
         mProductRecyclerView.setAdapter(mProductsAdapter);
+
+
+        ItemClickSupport.addTo(mProductRecyclerView).setOnItemClickListener(
+                new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+
+                        Product product = mProductsAdapter.getProductAtIndex(position);
+
+                        Intent intent = new Intent(getActivity(), ProductDetailsActivity.class);
+                        intent.putExtra(Product.PRODUCT_KEY, product);
+
+                        startActivity(intent);
+                    }
+                }
+        );
 
         ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
         query.setLimit(10);
