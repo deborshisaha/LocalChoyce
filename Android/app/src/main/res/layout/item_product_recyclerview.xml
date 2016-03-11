@@ -1,63 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/tools">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp">
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/cardViewProduct"
-        android:layout_gravity="center"
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rivProductPrimaryImage"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/beach_flipflop"
+        app:riv_corner_radius="2dp"
+        app:riv_mutate_background="true"/>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardElevation="4dp"
-        card_view:cardCornerRadius="2dp">
+        android:paddingLeft="8dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="50dp"
+        android:background="@drawable/black_to_transparent"
+        android:layout_alignParentTop="true">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/beach_flipflop"
+            android:id="@+id/rivProfilePicture"
+
+            app:riv_corner_radius="16dp"
+            app:riv_border_color="#F5F5F5"
+            app:riv_border_width="1dp"
+            app:riv_mutate_background="false"/>
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/rivProfilePicture">
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/rivProductPrimaryImage"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/beach_flipflop"
-                app:riv_corner_radius_top_left="2dp"
-                app:riv_corner_radius_top_right="2dp"
-                app:riv_mutate_background="true"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:id="@+id/about_product_container"
-                android:background="#ffffff"
-                android:layout_below="@+id/rivProductPrimaryImage" >
-
-                <TextView
-                    android:id="@+id/tvProductTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:textColor="#000000"/>
-
-                <TextView
-                    android:id="@+id/tvProductDescription"
-                    android:layout_below="@+id/tvProductTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textStyle="normal"
-                    android:textSize="12sp"/>
-
-            </RelativeLayout>
+                android:textStyle="bold"
+                android:layout_centerVertical="true"
+                android:textSize="16sp"
+                android:layout_marginLeft="8dp"
+                android:textColor="#ffffff"
+                android:text="Test"
+                android:id="@+id/tvProductByUserName"
+                />
 
         </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
 
-</FrameLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="32dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        android:id="@+id/about_product_container"
+        android:background="@drawable/transparent_to_black"
+        android:layout_alignParentBottom="true" >
+
+        <TextView
+            android:id="@+id/tvProductTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#ffffff"/>
+
+        <TextView
+            android:id="@+id/tvProductDescription"
+            android:layout_below="@+id/tvProductTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="4dp"
+            android:maxLines = "2"
+            android:textColor="#ffffff"
+            android:textStyle="normal"
+            android:textSize="14sp"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

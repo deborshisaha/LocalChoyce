@@ -69,7 +69,7 @@ dependencies {
 
     /* Custom library for recyclerview animations */
        compile 'jp.wasabeef:recyclerview-animators:2.2.0'
-    
+
 
     /* Recycler view */
     /* Note avoid using + in the version numbers can lead to unpredictable builds
