@@ -63,6 +63,8 @@ public class ProductsRecyclerViewFragment extends Fragment {
 
         ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
         query.setLimit(10);
+        query.include("user");
+
         query.findInBackground(new FindCallback<Product>() {
             @Override
             public void done(List<Product> products, ParseException e) {

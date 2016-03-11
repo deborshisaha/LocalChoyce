@@ -4,6 +4,7 @@ package fashiome.android.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.bumptech.glide.util.Util;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
@@ -29,12 +30,17 @@ public class Product extends ParseObject implements Parcelable {
     private int numberOfViews;
     private int numberOfFavorites;
     private double price;
-    private final String BASE_URL = "http://res.cloudinary.com/fashiome/image/upload/";
+
 
     public String getProductPrimaryImageCloudinaryPublicId() {
 
         List<String> arrOfPublicCloudinaryIds = getList("photos");
-        return BASE_URL+arrOfPublicCloudinaryIds.get(0)+".jpg";
+
+        if (arrOfPublicCloudinaryIds == null || arrOfPublicCloudinaryIds.size() == 0) {
+            return "";
+        }
+
+        return this.getObjectId() + arrOfPublicCloudinaryIds.get(0);
     }
 
     public Address getAddress() {
@@ -132,12 +138,13 @@ public class Product extends ParseObject implements Parcelable {
     }
 
     public User getProductPostedBy() {
-        return (User) getParseObject("user");
+        this.productPostedBy = (User) getParseUser("productPostedBy");
+        return this.productPostedBy;
     }
 
     public void setProductPostedBy(ParseUser productPostedBy) {
         this.productPostedBy = (User) productPostedBy;
-        put("user", productPostedBy);
+        put("productPostedBy", productPostedBy);
     }
 
     /**

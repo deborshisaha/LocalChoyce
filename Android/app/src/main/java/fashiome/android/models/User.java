@@ -16,7 +16,8 @@ public class User extends ParseUser implements Parcelable {
     public User() {}
 
     public String getFirstName() {
-        return getString("firstName");
+        this.firstName = getString("firstName");
+        return this.firstName;
     }
 
     public void setFirstName(String aFirstName) {
@@ -25,7 +26,8 @@ public class User extends ParseUser implements Parcelable {
     }
 
     public String getLastName() {
-        return getString("lastName");
+        this.lastName = getString("lastName");
+        return this.lastName;
     }
 
     public void setLastName(String aLastName) {
@@ -58,6 +60,15 @@ public class User extends ParseUser implements Parcelable {
     public void setEmail(String email) {
         this.email = email;
         put("email", email);
+    }
+
+    public String getFullName() {
+
+        if ( getFirstName() == null && getLastName() == null) {
+            return null;
+        }
+
+        return getFirstName()+ " " +getLastName();
     }
 
     private String firstName;
@@ -100,4 +111,5 @@ public class User extends ParseUser implements Parcelable {
             return new User[size];
         }
     };
+
 }

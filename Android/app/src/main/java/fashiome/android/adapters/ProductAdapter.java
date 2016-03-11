@@ -28,9 +28,11 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.Utils;
 import fashiome.android.models.Address;
 import fashiome.android.models.Product;
 import fashiome.android.models.User;
+import fashiome.android.utils.ImageURLGenerator;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
@@ -158,8 +160,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         @Bind(R.id.tvProductTitle)
         TextView tvProductTitle;
 
-        @Bind(R.id.cardViewProduct)
-        CardView cardViewProduct;
+        @Bind(R.id.rivProfilePicture)
+        RoundedImageView rivProfilePicture;
+
+        @Bind(R.id.tvProductByUserName )
+        TextView tvProductByUserName;
 
         /* Private variables */
         private Context mContext;
@@ -174,8 +179,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         public void configure(Product product) {
 
+            String URLString = ImageURLGenerator.getInstance(this.mContext).URLForImageWithCloudinaryPublicId(product.getProductPrimaryImageCloudinaryPublicId(), Utils.getScreenWidth(this.mContext));
+
+            Log.d("DEBUG", URLString);
+
+            if (URLString != null || URLString.length() > 0) {
+                Glide.with(this.mContext).load(URLString).into(rivProductPrimaryImage);
+            }
+
             tvProductTitle.setText(product.getProductName());
             tvProductDescription.setText(product.getProductDescription());
+
+//            if ( product.getProductPostedBy().getFullName() != null) {
+//                tvProductByUserName.setText( product.getProductPostedBy().getFullName());
+//            }
+
         }
     }
 }
