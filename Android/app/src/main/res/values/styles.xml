@@ -30,7 +30,7 @@
     </style>
 
     <style name="CustomButton">
-        <item name="android:background">@drawable/state_button</item>
+        <item name="android:background">@drawable/submit_state_button</item>
         <item name="android:layout_gravity">bottom|end</item>
     </style>
 
