@@ -7,6 +7,7 @@ import com.facebook.FacebookSdk;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -31,8 +32,16 @@ public class AppStarter extends Application {
 
         Parse.initialize(this);
 
+        /**
+         * Facebook Utils
+         */
         FacebookSdk.sdkInitialize(getApplicationContext());
         ParseFacebookUtils.initialize(this);
+
+        /**
+         * Parse installation
+         */
+        ParseInstallation.getCurrentInstallation().saveInBackground();
 
         ParseUser.enableAutomaticUser();
 

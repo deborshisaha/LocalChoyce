@@ -103,7 +103,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 googleMap.addMarker(markerOptions);
             }
         });
-        
+
         tvProductTitle.setText(mProduct.getProductName());
 
         setViewPagerItemsWithAdapter();
