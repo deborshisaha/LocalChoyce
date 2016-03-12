@@ -28,7 +28,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
-import fashiome.android.Utils;
+import fashiome.android.utils.Utils;
 import fashiome.android.models.Address;
 import fashiome.android.models.Product;
 import fashiome.android.models.User;
