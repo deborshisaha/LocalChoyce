@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/login_gradient_background"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activities.LoginActivity"
+    tools:showIn="@layout/activity_login">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Fashiome"
+        android:id="@+id/tvAppName"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorPrimary"
+        android:textSize="36sp"
+        android:textStyle="italic"
+        android:typeface="serif"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_marginTop="10dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_below="@+id/tvAppName"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_account_circle_white"
+        app:civ_border_width="1dp"
+        />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tiEmail"
+        android:textColorHint="#afacac"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/ivProfileImage">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_email_hint"
+            android:drawablePadding="5dp"
+            android:id="@+id/etEmail"
+            android:inputType="textEmailAddress"
+            android:textSize="16sp"
+            android:hint="Email"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tiPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textColorHint="#afacac"
+        android:layout_below="@+id/tiEmail">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:id="@+id/etPassword"
+            android:drawableLeft="@drawable/ic_password_hint"
+            android:drawablePadding="5dp"
+            android:textSize="16sp"
+            android:hint="Password"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign In"
+        android:id="@+id/bSignIn"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:layout_below="@+id/tiPassword"
+        android:background="@drawable/sign_in_state_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forgot Password ?"
+        android:id="@+id/tvForgotPassword"
+        android:textColor="#afacac"
+        android:layout_below="@+id/bSignIn"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:onClick="goCreateAccount"
+        android:id="@+id/tvRegister"
+        android:textColor="#afacac"
+        android:layout_below="@+id/bSignIn"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+
+    <View style="@style/DividerHorizontal"
+          android:layout_marginTop="30dp"
+          android:layout_width="120dp"
+          android:layout_marginLeft="10dp"
+          android:layout_alignParentLeft="true"
+          android:layout_below="@+id/tvForgotPassword"
+          android:background="#8f8f8f"
+          android:id="@+id/vDivider1" />
+
+    <View style="@style/DividerHorizontal"
+          android:layout_marginTop="30dp"
+          android:layout_width="120dp"
+          android:layout_marginRight="10dp"
+          android:layout_alignParentRight="true"
+          android:layout_below="@+id/tvForgotPassword"
+          android:background="#8f8f8f"
+          android:id="@+id/vDivider2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Quick login"
+        android:textColor="#afacac"
+        android:id="@+id/textView"
+        android:layout_below="@+id/tvForgotPassword"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/b_fb_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vDivider1"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/fb_login_state_button"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textSize="16sp"
+        android:drawableLeft="@drawable/ic_login_fb"
+        android:text="Login with Facebook"
+        android:textColor="@android:color/white" />
+
+</RelativeLayout>

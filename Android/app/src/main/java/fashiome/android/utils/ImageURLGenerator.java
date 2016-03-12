@@ -1,7 +1,7 @@
 package fashiome.android.utils;
 
 import android.content.Context;
-import fashiome.android.Utils;
+
 
 /**
  * Created by dsaha on 3/11/16.

@@ -3,8 +3,8 @@
 
     <corners android:radius="4dp" />
 
-    <solid android:color="#cd5500" />
+    <solid android:color="@color/com_facebook_button_background_color_pressed" />
 
-    <stroke android:color="#000000" android:width="4dp" />
+    <!--stroke android:color="#000000" android:width="4dp" /-->
 
 </shape>

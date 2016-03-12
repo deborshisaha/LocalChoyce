@@ -6,7 +6,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.animation.DecelerateInterpolator;
 
-import fashiome.android.Utils;
+import fashiome.android.utils.Utils;
 import fashiome.android.adapters.ProductAdapter;
 
 /**

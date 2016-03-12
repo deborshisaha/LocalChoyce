@@ -42,8 +42,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     GoogleMap googleMap;
 
-    @Bind(R.id.tvProductTitle)
-    TextView tvProductTitle;
+    @Bind(R.id.tvProductTitle) TextView tvProductTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +128,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     private void setViewPagerItemsWithAdapter() {
 
-        productPagerAdapter = new ProductPagerAdapter(this, mProduct);
+        productPagerAdapter = new ProductPagerAdapter(ProductDetailsActivity.this, mProduct);
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(productPagerAdapter);

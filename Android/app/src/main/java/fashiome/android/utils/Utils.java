@@ -1,4 +1,4 @@
-package fashiome.android;
+package fashiome.android.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -53,5 +53,7 @@ public class Utils {
     public static boolean isAndroid5() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
+
+
 
 }
