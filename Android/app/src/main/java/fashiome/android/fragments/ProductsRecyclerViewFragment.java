@@ -37,6 +37,10 @@ public class ProductsRecyclerViewFragment extends Fragment {
     @Bind(R.id.rvProduct)
     RecyclerView mProductRecyclerView;
 
+    public ProductAdapter getProductsAdapter() {
+        return mProductsAdapter;
+    }
+
     /* Private member variables */
     private ProductAdapter mProductsAdapter;
     private RecyclerView.LayoutManager mLayoutManager;

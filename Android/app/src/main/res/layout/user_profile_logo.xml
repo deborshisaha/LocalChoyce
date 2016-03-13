@@ -5,6 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/map"
+            android:layout_toLeftOf="@+id/ivProfileLogo"
+            android:layout_toStartOf="@+id/ivProfileLogo"
+            android:layout_alignTop="@+id/ivProfileLogo"
+            android:onClick="launchMap"
+            android:clickable="true"
+            />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivProfileLogo"
         android:layout_width="40dp"
@@ -14,4 +26,6 @@
         android:layout_margin="5dp"
         android:onClick="getUserProfileLogo"
         android:src="@drawable/ic_account_circle_white"/>
+
+
 </RelativeLayout>

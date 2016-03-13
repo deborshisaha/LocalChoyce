@@ -36,10 +36,11 @@ import fashiome.android.utils.ImageURLGenerator;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
+
     /**
      * Private member variables
      */
-    private List<Product> mProducts;
+    private ArrayList<Product> mProducts;
     private Context mContext;
 
     /**
@@ -52,7 +53,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.mContext = context;
     }
 
-    public ProductAdapter(List<Product> products, Context context) {
+    public ProductAdapter(ArrayList<Product> products, Context context) {
         super();
         this.mProducts = products;
         this.mContext = context;
@@ -120,6 +121,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
     }
 
+    public ArrayList<Product> getAll(){
+        return mProducts;
+    }
     /*
     private List<Product> getDummyProducts () {
 

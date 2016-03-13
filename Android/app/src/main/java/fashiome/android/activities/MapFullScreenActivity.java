@@ -17,6 +17,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import com.bumptech.glide.Glide;
+import com.parse.ParseUser;
+
 import org.parceler.Parcels;
 
 import android.app.Activity;
@@ -32,6 +35,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -40,6 +44,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -49,6 +54,7 @@ import fashiome.android.Manifest;
 import fashiome.android.R;
 import fashiome.android.adapters.CustomWindowAdapter;
 import fashiome.android.models.Item;
+import fashiome.android.models.Product;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -66,8 +72,10 @@ public class MapFullScreenActivity extends AppCompatActivity implements
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
-    private HashMap<String, Item> mMarkers= new HashMap<String, Item>();
-    ArrayList<Item> mItems;
+    private HashMap<String, Product> mMarkers= new HashMap<String, Product>();
+    ArrayList<Product> mItems;
+    ImageView mProfileLogo;
+
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
@@ -78,9 +86,9 @@ public class MapFullScreenActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_full_screen);
-        mItems =   Parcels.unwrap(getIntent().getParcelableExtra("items"));
+        mItems =   getIntent().getParcelableArrayListExtra("products");
        // mItems = Item.loadItems();
-
+        //setToolBar();
         mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
         if (mapFragment != null) {
             mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -96,20 +104,35 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         }
 
     }
+    public void setToolBar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        View logo = getLayoutInflater().inflate(R.layout.user_profile_logo, null);
+        toolbar.addView(logo);
+        setSupportActionBar(toolbar);
 
-    public void loadMarkersFromItems(ArrayList<Item> items){
-        for(int i=0;i<items.size();i++) {
-            Item item = items.get(i);
+        mProfileLogo = (ImageView) findViewById(R.id.ivProfileLogo);
+
+        if(ParseUser.getCurrentUser() != null) {
+
+            String profileUrl = ParseUser.getCurrentUser().get("profilePictureUrl").toString();
+            Glide.with(MapFullScreenActivity.this).load(profileUrl).into(mProfileLogo);
+        }
+
+
+    }
+    public void loadMarkersFromItems(ArrayList<Product> products){
+        for(int i=0;i<products.size();i++) {
+            Product product = products.get(i);
             BitmapDescriptor defaultMarker =
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
 
             Marker marker = map.addMarker(new MarkerOptions()
-                    .position(item.getPoint())
-                    .title(item.getName())
-                    .snippet(item.getName())
-                    .icon(defaultMarker));
-            mMarkers.put(marker.getId(),item);
-            LatLng latLng = new LatLng(item.getPoint().latitude, item.getPoint().longitude);
+                    .position(new LatLng(product.getAddress().getLatitude(), product.getAddress().getLongitude()))
+                            .title(product.getProductName())
+                            .snippet(product.getProductDescription())
+                            .icon(defaultMarker));
+            mMarkers.put(marker.getId(),product);
+            LatLng latLng = new LatLng(product.getAddress().getLatitude(), product.getAddress().getLongitude());
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 12);
             map.animateCamera(cameraUpdate);
             dropPinEffect(marker);
@@ -192,7 +215,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
                                 .title(title)
                                 .snippet(snippet)
                                 .icon(defaultMarker));
-                        mMarkers.put(marker.getId(), new Item(title, point));
+                        //mMarkers.put(marker.getId(), new Item(title, point));
                         // Animate marker using drop effect
                         // --> Call the dropPinEffect method here
                         dropPinEffect(marker);
@@ -211,9 +234,12 @@ public class MapFullScreenActivity extends AppCompatActivity implements
 
 
     public void onInfoWindowClick(Marker marker) {
-        Item mapItem = (Item) mMarkers.get(marker.getId());
+        Product mapItem = (Product) mMarkers.get(marker.getId());
         //...
         //show dialog fragment here
+        Intent i = new Intent(MapFullScreenActivity.this,ProductDetailsActivity.class);
+        i.putExtra("product",mapItem);
+        startActivity(i);
     }
     private void dropPinEffect(final Marker marker) {
         // Handler allows us to repeat a code block after a specified delay
