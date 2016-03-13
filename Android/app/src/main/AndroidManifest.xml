@@ -37,12 +37,15 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="com.parse.starter.permission.C2D_MESSAGE" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="com.example.mapdemo.permission.MAPS_RECEIVE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="com.parse.starter.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="com.example.mapdemo.permission.MAPS_RECEIVE"/>
@@ -52,27 +55,25 @@
             android:required="true"/>
 
     <application
-            android:name=".utils.AppStarter"
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme"
-            tools:replace="android:theme">
+        android:name=".utils.AppStarter"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:theme">
 
-        <!--Cloudinary-->
+        <!-- Cloudinary -->
         <meta-data
-                android:name="CLOUDINARY_URL"
-                android:value="cloudinary://861638198927249:NfrKLXfjFjBLr1i2-7JvXUNw-ug@fashiome"/>
+            android:name="CLOUDINARY_URL"
+            android:value="cloudinary://861638198927249:NfrKLXfjFjBLr1i2-7JvXUNw-ug@fashiome"/>
 
-
-        <!--Facebook-->
+        <!-- Facebook -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
 
-
-        <!--Parse-->
+        <!-- Parse -->
         <meta-data
             android:name="com.parse.APPLICATION_ID"
             android:value="@string/parse_app_id"/>
@@ -89,10 +90,7 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-
-
-        <activity android:name=".activities.PaymentActivity" />
-
+        <activity android:name=".activities.PaymentActivity"/>
         <activity
             android:name=".activities.MapListActivity"
             android:label="@string/app_name"
@@ -127,23 +125,19 @@
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login1"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.SignUpActivity"
             android:label="@string/title_activity_sign_up"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".activities.MapFullScreenActivity" />
-
-        <activity android:name=".activities.GoogleDriveFilesListActivity" />
-
-        <activity android:name=".activities.UserProfileActivity" android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".activities.MapFullScreenActivity"/>
+        <activity android:name=".activities.GoogleDriveFilesListActivity"/>
+        <activity
+            android:name=".activities.UserProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -151,33 +145,40 @@
             </intent-filter>
 
         </activity>
-
         <activity
             android:name=".activities.BookingDetailsActivity"
             android:label="@string/title_activity_booking_details"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <service android:name="com.parse.PushService"/>
 
-        <service android:name="com.parse.PushService" />
-
-        <receiver android:name="com.parse.ParsePushBroadcastReceiver"
+        <receiver
+            android:name="com.parse.ParsePushBroadcastReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.parse.push.intent.RECEIVE" />
-                <action android:name="com.parse.push.intent.DELETE" />
-                <action android:name="com.parse.push.intent.OPEN" />
+                <action android:name="com.parse.push.intent.RECEIVE"/>
+                <action android:name="com.parse.push.intent.DELETE"/>
+                <action android:name="com.parse.push.intent.OPEN"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+
+                <category android:name="fashiome.android"/>
             </intent-filter>
         </receiver>
 
-        <receiver android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="fashiome.android" />
-            </intent-filter>
-        </receiver>
+        <activity
+            android:name=".activities.ProductFilterSettingsActivity"
+            android:label="@string/title_activity_product_filter_settings"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

@@ -116,4 +116,7 @@ dependencies {
     //card.io
     compile 'io.card:android-sdk:5.3.0'
 
+    // discrete seekbar
+    compile 'org.adw.library:discrete-seekbar:1.0.1'
+
 }
