@@ -31,6 +31,6 @@
         style="@style/CustomButton"
         android:text="Confirm"
         android:textColor="#ffffff"
-        android:onClick="confirmPayment"/>
+        android:onClick="onScanPress"/>
 
 </android.support.design.widget.CoordinatorLayout>
