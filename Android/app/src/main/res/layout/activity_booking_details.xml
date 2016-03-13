@@ -29,8 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/CustomButton"
-        android:text="Confirm"
+        android:text="Pay Now"
         android:textColor="#ffffff"
-        android:onClick="confirmPayment"/>
+        android:onClick="onScanPress"/>
 
 </android.support.design.widget.CoordinatorLayout>
