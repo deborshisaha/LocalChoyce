@@ -3,11 +3,10 @@
     xmlns:app="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="2dp"
+    android:layout_marginTop="4dp"
     android:clipToPadding="false">
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <!--com.makeramen.roundedimageview.RoundedImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/rivProductPrimaryImage"
         android:layout_width="match_parent"
@@ -15,7 +14,15 @@
         android:scaleType="centerCrop"
         android:src="@drawable/beach_flipflop"
         app:riv_corner_radius="4dp"
-        app:riv_mutate_background="true"/>
+        app:riv_mutate_background="true"/-->
+
+    <ImageView
+        android:id="@+id/rivProductPrimaryImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/frame"
+        android:src="@drawable/beach_flipflop" />
 
     <RelativeLayout
         android:layout_width="match_parent"
