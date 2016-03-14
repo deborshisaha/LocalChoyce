@@ -84,19 +84,28 @@ public class HomeActivity extends AppCompatActivity {
 
         } else {
             Intent i = new Intent(HomeActivity.this, LoginActivity.class);
-            startActivityForResult(i, 100);
+            startActivityForResult(i, 200);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 100) {
-            mProductsFragment.addNewProductToList((Product)data.getParcelableExtra("product"));
-        }
-        else {
-            //get the user's profile logo
-            String profileUrl = ParseUser.getCurrentUser().get("profilePictureUrl").toString();
-            Glide.with(HomeActivity.this).load(profileUrl).into(mProfileLogo);
+
+        switch (requestCode) {
+
+            case 100:
+                mProductsFragment.addNewProductToList((Product) data.getParcelableExtra("product"));
+                break;
+
+            case 200:
+                //get the user's profile logo
+                String profileUrl = ParseUser.getCurrentUser().get("profilePictureUrl").toString();
+                Glide.with(HomeActivity.this).load(profileUrl).into(mProfileLogo);
+                break;
+
+            default:
+                return;
+
         }
     }
 

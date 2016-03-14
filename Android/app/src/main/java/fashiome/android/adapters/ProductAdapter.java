@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.MemoryCategory;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -169,7 +171,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         /* View bindings */
         @Bind(R.id.rivProductPrimaryImage)
-        RoundedImageView rivProductPrimaryImage;
+        ImageView rivProductPrimaryImage;
 
         @Bind(R.id.tvProductDescription)
         TextView tvProductDescription;
@@ -200,8 +202,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
             Log.d("DEBUG", URLString);
 
+            //Glide.get(mContext).setMemoryCategory(MemoryCategory.HIGH);
+
             if (URLString != null || URLString.length() > 0) {
-                Glide.with(this.mContext).load(URLString).into(rivProductPrimaryImage);
+                Glide.with(this.mContext)
+                        .load(URLString)
+                        //.diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(rivProductPrimaryImage);
             }
 
             tvProductTitle.setText(product.getProductName());

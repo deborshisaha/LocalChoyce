@@ -22,6 +22,19 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.DeleteCallback;
+import com.parse.FindCallback;
+import com.parse.FunctionCallback;
+import com.parse.Parse;
+import com.parse.ParseCloud;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.util.HashMap;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,10 +52,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private ProductPagerAdapter productPagerAdapter;
     private ShareActionProvider miShareAction;
     private Product mProduct;
+    private boolean isLiked = false;
 
     GoogleMap googleMap;
 
-    @Bind(R.id.tvProductTitle) TextView tvProductTitle;
+    @Bind(R.id.tvProductTitle) TextView mProductTitle;
+    @Bind(R.id.tvValue) TextView mProductValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +72,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
 
         mProduct = getIntent().getExtras().getParcelable(Product.PRODUCT_KEY);
+
 
         // Get Intent for a product here
         int numberOfRatings = 5;
@@ -103,10 +119,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
-        tvProductTitle.setText(mProduct.getProductName());
+        mProductTitle.setText(mProduct.getProductName());
+        mProductValue.setText(String.valueOf(mProduct.getPrice()));
 
         setViewPagerItemsWithAdapter();
         setUiPageViewController();
+        parseCallForIsLiked();
 
     }
 
@@ -176,6 +194,19 @@ public class ProductDetailsActivity extends AppCompatActivity {
         return true;
     }
 
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        MenuItem item = menu.findItem(R.id.menu_item_like);
+
+        if(isLiked){
+            item.setIcon(R.drawable.ic_like);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -184,6 +215,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
         switch(id) {
 
             case R.id.menu_item_like:
+
+                if(isLiked){
+                    parseCallForRemoveLike();
+                } else {
+                    parseCallForAddLike();
+                }
                 break;
 
             case R.id.menu_item_share:
@@ -193,6 +230,83 @@ public class ProductDetailsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void parseCallForAddLike(){
+
+        ParseObject addLike = new ParseObject("UserProduct");
+        addLike.put("userId", ParseUser.getCurrentUser());
+        addLike.put("productId", mProduct);
+        addLike.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+
+                if (e == null) {
+                    Log.i("info", "Liked successfully");
+                    isLiked = true;
+                    invalidateOptionsMenu();
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void parseCallForRemoveLike(){
+
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserProduct");
+        query.whereEqualTo("userId", ParseUser.getCurrentUser());
+        query.whereEqualTo("productId", mProduct);
+        Log.i("info", "user " + ParseUser.getCurrentUser().getObjectId());
+        Log.i("info", "product  " + mProduct.getObjectId());
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> deleteList, ParseException e) {
+                if (e == null) {
+                    Log.i("Found row to delete", String.valueOf(deleteList.size()));
+                    if (deleteList.size() > 0) {
+                        for (ParseObject del : deleteList) {
+                            del.deleteInBackground(new DeleteCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e == null) {
+                                        Log.i("info","Removed like successfully");
+                                        isLiked = false;
+                                        invalidateOptionsMenu();
+                                    } else {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void parseCallForIsLiked(){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserProduct");
+        query.whereEqualTo("userId", ParseUser.getCurrentUser());
+        query.whereEqualTo("productId", mProduct);
+        Log.i("info", "user " + ParseUser.getCurrentUser().getObjectId());
+        Log.i("info","product  "+mProduct.getObjectId());
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> likeList, ParseException e) {
+                if (e == null) {
+                    Log.i("Found ", String.valueOf(likeList.size()));
+                    if(likeList.size()>0){
+                        isLiked = true;
+                        invalidateOptionsMenu();
+                    }
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     public void processPayment(View view) {
         //Intent i = new Intent(ProductDetailsActivity.this, PaymentActivity.class);

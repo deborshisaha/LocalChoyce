@@ -60,7 +60,7 @@ public class ProductPagerAdapter extends PagerAdapter {
         Log.d("DEBUG", URLString);
 
         if (URLString != null || URLString.length() > 0) {
-            Log.i("info", "Loading image from glide");
+            Log.i("info", "Loading image from glide "+URLString);
             Glide.with(this.mContext).load(URLString).into(imageView);
             container.addView(itemView);
 
