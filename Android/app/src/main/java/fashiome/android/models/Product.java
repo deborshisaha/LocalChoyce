@@ -46,7 +46,8 @@ public class Product extends ParseObject implements Parcelable {
     }
 
     public Address getAddress() {
-        return (Address)getParseObject("address");
+        return address;
+                //(Address)getParseObject("address");
     }
 
     public void setAddress(Address address) {

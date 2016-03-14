@@ -87,6 +87,9 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_full_screen);
         mItems =   getIntent().getParcelableArrayListExtra("products");
+        System.out.println(mItems);
+        System.out.print(mItems.size());
+
        // mItems = Item.loadItems();
         //setToolBar();
         mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
@@ -125,17 +128,18 @@ public class MapFullScreenActivity extends AppCompatActivity implements
             Product product = products.get(i);
             BitmapDescriptor defaultMarker =
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
-
-            Marker marker = map.addMarker(new MarkerOptions()
-                    .position(new LatLng(product.getAddress().getLatitude(), product.getAddress().getLongitude()))
-                            .title(product.getProductName())
-                            .snippet(product.getProductDescription())
-                            .icon(defaultMarker));
-            mMarkers.put(marker.getId(),product);
-            LatLng latLng = new LatLng(product.getAddress().getLatitude(), product.getAddress().getLongitude());
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 12);
-            map.animateCamera(cameraUpdate);
-            dropPinEffect(marker);
+            if (product.getAddress() != null && product.getAddress().isHasLatitude() && product.getAddress().isHasLongitude()) {
+                Marker marker = map.addMarker(new MarkerOptions()
+                        .position(new LatLng(product.getAddress().getLatitude(), product.getAddress().getLongitude()))
+                        .title(product.getProductName())
+                        .snippet(product.getProductDescription())
+                        .icon(defaultMarker));
+                mMarkers.put(marker.getId(), product);
+                LatLng latLng = new LatLng(product.getAddress().getLatitude(), product.getAddress().getLongitude());
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 12);
+                map.animateCamera(cameraUpdate);
+                dropPinEffect(marker);
+            }
         }
     }
 
@@ -143,6 +147,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         map = googleMap;
         if (map != null) {
             // Map is ready
+            map.getUiSettings().setMapToolbarEnabled(true);
             /*final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(10);
             executor.schedule(new Runnable() {
                 @Override
@@ -150,7 +155,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
                     loadMarkersFromItems(mItems);
                 }
             },1, 1000);*/
-
+            loadMarkersFromItems(mItems);
                    // Attach marker click listener to the map here
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 public boolean onMarkerClick(Marker marker) {
@@ -162,8 +167,8 @@ public class MapFullScreenActivity extends AppCompatActivity implements
             map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
-                    if (mItems !=null)
-                        loadMarkersFromItems(mItems);
+                    //if (mItems !=null)
+                      //  loadMarkersFromItems(mItems);
                 }
             });
             map.setOnMapLongClickListener(this);
@@ -238,7 +243,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         //...
         //show dialog fragment here
         Intent i = new Intent(MapFullScreenActivity.this,ProductDetailsActivity.class);
-        i.putExtra("product",mapItem);
+        i.putExtra(Product.PRODUCT_KEY,mapItem);
         startActivity(i);
     }
     private void dropPinEffect(final Marker marker) {
@@ -288,6 +293,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
             } catch (SecurityException e){
                 e.printStackTrace();
             }
+            map.getUiSettings().setMapToolbarEnabled(true);
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(LocationServices.API)
                     .addConnectionCallbacks(this)

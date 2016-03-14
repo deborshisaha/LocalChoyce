@@ -1,5 +1,7 @@
 package fashiome.android.models;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -136,6 +138,22 @@ public class Address extends ParseObject implements Parcelable {
         put("longitude", mLongitude);
     }
 
+    public LatLng getPoint() {
+        return mPoint;
+    }
+
+    public void setPoint(LatLng point) {
+        mPoint = point;
+        mLatitude = point.latitude;
+        mLongitude = point.longitude;
+        mHasLatitude = true;
+        mHasLongitude = true;
+    }
+
+    public Address(LatLng point){
+        setPoint(point);
+    }
+
     private String mFeatureName;
     private String mAdminArea;
     private String mSubAdminArea;
@@ -150,10 +168,19 @@ public class Address extends ParseObject implements Parcelable {
     private double mLongitude;
     private boolean mHasLatitude = false;
     private boolean mHasLongitude = false;
+    private LatLng mPoint;
 
     @Override
     public int describeContents() {
         return 0;
+    }
+
+    public boolean isHasLatitude() {
+        return mHasLatitude;
+    }
+
+    public boolean isHasLongitude() {
+        return mHasLongitude;
     }
 
     @Override
