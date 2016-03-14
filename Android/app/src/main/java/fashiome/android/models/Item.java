@@ -61,7 +61,7 @@ public class Item {
         items.add(new Item("Gown",new LatLng(37.385015,-122.014943)));
         for (int i=0;i<40;i++){
             Item item = new Item();
-            item.setPoint(getLocation(37.371859,-122.021234,1000));
+            item.setPoint(getRandomLocation(37.371859,-122.021234,1000));
             item.setName(randomString(10));
             item.setDesc(randomString(100));
             items.add(item);
@@ -78,7 +78,7 @@ public class Item {
         return sb.toString();
     }
 
-    public static LatLng getLocation(double x0, double y0, int radius) {
+    public static LatLng getRandomLocation(double x0, double y0, int radius) {
         Random random = new Random();
 
         // Convert radius from meters to degrees

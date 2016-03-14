@@ -100,6 +100,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return mProducts.get(index);
     }
 
+    public void add(int index,Product product){
+        mProducts.add(index,product);
+    }
+
     public void updateItems(boolean animated, List<Product> products) {
 
         if (mProducts == null) {

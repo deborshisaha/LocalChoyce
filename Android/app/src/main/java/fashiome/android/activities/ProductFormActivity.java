@@ -36,6 +36,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.models.Address;
+import fashiome.android.models.Item;
 import fashiome.android.models.Product;
 
 /**
@@ -126,6 +128,7 @@ public class ProductFormActivity extends AppCompatActivity{
         product.setProductDescription(etProductDescription.getText().toString());
         product.setPrice(Double.parseDouble(etProductAskPrice.getText().toString()));
         product.setCurrency("USD");
+        product.setAddress(new Address(Item.getRandomLocation(37.48167,-122.15559,5000)));
         //product.setProductPostedBy((User) User.getCurrentUser());
         product.setPhotos(getPhotoCloudinaryPublicIdList());
         product.saveInBackground(new SaveCallback() {
@@ -154,6 +157,10 @@ public class ProductFormActivity extends AppCompatActivity{
                         protected void onPostExecute(String s) {
                             super.onPostExecute(s);
                             Toast.makeText(ProductFormActivity.this, "Wohoo!", Toast.LENGTH_LONG).show();
+                            Intent resultIntent  = new Intent(ProductFormActivity.this,HomeActivity.class);
+                            resultIntent.putExtra("product",product);
+                            setResult(100,resultIntent);
+                            finish();
                         }
                     };
 

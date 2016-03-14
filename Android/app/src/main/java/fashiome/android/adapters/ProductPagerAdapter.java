@@ -38,7 +38,9 @@ public class ProductPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mProduct.getPhotos().size();
+        if (mProduct.getPhotos() != null)
+            return mProduct.getPhotos().size();
+        return 0;
     }
 
     @Override

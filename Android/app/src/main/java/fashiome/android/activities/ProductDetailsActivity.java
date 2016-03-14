@@ -113,17 +113,19 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private void setUiPageViewController() {
         dotsLayout = (LinearLayout)findViewById(R.id.viewPagerCountDots);
         dotsCount = productPagerAdapter.getCount();
-        dots = new TextView[dotsCount];
+        if (dotsCount > 0 ) {
+            dots = new TextView[dotsCount];
 
-        for (int i = 0; i < dotsCount; i++) {
-            dots[i] = new TextView(this);
-            dots[i].setText(Html.fromHtml("&#8226;"));
-            dots[i].setTextSize(30);
-            dots[i].setTextColor(Color.DKGRAY);
-            dotsLayout.addView(dots[i]);
+            for (int i = 0; i < dotsCount; i++) {
+                dots[i] = new TextView(this);
+                dots[i].setText(Html.fromHtml("&#8226;"));
+                dots[i].setTextSize(30);
+                dots[i].setTextColor(Color.DKGRAY);
+                dotsLayout.addView(dots[i]);
+            }
+
+            dots[0].setTextColor(Color.WHITE);
         }
-
-        dots[0].setTextColor(Color.WHITE);
     }
 
     private void setViewPagerItemsWithAdapter() {

@@ -311,7 +311,7 @@ public class MapListFragment extends Fragment implements GoogleApiClient.Connect
                     public boolean onMarkerClick(Marker marker) {
                         // Handle marker click here
                         //send first item for now
-                        listenerForActivity.OnClick(mItems.get(0));
+                        //listenerForActivity.OnClick(mItems.get(0));
                         return true;
                     }
                 });
