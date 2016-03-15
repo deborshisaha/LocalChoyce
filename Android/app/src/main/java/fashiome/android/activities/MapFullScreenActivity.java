@@ -128,7 +128,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
             Product product = products.get(i);
             BitmapDescriptor defaultMarker =
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
-            if (product.getAddress() != null && product.getAddress().isHasLatitude() && product.getAddress().isHasLongitude()) {
+            if (product.getAddress() != null) {
                 Marker marker = map.addMarker(new MarkerOptions()
                         .position(new LatLng(product.getAddress().getLatitude(), product.getAddress().getLongitude()))
                         .title(product.getProductName())
@@ -246,6 +246,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         i.putExtra(Product.PRODUCT_KEY,mapItem);
         startActivity(i);
     }
+
     private void dropPinEffect(final Marker marker) {
         // Handler allows us to repeat a code block after a specified delay
         final android.os.Handler handler = new android.os.Handler();
