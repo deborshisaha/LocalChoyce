@@ -86,6 +86,8 @@ public class ProductsRecyclerViewFragment extends Fragment {
 
         ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
         query.setLimit(50);
+        query.setMaxCacheAge(60000*60);
+        query.orderByDescending("createdAt");
         query.include("productPostedBy");
 
         query.findInBackground(new FindCallback<Product>() {
