@@ -39,6 +39,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayInputStream;
@@ -173,7 +174,12 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
         product.setProductDescription(etProductDescription.getText().toString());
         product.setPrice(Double.parseDouble(etProductAskPrice.getText().toString()));
         product.setCurrency("USD");
-        //product.setProductPostedBy((User) User.getCurrentUser());
+        //product.setAddress(new Address(Item.getRandomLocation(37.48167, -122.15559, 5000)));
+
+        // cannot use User.getCurrentUser() because while uploading we do a new Product
+        // so User.getCurrentUser() returns null
+        product.setProductPostedBy(ParseUser.getCurrentUser());
+        Log.i("info","User is there: "+product.getProductPostedBy().getUsername());
         product.setPhotos(getPhotoCloudinaryPublicIdList());
         product.saveInBackground(new SaveCallback() {
             @Override
@@ -201,9 +207,9 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
                         protected void onPostExecute(String s) {
                             super.onPostExecute(s);
                             Toast.makeText(ProductFormActivity.this, "Wohoo!", Toast.LENGTH_LONG).show();
-                            Intent resultIntent = new Intent(ProductFormActivity.this, HomeActivity.class);
+                            Intent resultIntent  = new Intent();
                             resultIntent.putExtra("product", product);
-                            setResult(100, resultIntent);
+                            setResult(RESULT_OK, resultIntent);
                             finish();
                         }
                     };

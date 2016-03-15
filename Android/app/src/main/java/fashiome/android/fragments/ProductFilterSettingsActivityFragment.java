@@ -1,4 +1,4 @@
-package fashiome.android.activities;
+package fashiome.android.fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import fashiome.android.R;
 
 /**
- * A placeholder fragment containing a simple view.
+ * A placeholder fragment containing a simple view for filter settings
  */
 public class ProductFilterSettingsActivityFragment extends Fragment {
 

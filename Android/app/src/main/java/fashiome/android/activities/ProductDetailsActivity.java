@@ -92,8 +92,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         setViewPagerItemsWithAdapter();
         setUiPageViewController();
-        //parseCallForIsLiked();
 
+        if(ParseUser.getCurrentUser() != null) {
+            parseCallForIsLiked();
+        }
     }
 
     private void setUiPageViewController() {

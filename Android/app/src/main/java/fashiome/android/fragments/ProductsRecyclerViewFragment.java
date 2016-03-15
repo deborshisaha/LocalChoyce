@@ -106,14 +106,16 @@ public class ProductsRecyclerViewFragment extends Fragment {
     }
 
     public void addNewProductToList(Product product){
+
         mProductsAdapter.add(0, product);
-        mProductsAdapter.notifyDataSetChanged();
+        mProductsAdapter.notifyItemInserted(0);
         mProductRecyclerView.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mProductRecyclerView.scrollToPosition(0);
             }
         }, 1000);
+
     }
 
 //    @Override

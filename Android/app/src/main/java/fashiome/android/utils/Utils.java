@@ -15,6 +15,14 @@ public class Utils {
     private static int screenWidth = 0;
     private static int screenHeight = 0;
 
+    public static int getScreenWithInDp(Context c) {
+
+        DisplayMetrics displayMetrics = c.getResources().getDisplayMetrics();
+        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        return (int)dpWidth;
+    }
+
     public static int dpToPx(int dp) {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
