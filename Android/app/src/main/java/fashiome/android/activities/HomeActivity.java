@@ -31,7 +31,6 @@ import fashiome.android.models.Product;
 
 public class HomeActivity extends AppCompatActivity {
 
-
     ImageView mProfileLogo;
     ProductsRecyclerViewFragment mProductsFragment;
 
@@ -46,10 +45,8 @@ public class HomeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(HomeActivity.this, ProductFormActivity.class);
                 startActivityForResult(intent,100);
-
             }
         });
 
@@ -73,7 +70,6 @@ public class HomeActivity extends AppCompatActivity {
             String profileUrl = ParseUser.getCurrentUser().get("profilePictureUrl").toString();
             Glide.with(HomeActivity.this).load(profileUrl).into(mProfileLogo);
         }
-
 
     }
     public void getUserProfileLogo(View view) {

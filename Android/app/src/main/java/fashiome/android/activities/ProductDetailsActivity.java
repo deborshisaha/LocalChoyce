@@ -54,10 +54,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private Product mProduct;
     private boolean isLiked = false;
 
-    GoogleMap googleMap;
+    @Bind(R.id.tvProductTitle)
+    TextView mProductTitle;
 
-    @Bind(R.id.tvProductTitle) TextView mProductTitle;
-    @Bind(R.id.tvValue) TextView mProductValue;
+    @Bind(R.id.tvProductDescription)
+    TextView mProductDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,56 +76,23 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
 
         // Get Intent for a product here
-        int numberOfRatings = 5;
-        LinearLayout mLL = (LinearLayout)findViewById(R.id.llRatingBar);
-        for(int i = 0;i<numberOfRatings;i++){
-
-            ImageView iv = new ImageView(this);
-            iv.setImageResource(R.drawable.ic_star_filled);
-            android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(40,40);
-            iv.setLayoutParams(layoutParams);
-            mLL.addView(iv);
-        }
-
-        SupportMapFragment supportMapFragment = (SupportMapFragment)
-                getSupportFragmentManager().findFragmentById(R.id.map);
-
-        // Getting a reference to the map
-        googleMap = supportMapFragment.getMap();
-
-        // Setting a click event handler for the map
-        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-
-            @Override
-            public void onMapClick(LatLng latLng) {
-
-                // Creating a marker
-                MarkerOptions markerOptions = new MarkerOptions();
-
-                // Setting the position for the marker
-                markerOptions.position(latLng);
-
-                // Setting the title for the marker.
-                // This will be displayed on taping the marker
-                markerOptions.title(latLng.latitude + " : " + latLng.longitude);
-
-                // Clears the previously touched position
-                googleMap.clear();
-
-                // Animating to the touched position
-                googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-
-                // Placing a marker on the touched position
-                googleMap.addMarker(markerOptions);
-            }
-        });
+//        int numberOfRatings = 5;
+//        LinearLayout mLL = (LinearLayout)findViewById(R.id.llRatingBar);
+//        for(int i = 0;i<numberOfRatings;i++){
+//
+//            ImageView iv = new ImageView(this);
+//            iv.setImageResource(R.drawable.ic_star_filled);
+//            android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(40,40);
+//            iv.setLayoutParams(layoutParams);
+//            mLL.addView(iv);
+//        }
 
         mProductTitle.setText(mProduct.getProductName());
-        mProductValue.setText(String.valueOf(mProduct.getPrice()));
+        mProductDescription.setText(String.valueOf(mProduct.getProductDescription()));
 
         setViewPagerItemsWithAdapter();
         setUiPageViewController();
-        parseCallForIsLiked();
+        //parseCallForIsLiked();
 
     }
 
