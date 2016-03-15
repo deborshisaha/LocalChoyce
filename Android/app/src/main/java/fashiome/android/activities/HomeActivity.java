@@ -45,13 +45,20 @@ public class HomeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, ProductFormActivity.class);
-                startActivityForResult(intent,100);
+
+                Intent intent = null;
+
+                if (ParseUser.getCurrentUser() == null) {
+                    intent = new Intent(HomeActivity.this, LoginActivity.class);
+                    startActivityForResult(intent, 300);
+                } else {
+                    intent = new Intent(HomeActivity.this, ProductFormActivity.class);
+                    startActivityForResult(intent, 100);
+                }
             }
         });
 
 
-        //find embedded products recycler fragment
         mProductsFragment = (ProductsRecyclerViewFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragmentProducts);
     }
@@ -72,6 +79,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
+
     public void getUserProfileLogo(View view) {
         Log.i("info","profile clicked");
         if(ParseUser.getCurrentUser() != null){
@@ -99,6 +107,11 @@ public class HomeActivity extends AppCompatActivity {
                 Glide.with(HomeActivity.this).load(profileUrl).into(mProfileLogo);
                 break;
 
+            case 300:
+                Intent intent = new Intent(HomeActivity.this, ProductFormActivity.class);
+                startActivityForResult(intent, 100);
+                break;
+
             default:
                 return;
 
@@ -107,16 +120,12 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-       //getMenuInflater().inflate(R.menu.menu_home_activity, menu);
        return true;
     }
 
    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-       // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
        //noinspection SimplifiableIfStatement
@@ -129,7 +138,6 @@ public class HomeActivity extends AppCompatActivity {
 
     public void launchMap(View view) {
         Intent i = new Intent(HomeActivity.this,MapFullScreenActivity.class);
-        //get list of products from ProductsFragment
         i.putParcelableArrayListExtra("products", mProductsFragment.getProductsAdapter().getAll());
         startActivity(i);
     }

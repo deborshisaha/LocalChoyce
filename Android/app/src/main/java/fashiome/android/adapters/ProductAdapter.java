@@ -207,7 +207,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             if (URLString != null || URLString.length() > 0) {
                 Glide.with(this.mContext)
                         .load(URLString)
-                        //.diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(rivProductPrimaryImage);
             }
 
