@@ -77,7 +77,7 @@ public class ProductsRecyclerViewFragment extends Fragment {
                         Product product = mProductsAdapter.getProductAtIndex(position);
 
                         Intent intent = new Intent(getActivity(), ProductDetailsActivity.class);
-                        intent.putExtra(Product.PRODUCT_KEY, product);
+                        intent.putExtra("product", product);
 
                         startActivity(intent);
                     }
