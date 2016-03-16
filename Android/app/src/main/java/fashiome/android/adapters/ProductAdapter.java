@@ -213,10 +213,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvProductTitle.setText(product.getProductName());
             tvProductDescription.setText(product.getProductDescription());
 
-//            if ( product.getProductPostedBy().getFullName() != null) {
-//                tvProductByUserName.setText( product.getProductPostedBy().getFullName());
-//            }
+            if ( product.getProductPostedBy() != null) {
+                tvProductByUserName.setText( product.getProductPostedBy().getUsername());
+            }
 
+            Log.d("DEBUG", "Latitude : "+product.getAddress().getLatitude());
+            Log.d("DEBUG", "Longitude : "+product.getAddress().getLongitude());
         }
     }
 }

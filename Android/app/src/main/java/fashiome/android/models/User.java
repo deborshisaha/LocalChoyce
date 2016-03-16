@@ -16,7 +16,11 @@ public class User extends ParseUser implements Parcelable {
     public User() {}
 
     public String getFirstName() {
-        this.firstName = getString("firstName");
+
+        if (this.firstName == null) {
+            this.firstName = getString("firstName");
+        }
+
         return this.firstName;
     }
 
@@ -26,7 +30,11 @@ public class User extends ParseUser implements Parcelable {
     }
 
     public String getLastName() {
-        this.lastName = getString("lastName");
+
+        if (this.lastName == null) {
+            this.lastName = getString("lastName");
+        }
+
         return this.lastName;
     }
 

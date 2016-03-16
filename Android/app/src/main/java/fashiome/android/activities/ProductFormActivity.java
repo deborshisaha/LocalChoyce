@@ -53,6 +53,7 @@ import fashiome.android.R;
 import fashiome.android.models.Address;
 import fashiome.android.models.Item;
 import fashiome.android.models.Product;
+import fashiome.android.models.User;
 import permissions.dispatcher.NeedsPermission;
 
 /**
@@ -173,7 +174,7 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
         product.setProductDescription(etProductDescription.getText().toString());
         product.setPrice(Double.parseDouble(etProductAskPrice.getText().toString()));
         product.setCurrency("USD");
-        //product.setProductPostedBy((User) User.getCurrentUser());
+        product.setProductPostedBy((User) User.getCurrentUser());
         product.setPhotos(getPhotoCloudinaryPublicIdList());
         product.saveInBackground(new SaveCallback() {
             @Override

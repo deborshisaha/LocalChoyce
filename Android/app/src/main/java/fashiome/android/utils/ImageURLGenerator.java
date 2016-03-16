@@ -28,7 +28,7 @@ public class ImageURLGenerator {
             return BASE_URL + publicId + ".jpg";
         }
 
-        return BASE_URL+"r_4/w_"+ Integer.toString(pixels) + "/" + publicId + ".jpg";
+        return BASE_URL+"r_4/w_"+ Integer.toString(pixels) + "/" + publicId + ".png";
     }
 
 }

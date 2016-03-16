@@ -89,6 +89,7 @@ public class ProductsRecyclerViewFragment extends Fragment {
         query.setMaxCacheAge(60000*60);
         query.orderByDescending("createdAt");
         query.include("productPostedBy");
+        query.include("address");
 
         query.findInBackground(new FindCallback<Product>() {
             @Override
