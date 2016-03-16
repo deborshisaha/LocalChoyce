@@ -176,6 +176,7 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
         product.setPrice(Double.parseDouble(etProductAskPrice.getText().toString()));
         product.setCurrency("USD");
         product.setProductPostedBy((User) User.getCurrentUser());
+
         product.setPhotos(getPhotoCloudinaryPublicIdList());
         product.saveInBackground(new SaveCallback() {
             @Override
