@@ -4,6 +4,6 @@
     tools:context="fashiome.android.activities.HomeActivity">
     <item android:id="@+id/map_launcher"
           android:title="Maps"
-          android:icon="@drawable/ic_map"
+          android:icon="@drawable/ic_action_marker"
           app:showAsAction="ifRoom" />
 </menu>
