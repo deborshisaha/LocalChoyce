@@ -213,8 +213,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvProductTitle.setText(product.getProductName());
             tvProductDescription.setText(product.getProductDescription());
 
-            if ( product.getProductPostedBy() != null) {
-                tvProductByUserName.setText( product.getProductPostedBy().getUsername());
+         if (product.getProductPostedBy() != null) {
+                tvProductByUserName.setText(product.getProductPostedBy().getUsername());
+
             }
 
             Log.d("DEBUG", "Latitude : "+product.getAddress().getLatitude());

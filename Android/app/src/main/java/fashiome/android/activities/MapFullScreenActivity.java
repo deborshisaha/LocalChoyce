@@ -13,15 +13,20 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.bumptech.glide.Glide;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -32,6 +37,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -43,15 +50,25 @@ import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import fashiome.android.Manifest;
 import fashiome.android.R;
 import fashiome.android.adapters.CustomWindowAdapter;
+
+import fashiome.android.adapters.ProductAdapter;
+import fashiome.android.helpers.ItemClickSupport;
+import fashiome.android.models.Item;
+
 import fashiome.android.models.Product;
+import fashiome.android.utils.ImageURLGenerator;
+import fashiome.android.utils.Utils;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -69,9 +86,12 @@ public class MapFullScreenActivity extends AppCompatActivity implements
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
-    private HashMap<String, Product> mMarkers= new HashMap<String, Product>();
-    ArrayList<Product> mItems;
+
+    private LatLng mLocation;
+    private Marker mLocationMarker;
+
     ImageView mProfileLogo;
+
 
     /*
      * Define a request code to send to Google Play services This code is
@@ -79,11 +99,45 @@ public class MapFullScreenActivity extends AppCompatActivity implements
      */
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
+    ArrayList<Product> mItems;
+    private HashMap<String, Product> mMarkers= new HashMap<String, Product>();
+    ImageView pic;
+    TextView title;
+    TextView desc;
+    TextView price;
+
+    Product mSelectedProduct;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_full_screen);
-        mItems =   getIntent().getParcelableArrayListExtra("products");
+
+
+        mItems = getIntent().getParcelableArrayListExtra("products");
+
+         pic =(ImageView) findViewById(R.id.ivItemPhoto);
+         title = (TextView) findViewById(R.id.tvItemName);
+         desc = (TextView) findViewById(R.id.tvDesc);
+         price = (TextView) findViewById(R.id.tvPrice);
+
+        RelativeLayout footer = (RelativeLayout) findViewById(R.id.rlFooter);
+        footer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                //...
+                //show dialog fragment here
+                Intent i = new Intent(MapFullScreenActivity.this, ProductDetailsActivity.class);
+                i.putExtra("product", mSelectedProduct);
+                startActivity(i);
+            }
+        });
+
+
+
+
         System.out.println(mItems);
         System.out.print(mItems.size());
 
@@ -104,6 +158,32 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         }
 
     }
+
+    private void moveToLocation(LatLng latLng, final boolean moveCamera) {
+        if (latLng == null) {
+            return;
+        }
+        moveMarker(latLng);
+        mLocation = latLng;
+        new Runnable() {
+            @Override
+            public void run() {
+                if (map != null && moveCamera) {
+                    map.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(mLocation, 11.0f)));
+                }
+            }
+        };
+    }
+
+    private void moveMarker(LatLng latLng) {
+        if (mLocationMarker != null) {
+            mLocationMarker.remove();
+        }
+        //mLocationMarker = map.addMarker(new MarkerOptions()
+         //       .position(latLng).anchor(0.5f, 0.5f));
+        //.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_my_location))
+    }
+
     public void setToolBar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         View logo = getLayoutInflater().inflate(R.layout.home_activity_toolbar, null);
@@ -120,9 +200,27 @@ public class MapFullScreenActivity extends AppCompatActivity implements
 
 
     }
+
+    public void updateFooter(Product product){
+        mSelectedProduct = product;
+
+
+        title.setText(product.getProductName());
+        desc.setText(product.getProductDescription());
+        price.setText(product.getPrice()+"");
+
+
+    }
+    public void updateFooter(Marker marker){
+        Product product = (Product) mMarkers.get(marker.getId());
+        updateFooter(product);
+
+    }
+
     public void loadMarkersFromItems(ArrayList<Product> products){
+        Product product=null;
         for(int i=0;i<products.size();i++) {
-            Product product = products.get(i);
+            product = products.get(i);
             BitmapDescriptor defaultMarker =
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
             if (product.getAddress() != null) {
@@ -138,6 +236,8 @@ public class MapFullScreenActivity extends AppCompatActivity implements
                 dropPinEffect(marker);
             }
         }
+        mSelectedProduct = product;
+        updateFooter(mSelectedProduct);
     }
 
     protected void loadMap(GoogleMap googleMap) {
@@ -157,7 +257,13 @@ public class MapFullScreenActivity extends AppCompatActivity implements
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 public boolean onMarkerClick(Marker marker) {
                     // Handle marker click here
-                    onInfoWindowClick(marker);
+                    //show the details on the banner
+                    BitmapDescriptor greenMarker =
+                            BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+                    marker.setIcon(greenMarker);
+                    moveToLocation(marker.getPosition(), true);
+                    updateFooter(marker);
+
                     return true;
                 }
             });
@@ -235,14 +341,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
     }
 
 
-    public void onInfoWindowClick(Marker marker) {
-        Product mapItem = (Product) mMarkers.get(marker.getId());
-        //...
-        //show dialog fragment here
-        Intent i = new Intent(MapFullScreenActivity.this,ProductDetailsActivity.class);
-        i.putExtra(Product.PRODUCT_KEY,mapItem);
-        startActivity(i);
-    }
+
 
     private void dropPinEffect(final Marker marker) {
         // Handler allows us to repeat a code block after a specified delay
@@ -494,6 +593,26 @@ public class MapFullScreenActivity extends AppCompatActivity implements
             @Override
             public boolean onQueryTextSubmit(String q) {
                 //fetch new results
+                // Define the class we would like to query
+                ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
+                // Define our query conditions
+                query.whereContains("productDescription", q);
+                // Execute the find asynchronously
+                query.findInBackground(new FindCallback<Product>() {
+                    public void done(List<Product> itemList, ParseException e) {
+                        if (e == null) {
+                            // Access the array of results here
+                            if (itemList !=null){
+                                String firstItemId = itemList.get(0).getObjectId();
+                                Toast.makeText(MapFullScreenActivity.this, firstItemId, Toast.LENGTH_SHORT).show();
+                            } else
+                                Toast.makeText(MapFullScreenActivity.this, "No Matching Results found !! try again !! :)", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Log.d("item", "Error: " + e.getMessage());
+                        }
+                    }
+                });
                 return true;
             }
 

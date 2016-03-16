@@ -72,7 +72,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
 
-        mProduct = getIntent().getExtras().getParcelable(Product.PRODUCT_KEY);
+        mProduct = getIntent().getExtras().getParcelable("product");
 
 
         // Get Intent for a product here
