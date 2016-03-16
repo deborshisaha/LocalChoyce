@@ -66,7 +66,8 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.ic_app_logo);
         mProfileLogo = (RoundedImageView) findViewById(R.id.ivProfileLogo);
 
-        if(ParseUser.getCurrentUser() != null) {
+        //do not remove null chks
+        if(ParseUser.getCurrentUser() != null && ParseUser.getCurrentUser().get("profilePictureUrl")!=null) {
 
             String profileUrl = ParseUser.getCurrentUser().get("profilePictureUrl").toString();
             Glide.with(HomeActivity.this).load(profileUrl).into(mProfileLogo);
@@ -103,6 +104,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
                     query.include("productPostedBy");
+                    query.include("address");
                     // First try to find from the cache and only then go to network
                     // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK); // or CACHE_ONLY
                     // Execute the query to find the object with ID

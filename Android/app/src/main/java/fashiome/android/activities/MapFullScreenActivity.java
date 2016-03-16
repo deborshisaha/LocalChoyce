@@ -119,12 +119,12 @@ public class MapFullScreenActivity extends AppCompatActivity implements
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                         // do it
-                        Product product = mItems.get(position);
+                        Product product  = mProductsAdapter.getProductAtIndex(position);
                         if (product.getAddress() != null)
                             moveToLocation(product.getAddress().getPoint(), true);
-                        //Intent i = new Intent(MapFullScreenActivity.this
-                         //       , ProductDetailsActivity.class);
-                        //startActivity(i);
+                        Intent i = new Intent(MapFullScreenActivity.this
+                                , ProductDetailsActivity.class);
+                        startActivity(i);
                     }
                 }
         );
@@ -229,6 +229,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 public boolean onMarkerClick(Marker marker) {
                     // Handle marker click here
+                    //show the details on the banner
                     onInfoWindowClick(marker);
                     return true;
                 }
