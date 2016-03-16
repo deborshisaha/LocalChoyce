@@ -198,7 +198,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         public void configure(Product product) {
 
-            String URLString = ImageURLGenerator.getInstance(this.mContext).URLForImageWithCloudinaryPublicId(product.getProductPrimaryImageCloudinaryPublicId(), Utils.getScreenWidth(this.mContext));
+            String URLString = ImageURLGenerator.getInstance(this.mContext).URLForImageWithCloudinaryPublicId(product.getProductPrimaryImageCloudinaryPublicId(), Utils.getScreenWithInDp(this.mContext));
 
             Log.d("DEBUG", URLString);
 
@@ -213,8 +213,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvProductTitle.setText(product.getProductName());
             tvProductDescription.setText(product.getProductDescription());
 
+<<<<<<< HEAD
             if ( product.getProductPostedBy() != null) {
                 tvProductByUserName.setText( product.getProductPostedBy().getUsername());
+=======
+            if (product.getProductPostedBy().getUsername() != null) {
+                tvProductByUserName.setText(product.getProductPostedBy().getUsername());
+>>>>>>> 57510c4... - Bug fix for user not getting pulled from parse
             }
 
             Log.d("DEBUG", "Latitude : "+product.getAddress().getLatitude());
