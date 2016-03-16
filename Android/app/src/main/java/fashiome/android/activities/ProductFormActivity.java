@@ -54,6 +54,7 @@ import fashiome.android.R;
 import fashiome.android.models.Address;
 import fashiome.android.models.Item;
 import fashiome.android.models.Product;
+import fashiome.android.models.User;
 import permissions.dispatcher.NeedsPermission;
 
 /**
@@ -174,12 +175,7 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
         product.setProductDescription(etProductDescription.getText().toString());
         product.setPrice(Double.parseDouble(etProductAskPrice.getText().toString()));
         product.setCurrency("USD");
-        //product.setAddress(new Address(Item.getRandomLocation(37.48167, -122.15559, 5000)));
-
-        // cannot use User.getCurrentUser() because while uploading we do a new Product
-        // so User.getCurrentUser() returns null
-        product.setProductPostedBy(ParseUser.getCurrentUser());
-        Log.i("info","User is there: "+product.getProductPostedBy().getUsername());
+        product.setProductPostedBy((User) User.getCurrentUser());
         product.setPhotos(getPhotoCloudinaryPublicIdList());
         product.saveInBackground(new SaveCallback() {
             @Override

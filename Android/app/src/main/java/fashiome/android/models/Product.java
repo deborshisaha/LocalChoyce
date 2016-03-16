@@ -46,13 +46,31 @@ public class Product extends ParseObject implements Parcelable {
     }
 
     public Address getAddress() {
-        return address;
-                //(Address)getParseObject("address");
+
+        if (this.address == null) {
+            this.address = (Address) getParseObject("address");
+        }
+
+        return this.address;
     }
 
     public void setAddress(Address address) {
         this.address = address;
         put("address", address);
+    }
+
+    public void setProductPostedBy(User user) {
+        this.productPostedBy = user;
+        put("productPostedBy", this.productPostedBy);
+    }
+
+    public User getProductPostedBy() {
+
+        if (this.productPostedBy == null) {
+            this.productPostedBy = (User) getParseObject("productPostedBy");
+        }
+
+        return this.productPostedBy;
     }
 
     public int getNumberOfReviews() {
@@ -146,15 +164,15 @@ public class Product extends ParseObject implements Parcelable {
         put("productSKU", productSKU);
     }
 
-    public User getProductPostedBy() {
-        this.productPostedBy = (User) getParseUser("productPostedBy");
-        return this.productPostedBy;
-    }
-
-    public void setProductPostedBy(ParseUser productPostedBy) {
-        this.productPostedBy = (User) productPostedBy;
-        put("productPostedBy", productPostedBy);
-    }
+//    public User getProductPostedBy() {
+//        this.productPostedBy = (User) getParseUser("productPostedBy");
+//        return this.productPostedBy;
+//    }
+//
+//    public void setProductPostedBy(ParseUser productPostedBy) {
+//        this.productPostedBy = (User) productPostedBy;
+//        put("productPostedBy", productPostedBy);
+//    }
 
     /**
      * Default constructor
@@ -191,8 +209,8 @@ public class Product extends ParseObject implements Parcelable {
         dest.writeString(getProductSKU());
         dest.writeString(getCurrency());
         dest.writeStringList(getPhotos());
-        dest.writeParcelable(this.address, 0);
-        dest.writeParcelable(getProductPostedBy(), 0);
+        dest.writeParcelable(getAddress(), 0);
+        dest.writeParcelable(getProductPostedBy() , 0);
         dest.writeDouble(getProductRating());
         dest.writeInt(getNumberOfFavorites());
         dest.writeInt(getNumberOfViews());
