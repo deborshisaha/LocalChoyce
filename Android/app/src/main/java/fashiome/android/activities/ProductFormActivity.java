@@ -175,16 +175,8 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
         product.setProductDescription(etProductDescription.getText().toString());
         product.setPrice(Double.parseDouble(etProductAskPrice.getText().toString()));
         product.setCurrency("USD");
-<<<<<<< HEAD
         product.setProductPostedBy((User) User.getCurrentUser());
-=======
-        //product.setAddress(new Address(Item.getRandomLocation(37.48167, -122.15559, 5000)));
 
-        // cannot use User.getCurrentUser() because while uploading we do a new Product
-        // so User.getCurrentUser() returns null
-        product.setProductPostedBy(ParseUser.getCurrentUser());
-        Log.i("info","User is there: "+product.getProductPostedBy().getUsername());
->>>>>>> 57510c4... - Bug fix for user not getting pulled from parse
         product.setPhotos(getPhotoCloudinaryPublicIdList());
         product.saveInBackground(new SaveCallback() {
             @Override

@@ -13,7 +13,22 @@ import com.parse.ParseUser;
 @ParseClassName("_User")
 public class User extends ParseUser implements Parcelable {
 
+    private String facebookId;
+
     public User() {}
+
+    public String getFacebookId() {
+        if (this.facebookId == null) {
+            this.facebookId = getString("facebookId");
+        }
+
+        return this.facebookId;
+    }
+
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+        put("facebookId", facebookId);
+    }
 
     public String getFirstName() {
 
@@ -100,6 +115,7 @@ public class User extends ParseUser implements Parcelable {
         dest.writeString(this.profilePictureURL);
         dest.writeDouble(this.rating);
         dest.writeString(this.email);
+        dest.writeString(this.facebookId);
     }
 
     protected User(Parcel in) {
@@ -108,6 +124,7 @@ public class User extends ParseUser implements Parcelable {
         this.profilePictureURL = in.readString();
         this.rating = in.readDouble();
         this.email = in.readString();
+        this.facebookId = in.readString();
     }
 
     public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {

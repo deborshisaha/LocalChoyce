@@ -66,8 +66,17 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.ic_app_logo);
         mProfileLogo = (RoundedImageView) findViewById(R.id.ivProfileLogo);
 
-        if(ParseUser.getCurrentUser() != null) {
+        mProfileLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ParseUser.getCurrentUser() != null) {
+                    Intent i = new Intent(HomeActivity.this, UserProfileActivity.class);
+                    startActivity(i);
+                }
+            }
+        });
 
+        if(ParseUser.getCurrentUser() != null) {
             String profileUrl = ParseUser.getCurrentUser().get("profilePictureUrl").toString();
             Glide.with(HomeActivity.this).load(profileUrl).into(mProfileLogo);
         }
@@ -146,12 +155,12 @@ public class HomeActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-       //noinspection SimplifiableIfStatement
+        //noinspection SimplifiableIfStatement
         if (id == R.id.map_launcher) {
-           return true;
-       }
+            return true;
+        }
 
-       return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
     public void launchMap(View view) {

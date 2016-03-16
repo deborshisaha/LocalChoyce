@@ -213,13 +213,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvProductTitle.setText(product.getProductName());
             tvProductDescription.setText(product.getProductDescription());
 
-<<<<<<< HEAD
             if ( product.getProductPostedBy() != null) {
                 tvProductByUserName.setText( product.getProductPostedBy().getUsername());
-=======
-            if (product.getProductPostedBy().getUsername() != null) {
-                tvProductByUserName.setText(product.getProductPostedBy().getUsername());
->>>>>>> 57510c4... - Bug fix for user not getting pulled from parse
             }
 
             Log.d("DEBUG", "Latitude : "+product.getAddress().getLatitude());

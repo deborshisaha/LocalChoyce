@@ -143,13 +143,12 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject picture = response.getJSONObject().getJSONObject("picture");
                             JSONObject data = picture.getJSONObject("data");
 
-                            //  Returns a 50x50 profile picture
-                            //String pictureUrl = data.getString("url");
                             Log.i("info", "https://graph.facebook.com/" + AccessToken.getCurrentAccessToken().getUserId() + "/picture?type=large");
 
                             String pictureUrl = "https://graph.facebook.com/"+AccessToken.getCurrentAccessToken().getUserId()+"/picture?type=large";
 
                             user.setProfilePictureURL(pictureUrl);
+                            user.setFacebookId(AccessToken.getCurrentAccessToken().getUserId());
 
                             saveNewUser(user);
 
@@ -172,22 +171,5 @@ public class LoginActivity extends AppCompatActivity {
     public void goCreateAccount(View view){
         startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
     }
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_login_activity, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-*/
-
 
 }

@@ -101,7 +101,12 @@ public class Product extends ParseObject implements Parcelable {
     }
 
     public double getPrice() {
-        return getDouble("price");
+
+        if (this.price == 0) {
+            this.price = getDouble("price");
+        }
+
+        return this.price;
     }
 
     public void setPrice(double price) {
@@ -110,7 +115,12 @@ public class Product extends ParseObject implements Parcelable {
     }
 
     public String getCurrency() {
-        return getString("currency");
+
+        if (this.currency == null) {
+            this.currency = getString("currency");
+        }
+
+        return this.currency;
     }
 
     public void setCurrency(String currency) {
@@ -163,16 +173,6 @@ public class Product extends ParseObject implements Parcelable {
         this.productSKU = productSKU;
         put("productSKU", productSKU);
     }
-
-//    public User getProductPostedBy() {
-//        this.productPostedBy = (User) getParseUser("productPostedBy");
-//        return this.productPostedBy;
-//    }
-//
-//    public void setProductPostedBy(ParseUser productPostedBy) {
-//        this.productPostedBy = (User) productPostedBy;
-//        put("productPostedBy", productPostedBy);
-//    }
 
     /**
      * Default constructor
