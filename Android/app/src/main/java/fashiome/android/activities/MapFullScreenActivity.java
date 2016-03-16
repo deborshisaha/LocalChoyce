@@ -13,11 +13,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.bumptech.glide.Glide;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import android.app.Activity;
@@ -32,6 +36,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -47,10 +53,16 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import fashiome.android.Manifest;
 import fashiome.android.R;
 import fashiome.android.adapters.CustomWindowAdapter;
+
+import fashiome.android.adapters.ProductAdapter;
+import fashiome.android.helpers.ItemClickSupport;
+import fashiome.android.models.Item;
+
 import fashiome.android.models.Product;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -69,8 +81,10 @@ public class MapFullScreenActivity extends AppCompatActivity implements
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
-    private HashMap<String, Product> mMarkers= new HashMap<String, Product>();
-    ArrayList<Product> mItems;
+
+    private LatLng mLocation;
+    private Marker mLocationMarker;
+
     ImageView mProfileLogo;
 
     /*
@@ -78,12 +92,44 @@ public class MapFullScreenActivity extends AppCompatActivity implements
      * returned in Activity.onActivityResult
      */
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private RecyclerView mReViewProducts;
+    ArrayList<Product> mItems;
+    private HashMap<String, Product> mMarkers= new HashMap<String, Product>();
+    private ProductAdapter mProductsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_full_screen);
-        mItems =   getIntent().getParcelableArrayListExtra("products");
+
+        mReViewProducts = (RecyclerView) findViewById(R.id.listProducts);
+        mItems = getIntent().getParcelableArrayListExtra("products");
+
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mReViewProducts.setLayoutManager(layoutManager);
+        mReViewProducts.hasFixedSize();
+
+        mProductsAdapter = new ProductAdapter(mItems,this);
+        mReViewProducts.setAdapter(mProductsAdapter);
+
+
+        ItemClickSupport.addTo(mReViewProducts).setOnItemClickListener(
+                new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        // do it
+                        Product product = mItems.get(position);
+                        if (product.getAddress() != null)
+                            moveToLocation(product.getAddress().getPoint(), true);
+                        //Intent i = new Intent(MapFullScreenActivity.this
+                         //       , ProductDetailsActivity.class);
+                        //startActivity(i);
+                    }
+                }
+        );
+
+
         System.out.println(mItems);
         System.out.print(mItems.size());
 
@@ -104,6 +150,32 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         }
 
     }
+
+    private void moveToLocation(LatLng latLng, final boolean moveCamera) {
+        if (latLng == null) {
+            return;
+        }
+        moveMarker(latLng);
+        mLocation = latLng;
+        mReViewProducts.post(new Runnable() {
+            @Override
+            public void run() {
+                if (map != null && moveCamera) {
+                    map.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(mLocation, 11.0f)));
+                }
+            }
+        });
+    }
+
+    private void moveMarker(LatLng latLng) {
+        if (mLocationMarker != null) {
+            mLocationMarker.remove();
+        }
+        mLocationMarker = map.addMarker(new MarkerOptions()
+                .position(latLng).anchor(0.5f, 0.5f));
+        //.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_my_location))
+    }
+
     public void setToolBar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         View logo = getLayoutInflater().inflate(R.layout.home_activity_toolbar, null);
@@ -494,6 +566,26 @@ public class MapFullScreenActivity extends AppCompatActivity implements
             @Override
             public boolean onQueryTextSubmit(String q) {
                 //fetch new results
+                // Define the class we would like to query
+                ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
+                // Define our query conditions
+                query.whereContains("productDescription", q);
+                // Execute the find asynchronously
+                query.findInBackground(new FindCallback<Product>() {
+                    public void done(List<Product> itemList, ParseException e) {
+                        if (e == null) {
+                            // Access the array of results here
+                            if (itemList !=null){
+                                String firstItemId = itemList.get(0).getObjectId();
+                                Toast.makeText(MapFullScreenActivity.this, firstItemId, Toast.LENGTH_SHORT).show();
+                            } else
+                                Toast.makeText(MapFullScreenActivity.this, "No Matching Results found !! try again !! :)", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Log.d("item", "Error: " + e.getMessage());
+                        }
+                    }
+                });
                 return true;
             }
 
