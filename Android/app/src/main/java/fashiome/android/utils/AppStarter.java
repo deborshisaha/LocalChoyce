@@ -43,11 +43,13 @@ public class AppStarter extends Application {
          */
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
+        //auto user not good for our use cases disabling it
         //ParseUser.enableAutomaticUser();
 
         ParseACL defaultACL = new ParseACL();
-        // Optionally enable public read access.
+        // Optionally enable public read and write access.
         defaultACL.setPublicReadAccess(true);
+        defaultACL.setPublicWriteAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
 
     }

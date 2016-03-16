@@ -1,8 +1,6 @@
 package fashiome.android.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -12,18 +10,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.cloudinary.Cloudinary;
-import com.cloudinary.android.Utils;
-import com.cloudinary.utils.ObjectUtils;
+import com.makeramen.roundedimageview.RoundedImageView;
+import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 import fashiome.android.R;
 import fashiome.android.fragments.ProductsRecyclerViewFragment;
@@ -66,11 +59,12 @@ public class HomeActivity extends AppCompatActivity {
 
     public void setToolBar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        View logo = getLayoutInflater().inflate(R.layout.user_profile_logo, null);
+        View logo = getLayoutInflater().inflate(R.layout.home_activity_toolbar, null);
         toolbar.addView(logo);
         setSupportActionBar(toolbar);
 
-        mProfileLogo = (ImageView) findViewById(R.id.ivProfileLogo);
+        getSupportActionBar().setIcon(R.drawable.ic_app_logo);
+        mProfileLogo = (RoundedImageView) findViewById(R.id.ivProfileLogo);
 
         if(ParseUser.getCurrentUser() != null) {
 
@@ -98,7 +92,31 @@ public class HomeActivity extends AppCompatActivity {
         switch (requestCode) {
 
             case 100:
-                mProductsFragment.addNewProductToList((Product) data.getParcelableExtra("product"));
+
+                // --- Receiving ---
+                if (resultCode == RESULT_OK) {
+
+                    Product p = data.getParcelableExtra("product");
+                    Log.i("info"," Pid"+p.getObjectId());
+                    // this never returns the user . Nested parse objects are not serialized using parcelable
+                    //Log.i("info"," User"+p.getProductPostedBy().getUsername());
+
+                    ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
+                    query.include("productPostedBy");
+                    // First try to find from the cache and only then go to network
+                    // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK); // or CACHE_ONLY
+                    // Execute the query to find the object with ID
+                    query.getInBackground(p.getObjectId(), new GetCallback<Product>() {
+                        public void done(Product product, ParseException e) {
+                            if (e == null) {
+                                Log.i("info"," Product found: "+product.getProductName());
+                                mProductsFragment.addNewProductToList(product);
+                            } else {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
                 break;
 
             case 200:

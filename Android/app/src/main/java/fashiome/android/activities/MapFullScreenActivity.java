@@ -20,8 +20,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.bumptech.glide.Glide;
 import com.parse.ParseUser;
 
-import org.parceler.Parcels;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -53,7 +51,6 @@ import java.util.HashMap;
 import fashiome.android.Manifest;
 import fashiome.android.R;
 import fashiome.android.adapters.CustomWindowAdapter;
-import fashiome.android.models.Item;
 import fashiome.android.models.Product;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -109,7 +106,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
     }
     public void setToolBar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        View logo = getLayoutInflater().inflate(R.layout.user_profile_logo, null);
+        View logo = getLayoutInflater().inflate(R.layout.home_activity_toolbar, null);
         toolbar.addView(logo);
         setSupportActionBar(toolbar);
 
