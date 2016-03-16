@@ -26,6 +26,7 @@ import com.parse.ParseUser;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -49,6 +50,8 @@ import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -64,6 +67,8 @@ import fashiome.android.helpers.ItemClickSupport;
 import fashiome.android.models.Item;
 
 import fashiome.android.models.Product;
+import fashiome.android.utils.ImageURLGenerator;
+import fashiome.android.utils.Utils;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -87,47 +92,50 @@ public class MapFullScreenActivity extends AppCompatActivity implements
 
     ImageView mProfileLogo;
 
+
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
      */
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-    private RecyclerView mReViewProducts;
+
     ArrayList<Product> mItems;
     private HashMap<String, Product> mMarkers= new HashMap<String, Product>();
-    private ProductAdapter mProductsAdapter;
+    ImageView pic;
+    TextView title;
+    TextView desc;
+    TextView price;
+
+    Product mSelectedProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_full_screen);
 
-        mReViewProducts = (RecyclerView) findViewById(R.id.listProducts);
+
         mItems = getIntent().getParcelableArrayListExtra("products");
 
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mReViewProducts.setLayoutManager(layoutManager);
-        mReViewProducts.hasFixedSize();
+         pic =(ImageView) findViewById(R.id.ivItemPhoto);
+         title = (TextView) findViewById(R.id.tvItemName);
+         desc = (TextView) findViewById(R.id.tvDesc);
+         price = (TextView) findViewById(R.id.tvPrice);
 
-        mProductsAdapter = new ProductAdapter(mItems,this);
-        mReViewProducts.setAdapter(mProductsAdapter);
+        RelativeLayout footer = (RelativeLayout) findViewById(R.id.rlFooter);
+        footer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
 
-        ItemClickSupport.addTo(mReViewProducts).setOnItemClickListener(
-                new ItemClickSupport.OnItemClickListener() {
-                    @Override
-                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        // do it
-                        Product product  = mProductsAdapter.getProductAtIndex(position);
-                        if (product.getAddress() != null)
-                            moveToLocation(product.getAddress().getPoint(), true);
-                        Intent i = new Intent(MapFullScreenActivity.this
-                                , ProductDetailsActivity.class);
-                        startActivity(i);
-                    }
-                }
-        );
+                //...
+                //show dialog fragment here
+                Intent i = new Intent(MapFullScreenActivity.this, ProductDetailsActivity.class);
+                i.putExtra("product", mSelectedProduct);
+                startActivity(i);
+            }
+        });
+
+
 
 
         System.out.println(mItems);
@@ -157,22 +165,22 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         }
         moveMarker(latLng);
         mLocation = latLng;
-        mReViewProducts.post(new Runnable() {
+        new Runnable() {
             @Override
             public void run() {
                 if (map != null && moveCamera) {
                     map.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(mLocation, 11.0f)));
                 }
             }
-        });
+        };
     }
 
     private void moveMarker(LatLng latLng) {
         if (mLocationMarker != null) {
             mLocationMarker.remove();
         }
-        mLocationMarker = map.addMarker(new MarkerOptions()
-                .position(latLng).anchor(0.5f, 0.5f));
+        //mLocationMarker = map.addMarker(new MarkerOptions()
+         //       .position(latLng).anchor(0.5f, 0.5f));
         //.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_my_location))
     }
 
@@ -192,9 +200,27 @@ public class MapFullScreenActivity extends AppCompatActivity implements
 
 
     }
+
+    public void updateFooter(Product product){
+        mSelectedProduct = product;
+
+
+        title.setText(product.getProductName());
+        desc.setText(product.getProductDescription());
+        price.setText(product.getPrice()+"");
+
+
+    }
+    public void updateFooter(Marker marker){
+        Product product = (Product) mMarkers.get(marker.getId());
+        updateFooter(product);
+
+    }
+
     public void loadMarkersFromItems(ArrayList<Product> products){
+        Product product=null;
         for(int i=0;i<products.size();i++) {
-            Product product = products.get(i);
+            product = products.get(i);
             BitmapDescriptor defaultMarker =
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
             if (product.getAddress() != null) {
@@ -210,6 +236,8 @@ public class MapFullScreenActivity extends AppCompatActivity implements
                 dropPinEffect(marker);
             }
         }
+        mSelectedProduct = product;
+        updateFooter(mSelectedProduct);
     }
 
     protected void loadMap(GoogleMap googleMap) {
@@ -230,7 +258,12 @@ public class MapFullScreenActivity extends AppCompatActivity implements
                 public boolean onMarkerClick(Marker marker) {
                     // Handle marker click here
                     //show the details on the banner
-                    onInfoWindowClick(marker);
+                    BitmapDescriptor greenMarker =
+                            BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+                    marker.setIcon(greenMarker);
+                    moveToLocation(marker.getPosition(), true);
+                    updateFooter(marker);
+
                     return true;
                 }
             });
@@ -308,14 +341,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
     }
 
 
-    public void onInfoWindowClick(Marker marker) {
-        Product mapItem = (Product) mMarkers.get(marker.getId());
-        //...
-        //show dialog fragment here
-        Intent i = new Intent(MapFullScreenActivity.this,ProductDetailsActivity.class);
-        i.putExtra(Product.PRODUCT_KEY,mapItem);
-        startActivity(i);
-    }
+
 
     private void dropPinEffect(final Marker marker) {
         // Handler allows us to repeat a code block after a specified delay
