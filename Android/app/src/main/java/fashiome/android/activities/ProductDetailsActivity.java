@@ -2,7 +2,10 @@ package fashiome.android.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,14 +17,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.FunctionCallback;
@@ -33,17 +41,22 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.adapters.ProductPagerAdapter;
+import fashiome.android.fragments.ProductRentDetailsFragment;
 import fashiome.android.models.Product;
+import io.card.payment.CardIOActivity;
+import io.card.payment.CreditCard;
 
 
-public class ProductDetailsActivity extends AppCompatActivity {
+public class ProductDetailsActivity extends AppCompatActivity implements ProductRentDetailsFragment.ProductRentDetailsDialogListener {
 
     private LinearLayout dotsLayout;
     private int dotsCount;
@@ -53,12 +66,26 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private ShareActionProvider miShareAction;
     private Product mProduct;
     private boolean isLiked = false;
+    private int totalAmount = 0;
+    private int MY_SCAN_REQUEST_CODE = 100; // arbitrary int
 
     @Bind(R.id.tvProductTitle)
     TextView mProductTitle;
 
     @Bind(R.id.tvProductDescription)
     TextView mProductDescription;
+
+    @Bind(R.id.tvSeller)
+    TextView mSeller;
+
+    @Bind(R.id.tvAddress)
+    TextView mAddress;
+
+    @Bind(R.id.rivSellerProfile)
+    RoundedImageView mSellerProfile;
+
+    @Bind(R.id.bRent)
+    Button mRent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +101,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         mProduct = getIntent().getExtras().getParcelable("product");
 
+        Log.i("info"," url after "+mProduct.getProductPostedBy().getObjectId()+mProduct.getProductPostedBy().getProfilePictureURL());
 
         // Get Intent for a product here
 //        int numberOfRatings = 5;
@@ -89,6 +117,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         mProductTitle.setText(mProduct.getProductName());
         mProductDescription.setText(String.valueOf(mProduct.getProductDescription()));
+        Glide.with(ProductDetailsActivity.this)
+                .load(mProduct.getProductPostedBy().getProfilePictureURL())
+                .into(mSellerProfile);
+
 
         setViewPagerItemsWithAdapter();
         setUiPageViewController();
@@ -96,6 +128,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         if(ParseUser.getCurrentUser() != null) {
             parseCallForIsLiked();
         }
+
+        getProductLocationAddress();
     }
 
     private void setUiPageViewController() {
@@ -186,10 +220,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
             case R.id.menu_item_like:
 
-                if(isLiked){
-                    parseCallForRemoveLike();
+                if(ParseUser.getCurrentUser() != null) {
+
+                    if (isLiked) {
+                        parseCallForRemoveLike();
+                    } else {
+                        parseCallForAddLike();
+                    }
                 } else {
-                    parseCallForAddLike();
+                    startActivity(new Intent(ProductDetailsActivity.this, LoginActivity.class));
                 }
                 break;
 
@@ -239,7 +278,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                 @Override
                                 public void done(ParseException e) {
                                     if (e == null) {
-                                        Log.i("info","Removed like successfully");
+                                        Log.i("info", "Removed like successfully");
                                         isLiked = false;
                                         invalidateOptionsMenu();
                                     } else {
@@ -261,13 +300,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
         query.whereEqualTo("userId", ParseUser.getCurrentUser());
         query.whereEqualTo("productId", mProduct);
         Log.i("info", "user " + ParseUser.getCurrentUser().getObjectId());
-        Log.i("info","product  "+mProduct.getObjectId());
+        Log.i("info", "product  " + mProduct.getObjectId());
 
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> likeList, ParseException e) {
                 if (e == null) {
                     Log.i("Found ", String.valueOf(likeList.size()));
-                    if(likeList.size()>0){
+                    if (likeList.size() > 0) {
                         isLiked = true;
                         invalidateOptionsMenu();
                     }
@@ -279,9 +318,29 @@ public class ProductDetailsActivity extends AppCompatActivity {
     }
 
     public void processPayment(View view) {
-        //Intent i = new Intent(ProductDetailsActivity.this, PaymentActivity.class);
-        Intent i = new Intent(ProductDetailsActivity.this, BookingDetailsActivity.class);
-        startActivity(i);
+
+        if(totalAmount <= 0) {
+            showEditDialog();
+        } else {
+            onScanPress(view);
+        }
+    }
+
+    private void showEditDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        Log.i("info", "Price before: " + mProduct.getPrice());
+        ProductRentDetailsFragment rentDetailsFragment = ProductRentDetailsFragment.newInstance(mProduct);
+        rentDetailsFragment.context = this;
+        rentDetailsFragment.listener = this;
+        rentDetailsFragment.show(fm, "fragment_rent_details");
+    }
+
+    @Override
+    public void onSavingRentDetails(int amount) {
+        Log.i("info","callback received : total amount "+ String.valueOf(amount));
+        totalAmount = amount;
+        String displayAmount = "Pay $"+String.valueOf(totalAmount);
+        mRent.setText(displayAmount);
     }
 
     /* this method is overridden to prevent the UP/BACK button_hollow from creating a new activity
@@ -292,4 +351,96 @@ instead of showing the old activity */
         return null;
     }
 
+    public void onScanPress(View v) {
+        Intent scanIntent = new Intent(this, CardIOActivity.class);
+
+        // customize these values to suit your needs.
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true); // default: false
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, true); // default: false
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
+
+        // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
+        startActivityForResult(scanIntent, MY_SCAN_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == MY_SCAN_REQUEST_CODE) {
+            String resultDisplayStr;
+            if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
+                CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
+
+                // Never log a raw card number. Avoid displaying it, but if necessary use getFormattedCardNumber()
+                resultDisplayStr = "Card Number: " + scanResult.getRedactedCardNumber() + "\n";
+
+                // Do something with the raw number, e.g.:
+                // myService.setCardNumber( scanResult.cardNumber );
+
+                if (scanResult.isExpiryValid()) {
+                    resultDisplayStr += "Expiration Date: " + scanResult.expiryMonth + "/" + scanResult.expiryYear + "\n";
+                }
+
+                if (scanResult.cvv != null) {
+                    // Never log or display a CVV
+                    resultDisplayStr += "CVV has " + scanResult.cvv.length() + " digits.\n";
+                }
+
+                if (scanResult.postalCode != null) {
+                    resultDisplayStr += "Postal Code: " + scanResult.postalCode + "\n";
+                }
+            }
+            else {
+                resultDisplayStr = "Scan was canceled.";
+            }
+            // do something with resultDisplayStr, maybe display it in a textView
+            // resultTextView.setText(resultDisplayStr);
+            Toast.makeText(ProductDetailsActivity.this, "Congratulations!! Payment done", Toast.LENGTH_LONG).show();
+
+            // TODO - 1 this is currently not working. I want to send back the rented product back to the HomeActivity or
+            // map activity but its a fragment ProductsRecyclerViewFragment
+
+            Intent resultIntent  = new Intent();
+            resultIntent.putExtra("product", mProduct);
+            setResult(RESULT_OK, resultIntent);
+            finish();
+        }
+        // else handle other activity results
+    }
+
+    public void getProductLocationAddress() {
+
+        Geocoder geocoder= new Geocoder(this, Locale.ENGLISH);
+
+        try {
+
+            List<Address> addresses = geocoder.getFromLocation(mProduct.getAddress().getLatitude(),
+                    mProduct.getAddress().getLongitude(), 1);
+
+            if(addresses != null) {
+
+                Address fetchedAddress = addresses.get(0);
+                StringBuilder strAddress = new StringBuilder();
+
+                for(int i=0; i<fetchedAddress.getMaxAddressLineIndex(); i++) {
+                    strAddress.append(fetchedAddress.getAddressLine(i)).append("\n");
+                }
+
+                Log.i("I am at: ", strAddress.toString());
+                if(strAddress.length()>0 && !strAddress.equals("")){
+                    mAddress.setText(strAddress.toString());
+                }
+
+            }
+
+            else
+                Log.i("info","No location found..!");
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(),"Could not get address..!", Toast.LENGTH_LONG).show();
+        }
+    }
 }

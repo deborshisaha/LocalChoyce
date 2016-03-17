@@ -59,7 +59,10 @@ public class User extends ParseUser implements Parcelable {
     }
 
     public String getProfilePictureURL() {
-        return getString("profilePictureURL");
+        if (this.profilePictureURL == null) {
+            this.profilePictureURL = getString("profilePictureUrl");
+        }
+        return this.profilePictureURL;
     }
 
     public void setProfilePictureURL(String profilePictureURL) {

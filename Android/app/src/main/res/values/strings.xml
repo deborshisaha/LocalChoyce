@@ -2,7 +2,7 @@
     <string name="parse_app_id">r2O85jyiF0QzqTVVbkbncJ8hyEsNY7AWj9oiWzlF</string>
     <string name="parse_client_key">wCopnOI0zadwK9cXkcRxy7Z9gaiWjS1DEr68FjuU</string>
     <string name="facebook_app_id">205815676442035</string>
-    <string name="app_name"></string>
+    <string name="app_name">AlwaysNew</string>
     <string name="action_settings">Settings</string>
     <string name="action_message">Message</string>
     <string name="action_share">Share</string>
@@ -12,8 +12,15 @@
     <string name="product_name">Product name</string>
     <string name="save">Save</string>
     <string name="title_activity_booking_details">Booking details</string>
-    <string name="title_activity_login1">LoginActivity1</string>
+    <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
+    <string-array name="orderItems">
+        <item>S</item>
+        <item>M</item>
+        <item>L</item>
+        <item>XL</item>
+    </string-array>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

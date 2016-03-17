@@ -1,6 +1,8 @@
-/*package fashiome.android.fragments;
+package fashiome.android.fragments;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,61 +11,86 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
-import fashiome.android.models.User;
+import fashiome.android.models.Product;
 
-public class ProductRentDetailsFragment extends DialogFragment implements View.OnClickListener{
+public class ProductRentDetailsFragment extends DialogFragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener{
+
+
+    Calendar myCalendar = Calendar.getInstance();
+
+    public Context context;
+
+    public Product product;
+
+    private int finalAmount = 0;
+
+    SimpleDateFormat displayFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+    SimpleDateFormat requiredFormat = new SimpleDateFormat("yyyyMMdd", Locale.US);
 
 
     public interface ProductRentDetailsDialogListener {
-        void onFinishPostingTweet();
+        void onSavingRentDetails(int amount);
     }
 
-    private ProductRentDetailsDialogListener listener;
+    public ProductRentDetailsDialogListener listener;
 
-    @Bind(R.id.etTweetText)
-    EditText mtweetText;
-    @Bind(R.id.saveTweet)
-    Button mSendTweet;
-    @Bind(R.id.ivUserProfile)
-    ImageView mProfileImage;
-    @Bind(R.id.tvUserName)
-    TextView mUserName;
-    @Bind(R.id.tvScreenName) TextView mScreenName;
-    @Bind(R.id.ivCancel) ImageView mCancel;
-    @Bind(R.id.tvNumCharacters) TextView mNumCharacters;
+
+    @Bind(R.id.currentDate) EditText mEditText;
+    @Bind(R.id.saveButton) Button saveSettings;
+    @Bind(R.id.spinnerSortOrder) Spinner sortOrder;
+    @Bind(R.id.numDays) EditText mNumdays;
+    @Bind(R.id.etQuantityNum) EditText mQuantity;
+    @Bind(R.id.tvTotal) TextView mTotal;
 
     @Override
     public void onClick(View v) {
+
         switch(v.getId()) {
 
-            case R.id.ivCancel:
-                dismiss();
+            case R.id.currentDate:
+
+                new DatePickerDialog(context, this,
+                        myCalendar.get(Calendar.YEAR),
+                        myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH))
+                        .show();
                 break;
 
-            case R.id.saveTweet:
-                saveTweet();
+            case R.id.saveButton:
+                saveRentDetails();
                 break;
+
         }
 
     }
 
     private void saveRentDetails() {
-        listener.onFinishPostingTweet();
+        listener.onSavingRentDetails(finalAmount);
         dismiss();
     }
 
@@ -73,11 +100,10 @@ public class ProductRentDetailsFragment extends DialogFragment implements View.O
         // Use `newInstance` instead as shown below
     }
 
-    public static ProductRentDetailsFragment newInstance() {
+    public static ProductRentDetailsFragment newInstance(Product p) {
         ProductRentDetailsFragment frag = new ProductRentDetailsFragment();
         Bundle args = new Bundle();
-        args.putParcelable("startDate", startDate);
-        args.putParcelable("endDate", self);
+        args.putParcelable("product", p);
         frag.setArguments(args);
         return frag;
     }
@@ -118,11 +144,11 @@ public class ProductRentDetailsFragment extends DialogFragment implements View.O
                              Bundle savedInstanceState) {
         //setStyle(android.support.v4.app.DialogFragment.STYLE_NO_TITLE, R.style.Dialog);
 
-        View view = inflater.inflate(R.layout.compose_new_tweet, container);
+        View view = inflater.inflate(R.layout.fragment_rent_details, container);
 
-        self = getArguments().getParcelable("self");
+        product = getArguments().getParcelable("product");
 
-        title = getArguments().getString("title");
+        //title = getArguments().getString("title");
 
         ButterKnife.bind(this, view);
 
@@ -133,35 +159,23 @@ public class ProductRentDetailsFragment extends DialogFragment implements View.O
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String profileUrl = self.getProfile_image_url();
-        mUserName.setText(self.getName());
-        mScreenName.setText("@" + self.getScreenName());
+        //String profileUrl = self.getProfile_image_url();
+        //mUserName.setText(self.getName());
+        //mScreenName.setText("@" + self.getScreenName());
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
+                R.array.orderItems, android.R.layout.simple_spinner_dropdown_item);
+
+        String title = product.getProductName() + " $"+ String.valueOf((int)product.getPrice()) + "/day";
         getDialog().setTitle(title);
 
-        Glide.with(getActivity())
-                .load(profileUrl)
-                .asBitmap()
-                .placeholder(R.drawable.ic_placeholder)
-                .error(R.drawable.ic_error)
-                .into(new BitmapImageViewTarget(mProfileImage) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        RoundedBitmapDrawable circularBitmapDrawable =
-                                RoundedBitmapDrawableFactory.create(getActivity().getResources(), resource);
-                        //circularBitmapDrawable.setCircular(true);
-                        circularBitmapDrawable.setCornerRadius(10);
-                        //circularBitmapDrawable.setCornerRadius(Math.max(resource.getWidth(), resource.getHeight()) / 2.0f);
-                        mProfileImage.setImageDrawable(circularBitmapDrawable);
-                    }
-                });
+        mTotal.setVisibility(View.INVISIBLE);
 
+        mEditText.setText(displayFormat.format(myCalendar.getTime()));
 
-        mCancel.setOnClickListener(this);
+        Log.i("info"," "+product.getNumberOfFavorites()+product.getNumberOfReviews()+product.getProductName()+product.getObjectId()+product.getPrice());
 
-        mSendTweet.setOnClickListener(this);
-
-        mtweetText.addTextChangedListener(new TextWatcher() {
+        mQuantity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -169,9 +183,7 @@ public class ProductRentDetailsFragment extends DialogFragment implements View.O
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int charactersLeft = 140 - s.length();
-                //Log.i("info", "Count: " + charactersLeft);
-                mNumCharacters.setText(String.valueOf(charactersLeft));
+                calculateFinalAmount();
             }
 
             @Override
@@ -179,6 +191,53 @@ public class ProductRentDetailsFragment extends DialogFragment implements View.O
 
             }
         });
+
+        sortOrder.setAdapter(adapter);
+        mEditText.setOnClickListener(this);
+        saveSettings.setOnClickListener(this);
+
     }
 
-}*/
+    public void calculateFinalAmount(){
+
+        int quantity, numDays, productPrice;
+
+        if(mQuantity.getText().length() > 0 && !mQuantity.getText().equals("")) {
+            quantity = Integer.parseInt(mQuantity.getText().toString());
+        } else quantity = 0;
+
+        if(mNumdays.getText().length() > 0 && !mNumdays.getText().equals("")) {
+
+            numDays = Integer.parseInt(mNumdays.getText().toString());
+        } else numDays = 0;
+
+
+        if(mQuantity.getText().length() > 0 && !mQuantity.getText().equals("")) {
+            Log.i("info","Product price "+String.valueOf(product.getPrice()));
+            productPrice = (int) product.getPrice();
+            finalAmount = quantity * numDays * productPrice;
+        } else finalAmount = 0;
+
+        String displayAmount = "Total $"+String.valueOf(finalAmount);
+        mTotal.setText(displayAmount);
+        mTotal.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        myCalendar.set(Calendar.YEAR, year);
+        myCalendar.set(Calendar.MONTH, monthOfYear);
+        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        updateDate();
+
+    }
+
+    private void updateDate() {
+
+        //String reqdDate = requiredFormat.format(myCalendar.getTime());
+        String displayDate = displayFormat.format(myCalendar.getTime());
+        mEditText.setText(displayDate);
+    }
+
+}
