@@ -84,6 +84,6 @@
         style="@style/CustomButton"
         android:text="RENT IT NOW!"
         android:textColor="#ffffff"
-            android:onClick="processPayment"/>
+        android:onClick="processPayment"/>
 
 </android.support.design.widget.CoordinatorLayout>

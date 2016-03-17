@@ -76,13 +76,15 @@ public class ProductsRecyclerViewFragment extends Fragment {
 
                         Product product = mProductsAdapter.getProductAtIndex(position);
 
+                        Log.i("info", "url before: " + String.valueOf(product.getProductPostedBy().getProfilePictureURL()));
+
                         Intent intent = new Intent(getActivity(), ProductDetailsActivity.class);
                         intent.putExtra("product", product);
 
-                        startActivity(intent);
+                        startActivityForResult(intent, 500);
+
                     }
-                }
-        );
+                });
 
         ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
         query.setLimit(50);
@@ -96,6 +98,12 @@ public class ProductsRecyclerViewFragment extends Fragment {
             public void done(List<Product> products, ParseException e) {
                 if (e == null) {
                     Log.d("DEBUG", "Retrieved " + products.size() + " products");
+                    for(Product p: products) {
+                        Log.i("info","product price: "+String.valueOf(p.getPrice()));
+                        Log.i("info","parse url : "+String.valueOf(p.getProductPostedBy().getProfilePictureURL()));
+                        Log.i("info", "Latitude : " + p.getAddress().getLatitude());
+                        Log.i("info", "Longitude : " + p.getAddress().getLongitude());
+                    }
                     mProductsAdapter.updateItems(true, products);
                 } else {
                     Log.d("DEBUG", "Error: " + e.getMessage());
@@ -119,7 +127,20 @@ public class ProductsRecyclerViewFragment extends Fragment {
 
     }
 
-//    @Override
+    // TODO - 1 this is currently not working. I want to receive back the rented product
+    // look in ProductDetailsActivity
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Log.i("info","Product bought");
+
+        if (resultCode == getActivity().RESULT_OK) {
+
+            Product p = data.getParcelableExtra("product");
+            Log.i("info", "got the bought product Pid" + p.getObjectId());
+
+        }
+    }
 //    public void onViewCreated(View view, Bundle savedInstanceState) {
 //        super.onViewCreated(view, savedInstanceState);
 //        startContentAnimation();

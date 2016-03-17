@@ -27,7 +27,6 @@
         android:scaleType = "centerCrop"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:onClick="getUserProfileLogo"
         android:src="@drawable/ic_account_circle_white"
 
         app:riv_corner_radius="2dp"/>

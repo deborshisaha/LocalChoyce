@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/rl1"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFAFAFA"
+        android:elevation="2dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Date"
+            android:id="@+id/beginDate"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/currentDate"
+            android:layout_toRightOf="@+id/beginDate"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Number of days"
+            android:id="@+id/tvFor"
+            android:layout_below="@+id/currentDate"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="16sp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/numDays"
+            android:layout_below="@+id/currentDate"
+            android:layout_toRightOf="@+id/tvFor"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:inputType="number"
+            android:textSize="16sp" />
+
+
+
+    </RelativeLayout>
+
+    <View style="@style/DividerHorizontal"
+          android:layout_marginTop="10dp"
+          android:layout_marginRight="20dp"
+          android:layout_marginLeft="20dp"
+          android:layout_below="@+id/rl1"
+          android:id="@+id/view1" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl2"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFAFAFA"
+        android:elevation="2dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Size"
+            android:id="@+id/priorityLevel"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerSortOrder"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/priorityLevel"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quantity"
+            android:id="@+id/tvQuantity"
+            android:layout_below="@+id/spinnerSortOrder"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="16sp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/etQuantityNum"
+            android:layout_toRightOf="@+id/tvQuantity"
+            android:layout_below="@+id/spinnerSortOrder"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:inputType="number"
+            android:textSize="16sp" />
+
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total $120"
+        android:id="@+id/tvTotal"
+        android:layout_below="@+id/rl2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:textSize="22sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:background="@drawable/sign_in_state_button"
+        android:id="@+id/saveButton"
+        android:layout_below="@+id/tvTotal"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+</RelativeLayout>

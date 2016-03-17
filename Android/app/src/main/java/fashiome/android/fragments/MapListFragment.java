@@ -70,6 +70,7 @@ import fashiome.android.adapters.HeaderAdapter;
 import fashiome.android.helpers.ItemClickSupport;
 import fashiome.android.helpers.LockableRecyclerView;
 import fashiome.android.models.Item;
+import fashiome.android.models.Product;
 import fashiome.android.utils.AppStarter;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.PermissionUtils;

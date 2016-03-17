@@ -61,7 +61,7 @@ public class Product extends ParseObject implements Parcelable {
 
     public void setProductPostedBy(User user) {
         this.productPostedBy = user;
-        put("productPostedBy", this.productPostedBy);
+        put("productPostedBy", user);
     }
 
     public User getProductPostedBy() {
@@ -74,7 +74,11 @@ public class Product extends ParseObject implements Parcelable {
     }
 
     public int getNumberOfReviews() {
-        return getInt("numberOfReviews");
+
+        if(this.numberOfReviews == 0) {
+            this.numberOfReviews = getInt("numberOfReviews");
+        }
+        return this.numberOfReviews;
     }
 
     public void setNumberOfReviews(int numberOfReviews) {
@@ -83,7 +87,11 @@ public class Product extends ParseObject implements Parcelable {
     }
 
     public int getNumberOfViews() {
-        return getInt("numberOfViews");
+
+        if(this.numberOfViews == 0){
+            this.numberOfViews = getInt("numberOfViews");
+        }
+        return this.numberOfViews;
     }
 
     public void setNumberOfViews(int numberOfViews) {
@@ -92,7 +100,11 @@ public class Product extends ParseObject implements Parcelable {
     }
 
     public int getNumberOfFavorites() {
-        return getInt("numberOfFavorites");
+
+        if(this.numberOfFavorites == 0) {
+            this.numberOfFavorites = getInt("numberOfFavorites");
+        }
+        return this.numberOfFavorites;
     }
 
     public void setNumberOfFavorites(int numberOfFavorites) {
@@ -157,7 +169,11 @@ public class Product extends ParseObject implements Parcelable {
     }
 
     public double getProductRating() {
-        return getDouble("productRating");
+
+        if (this.productRating == 0) {
+            this.productRating = getDouble("productRating");
+        }
+        return this.productRating;
     }
 
     public void setProductRating(float productRating) {

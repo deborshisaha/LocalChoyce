@@ -71,6 +71,10 @@ public class HomeActivity extends AppCompatActivity {
                 if(ParseUser.getCurrentUser() != null) {
                     Intent i = new Intent(HomeActivity.this, UserProfileActivity.class);
                     startActivity(i);
+                } else {
+                    Intent i = new Intent(HomeActivity.this, LoginActivity.class);
+                    startActivityForResult(i, 200);
+
                 }
             }
         });
@@ -80,18 +84,6 @@ public class HomeActivity extends AppCompatActivity {
             Glide.with(HomeActivity.this).load(profileUrl).into(mProfileLogo);
         }
 
-    }
-
-    public void getUserProfileLogo(View view) {
-        Log.i("info","profile clicked");
-        if(ParseUser.getCurrentUser() != null){
-
-            // Intent to UserProfileDetailPage
-
-        } else {
-            Intent i = new Intent(HomeActivity.this, LoginActivity.class);
-            startActivityForResult(i, 200);
-        }
     }
 
     @Override

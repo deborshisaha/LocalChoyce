@@ -198,9 +198,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         public void configure(Product product) {
 
-            String URLString = ImageURLGenerator.getInstance(this.mContext).URLForImageWithCloudinaryPublicId(product.getProductPrimaryImageCloudinaryPublicId(), Utils.getScreenWithInDp(this.mContext));
+            String URLString = ImageURLGenerator.getInstance(this.mContext).URLForImageWithCloudinaryPublicId(product.getProductPrimaryImageCloudinaryPublicId(), Utils.getScreenWidthInDp(this.mContext));
 
             Log.d("DEBUG", URLString);
+
+            Log.i("info","adapter price: "+String.valueOf(product.getPrice()));
 
             //Glide.get(mContext).setMemoryCategory(MemoryCategory.HIGH);
 

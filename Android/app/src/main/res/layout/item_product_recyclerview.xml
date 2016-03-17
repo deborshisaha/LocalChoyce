@@ -6,23 +6,11 @@
     android:layout_marginTop="4dp"
     android:clipToPadding="false">
 
-    <!--com.makeramen.roundedimageview.RoundedImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/rivProductPrimaryImage"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/beach_flipflop"
-        app:riv_corner_radius="4dp"
-        app:riv_mutate_background="true"/-->
-
     <ImageView
         android:id="@+id/rivProductPrimaryImage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:background="@drawable/frame"
-        android:src="@drawable/beach_flipflop" />
+        android:scaleType="centerCrop"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -40,9 +28,7 @@
             android:layout_marginLeft="4dp"
             android:layout_marginTop="0dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/beach_flipflop"
             android:id="@+id/rivProfilePicture"
-
             app:riv_corner_radius="16dp"
             app:riv_border_color="#F5F5F5"
             app:riv_border_width="1dp"
