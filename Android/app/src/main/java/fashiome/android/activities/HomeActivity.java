@@ -13,10 +13,14 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import fashiome.android.R;
 import fashiome.android.fragments.ProductsRecyclerViewFragment;
@@ -26,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
 
     ImageView mProfileLogo;
     ProductsRecyclerViewFragment mProductsFragment;
+    ArrayList<Product> mProducts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +56,37 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        mProducts = new ArrayList<Product>();
+        loadProductsFromBackend();
 
         mProductsFragment = (ProductsRecyclerViewFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragmentProducts);
     }
 
+public void loadProductsFromBackend(){
+    ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
+    query.setLimit(50);
+    query.setMaxCacheAge(60000*60);
+    query.orderByDescending("createdAt");
+    query.include("productPostedBy");
+    query.include("address");
 
+    query.findInBackground(new FindCallback<Product>() {
+        @Override
+        public void done(List<Product> products, ParseException e) {
+            if (e == null) {
+                Log.d("DEBUG", "Retrieved " + products.size() + " products");
+                mProducts.addAll(products);
+                for(int i=0;i<mProducts.size();i++) {
+                    Product product = mProducts.get(i);
+                    System.out.println("Address of each product -> "+product.getAddress().getLatitude()+"," + product.getAddress().getLongitude());
+                }
+            } else {
+                Log.d("DEBUG", "Error: " + e.getMessage());
+            }
+        }
+    });
+}
     public void setToolBar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         View logo = getLayoutInflater().inflate(R.layout.home_activity_toolbar, null);
@@ -157,7 +187,8 @@ public class HomeActivity extends AppCompatActivity {
 
     public void launchMap(View view) {
         Intent i = new Intent(HomeActivity.this,MapFullScreenActivity.class);
-        i.putParcelableArrayListExtra("products", mProductsFragment.getProductsAdapter().getAll());
+        i.putParcelableArrayListExtra("products", mProducts);
+        System.out.println("Size of the fetched products ----------------" + mProducts.size());
         startActivity(i);
     }
 

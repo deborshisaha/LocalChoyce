@@ -130,6 +130,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public ArrayList<Product> getAll(){
         return mProducts;
     }
+
+
     /*
     private List<Product> getDummyProducts () {
 
