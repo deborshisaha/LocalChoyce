@@ -115,6 +115,11 @@ public class MapFullScreenActivity extends AppCompatActivity implements
 
 
         mItems = getIntent().getParcelableArrayListExtra("products");
+        System.out.println("Size of the parceled products ----------------"+mItems.size());
+        for(int i=0;i<mItems.size();i++) {
+            Product product = mItems.get(i);
+            System.out.println("Address of each product -> "+product.getAddress().getLatitude()+"," + product.getAddress().getLongitude());
+        }
 
          pic =(ImageView) findViewById(R.id.ivItemPhoto);
          title = (TextView) findViewById(R.id.tvItemName);
@@ -169,7 +174,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
             @Override
             public void run() {
                 if (map != null && moveCamera) {
-                    map.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(mLocation, 11.0f)));
+                    map.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(mLocation, 6.0f)));
                 }
             }
         };
@@ -204,13 +209,21 @@ public class MapFullScreenActivity extends AppCompatActivity implements
     public void updateFooter(Product product){
         mSelectedProduct = product;
 
+        String URLString = ImageURLGenerator.getInstance(this).URLForImageWithCloudinaryPublicId(product.getProductPrimaryImageCloudinaryPublicId(),150);
 
+        Log.d("DEBUG", URLString);
+
+        if (URLString != null || URLString.length() > 0) {
+            Log.i("info", "Loading image from glide " + URLString);
+            Glide.with(this).load(URLString).into(pic);
+        }
         title.setText(product.getProductName());
         desc.setText(product.getProductDescription());
-        price.setText(product.getPrice()+"");
+        price.setText("$"+product.getPrice()+"");
 
 
     }
+
     public void updateFooter(Marker marker){
         Product product = (Product) mMarkers.get(marker.getId());
         updateFooter(product);
@@ -219,11 +232,13 @@ public class MapFullScreenActivity extends AppCompatActivity implements
 
     public void loadMarkersFromItems(ArrayList<Product> products){
         Product product=null;
+        System.out.println("numbe rof markesrs dropped----------------"+products.size());
         for(int i=0;i<products.size();i++) {
             product = products.get(i);
             BitmapDescriptor defaultMarker =
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
             if (product.getAddress() != null) {
+                System.out.println("Address of each product -> "+product.getAddress().getLatitude()+"," + product.getAddress().getLongitude());
                 Marker marker = map.addMarker(new MarkerOptions()
                         .position(new LatLng(product.getAddress().getLatitude(), product.getAddress().getLongitude()))
                         .title(product.getProductName())
@@ -232,7 +247,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
                 mMarkers.put(marker.getId(), product);
                 LatLng latLng = new LatLng(product.getAddress().getLatitude(), product.getAddress().getLongitude());
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 12);
-                map.animateCamera(cameraUpdate);
+                //map.animateCamera(cameraUpdate);
                 dropPinEffect(marker);
             }
         }
@@ -490,7 +505,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         if (location != null) {
             Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 12);
 
             map.animateCamera(cameraUpdate);
         } else {
