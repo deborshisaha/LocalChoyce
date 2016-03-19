@@ -132,10 +132,14 @@ public class ProductsRecyclerViewFragment extends Fragment {
                 if (e == null && products.size() > 0) {
                     Log.d("DEBUG", "Retrieved " + products.size() + " products");
                     for(Product p: products) {
-                        Log.i("info","username : "+String.valueOf(p.getProductPostedBy().getUsername()));
-                        Log.i("info", "Latitude : " + p.getAddress().getLatitude());
-                        Log.i("info", "Longitude : " + p.getAddress().getLongitude());
+                        if (p.getProductPostedBy() !=null)
+                            Log.i("info","username : "+String.valueOf(p.getProductPostedBy().getUsername()));
+                        if (p.getAddress() !=null){
+                            Log.i("info", "Latitude : " + p.getAddress().getLatitude());
+                            Log.i("info", "Longitude : " + p.getAddress().getLongitude());
+                        }
                     }
+
                     mProductsAdapter.updateItems(true, products);
                 } else {
                     Log.d("DEBUG", "Error: " + e.getMessage());
