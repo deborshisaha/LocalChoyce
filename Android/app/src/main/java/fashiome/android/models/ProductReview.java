@@ -12,21 +12,21 @@ import com.parse.ParseQuery;
  * Created by dsaha on 3/18/16.
  */
 
-@ParseClassName("SellerReview")
-public class SellerReview extends ParseObject implements Parcelable {
+@ParseClassName("ProductReview")
+public class ProductReview extends ParseObject implements Parcelable {
 
-    private User seller;
+    private Product product;
     private User user;
     private String reviewText;
     private double rating;
 
 
-    public User getSeller() {
-        if (this.seller == null) {
-            this.seller = (User)getParseObject("seller");
+    public Product getProduct() {
+        if (this.product == null) {
+            this.product = (Product)getParseObject("product");
         }
 
-        return this.seller;
+        return this.product;
     }
 
     public User getUser() {
@@ -37,9 +37,9 @@ public class SellerReview extends ParseObject implements Parcelable {
         return this.user;
     }
 
-    public void setSeller(User seller) {
-        this.seller = seller;
-        put("seller", this.seller);
+    public void setProduct(Product product) {
+        this.product = product;
+        put("product", this.product);
     }
 
     public void setUser (User user) {
@@ -83,39 +83,39 @@ public class SellerReview extends ParseObject implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(getSeller(), 0);
+        dest.writeParcelable(getProduct(), 0);
         dest.writeParcelable(getUser(), 0);
         dest.writeString(getReviewText());
         dest.writeDouble(getRating());
     }
 
-    public SellerReview() {
+    public ProductReview() {
     }
 
-    protected SellerReview(Parcel in) {
-        this.seller = in.readParcelable(User.class.getClassLoader());
+    protected ProductReview(Parcel in) {
+        this.product = in.readParcelable(Product.class.getClassLoader());
         this.user = in.readParcelable(User.class.getClassLoader());
         this.reviewText = in.readString();
         this.rating = in.readDouble();
     }
 
-    public static final Parcelable.Creator<SellerReview> CREATOR = new Parcelable.Creator<SellerReview>() {
-        public SellerReview createFromParcel(Parcel source) {
-            return new SellerReview(source);
+    public static final Parcelable.Creator<ProductReview> CREATOR = new Parcelable.Creator<ProductReview>() {
+        public ProductReview createFromParcel(Parcel source) {
+            return new ProductReview(source);
         }
 
-        public SellerReview[] newArray(int size) {
-            return new SellerReview[size];
+        public ProductReview[] newArray(int size) {
+            return new ProductReview[size];
         }
     };
 
-    public static void fetchSellerReview(User seller, FindCallback<SellerReview> sellerReviewsLoadedBlock) {
-        ParseQuery<SellerReview> query = ParseQuery.getQuery(SellerReview.class);
+    public static void fetchProductReview(User user, FindCallback<ProductReview> productReviewsLoadedBlock) {
+        ParseQuery<ProductReview> query = ParseQuery.getQuery(ProductReview.class);
         query.setLimit(50);
-        query.setMaxCacheAge(60000*60);
-        query.whereEqualTo("seller", seller);
+        query.setMaxCacheAge(60000 * 60);
+        query.whereEqualTo("user", user);
         query.orderByDescending("createdAt");
         query.include("user");
-        query.findInBackground(sellerReviewsLoadedBlock);
+        query.findInBackground(productReviewsLoadedBlock);
     }
 }
