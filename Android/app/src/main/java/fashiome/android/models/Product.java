@@ -12,6 +12,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @ParseClassName("Product")
@@ -28,6 +29,7 @@ public class Product extends ParseObject implements Parcelable {
     private Address address;
     private User productPostedBy;
     private String productSize;
+    private String gender;
     private double productRating;
     private int numberOfReviews;
     private int numberOfViews;
@@ -183,6 +185,20 @@ public class Product extends ParseObject implements Parcelable {
         put("productSize", mProductSize);
     }
 
+    public String getGender() {
+
+        if (this.gender == null) {
+            this.gender = getString("gender");
+        }
+        String string = this.gender;
+        return string;
+    }
+
+    public void setGender(String mGender) {
+        this.gender = mGender;
+        put("gender", mGender);
+    }
+
     public double getProductRating() {
 
         if (this.productRating == 0) {
@@ -237,6 +253,8 @@ public class Product extends ParseObject implements Parcelable {
         dest.writeString(getObjectId());
         dest.writeString(getProductDescription());
         dest.writeString(getProductName());
+        dest.writeString(getProductSize());
+        dest.writeString(getGender());
         dest.writeString(getProductSKU());
         dest.writeString(getCurrency());
         dest.writeStringList(getPhotos());
@@ -253,6 +271,8 @@ public class Product extends ParseObject implements Parcelable {
         this.setObjectId(in.readString());
         this.productDescription = in.readString();
         this.productName = in.readString();
+        this.productSize = in.readString();
+        this.gender = in.readString();
         this.productSKU = in.readString();
         this.currency = in.readString();
         this.photos = in.createStringArrayList();
@@ -284,12 +304,15 @@ public class Product extends ParseObject implements Parcelable {
         return this.getObjectId() + this.photos.get(position);
     }
 
-    public static void fetchProducts(FindCallback<Product> productsLoadedBlock){
+    public static void fetchProducts(Date date, FindCallback<Product> productsLoadedBlock){
 
         ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
         query.setLimit(20);
-        query.setMaxCacheAge(60000*60);
+        query.setMaxCacheAge(60000 * 60);
         query.orderByDescending("createdAt");
+        if(date != null) {
+            query.whereGreaterThan("createdAt", date);
+        }
         query.include("productPostedBy");
         query.include("address");
         query.findInBackground(productsLoadedBlock);

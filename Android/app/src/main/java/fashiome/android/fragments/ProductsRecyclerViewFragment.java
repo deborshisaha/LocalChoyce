@@ -18,6 +18,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -28,8 +29,10 @@ import fashiome.android.adapters.ProductAdapter;
 import fashiome.android.animators.ProductResultsAnimator;
 import fashiome.android.helpers.ItemClickSupport;
 import fashiome.android.models.Product;
+import fashiome.android.utils.Constants;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.FlipInLeftYAnimator;
+import jp.wasabeef.recyclerview.animators.FlipInRightYAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 /**
@@ -52,6 +55,7 @@ public class ProductsRecyclerViewFragment extends Fragment {
     /* Private member variables */
     private ProductAdapter mProductsAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private Date lastSeen;
 
     public ProductsRecyclerViewFragment() {
     }
@@ -78,9 +82,9 @@ public class ProductsRecyclerViewFragment extends Fragment {
 
         AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(mProductsAdapter);
         mProductRecyclerView.setAdapter(alphaAdapter);
-        FlipInLeftYAnimator animator = new FlipInLeftYAnimator();
+        SlideInLeftAnimator animator = new SlideInLeftAnimator();
         mProductRecyclerView.setItemAnimator(animator);
-        mProductRecyclerView.getItemAnimator().setAddDuration(300);
+        mProductRecyclerView.getItemAnimator().setAddDuration(200);
 
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -89,8 +93,8 @@ public class ProductsRecyclerViewFragment extends Fragment {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                Log.i("info", "Refresh to get new items ");
-                getAllProductsFromParse();
+                Log.i("info", "Refresh to get new items for date" + new Date().toString());
+                getAllProductsFromParse(Constants.REFRESH_OPERATION, lastSeen);
 
             }
         });
@@ -118,27 +122,41 @@ public class ProductsRecyclerViewFragment extends Fragment {
                     }
                 });
 
-        getAllProductsFromParse();
+        getAllProductsFromParse(Constants.NEW_SEARCH_OPERATION, null);
 
         return view;
     }
 
-    public void getAllProductsFromParse(){
+    public void getAllProductsFromParse(final int operation, Date date){
 
-        Product.fetchProducts(new FindCallback<Product>() {
+        Product.fetchProducts(date, new FindCallback<Product>() {
             @Override
             public void done(List<Product> products, ParseException e) {
                 swipeContainer.setRefreshing(false);
                 if (e == null && products.size() > 0) {
                     Log.d("DEBUG", "Retrieved " + products.size() + " products");
+                    lastSeen = products.get(0).getCreatedAt();
+                    Log.i("Last seen date: ",lastSeen.toString());
                     for(Product p: products) {
+                        Log.i("info","CreatedAt: "+p.getCreatedAt().toString());
                         Log.i("info","username : "+String.valueOf(p.getProductPostedBy().getUsername()));
                         Log.i("info", "Latitude : " + p.getAddress().getLatitude());
                         Log.i("info", "Longitude : " + p.getAddress().getLongitude());
                     }
-                    mProductsAdapter.updateItems(true, products);
+                    mProductsAdapter.updateItems(operation, products);
+                    mProductRecyclerView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mProductRecyclerView.scrollToPosition(0);
+                        }
+                    }, 1000);
+
                 } else {
-                    Log.d("DEBUG", "Error: " + e.getMessage());
+                    if(e == null){
+                        Log.i("info","no results found");
+                    } else {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

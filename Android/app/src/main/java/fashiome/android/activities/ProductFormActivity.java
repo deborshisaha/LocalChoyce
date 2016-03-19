@@ -97,6 +97,9 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
     @Bind(R.id.spinnerSize)
     Spinner size;
 
+    @Bind(R.id.spinnerGender)
+    Spinner gender;
+
 
     private static final int REQUEST_CAMERA = 0;
     private static final int SELECT_FILE = 1;
@@ -124,10 +127,15 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
 
         ButterKnife.bind(this);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(ProductFormActivity.this,
-                R.array.orderItems, android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> sizeAdapter = ArrayAdapter.createFromResource(ProductFormActivity.this,
+                R.array.sizeEnum, android.R.layout.simple_spinner_dropdown_item);
 
-        size.setAdapter(adapter);
+        size.setAdapter(sizeAdapter);
+
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(ProductFormActivity.this,
+                R.array.genderEnum, android.R.layout.simple_spinner_dropdown_item);
+
+        gender.setAdapter(genderAdapter);
 
         View.OnClickListener imageOnClickListener = new View.OnClickListener() {
             @Override
@@ -237,6 +245,7 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
         product.setCurrency("USD");
         product.setProductPostedBy((User) User.getCurrentUser());
         product.setProductSize(size.getSelectedItem().toString());
+        product.setGender(gender.getSelectedItem().toString());
         product.setPhotos(getPhotoCloudinaryPublicIdList());
         product.saveInBackground(new SaveCallback() {
             @Override

@@ -119,6 +119,25 @@
         android:spinnerMode="dropdown"
         android:layout_below="@+id/productAskPriceWrapper"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Gender"
+        android:id="@+id/tvGender"
+        android:layout_marginLeft="6dp"
+        android:textSize="16sp"
+        android:layout_below="@+id/spinnerSize"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/spinnerGender"
+        android:layout_toRightOf="@+id/tvGender"
+        android:spinnerMode="dropdown"
+        android:layout_below="@+id/spinnerSize"/>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -14,12 +14,18 @@
     <string name="title_activity_booking_details">Booking details</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
-    <string-array name="orderItems">
+    <string-array name="sizeEnum">
         <item>S</item>
         <item>M</item>
         <item>L</item>
         <item>XL</item>
     </string-array>
+    <string-array name="genderEnum">
+        <item>F</item>
+        <item>M</item>
+        <item>Both</item>
+    </string-array>
+
 
     <string name="large_text">
         "Material is the metaphor.\n\n"
