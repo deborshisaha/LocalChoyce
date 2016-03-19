@@ -113,4 +113,17 @@
     <string name="title_activity_product_filter_settings">ProductFilterSettingsActivity</string>
     <string name="title_activity_user_details">UserDetailsActivity</string>
     <string name="title_activity_add_new_product">AddNewProductActivity</string>
+
+    <string name="introTitle4">Sign up</string>
+    <string name="introDesc4">Feeling lazy? Connect with Facebook. Signing up helps ypu keep track of your stuff</string>
+
+    <string name="introTitle3">Always New</string>
+    <string name="introDesc3">Pay as you go and never repeat a dress at parties</string>
+
+    <string name="introTitle2">Make money</string>
+    <string name="introDesc2">Put your eclectic wardrobe to work</string>
+
+    <string name="introTitle1">Special occasions</string>
+    <string name="introDesc1">Awe everyone with best clothing without spending the most</string>
+
 </resources>
