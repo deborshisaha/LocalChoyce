@@ -3,6 +3,7 @@ package fashiome.android.fragments;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,6 +41,10 @@ public class ProductsRecyclerViewFragment extends Fragment {
     @Bind(R.id.rvProduct)
     RecyclerView mProductRecyclerView;
 
+    @Bind(R.id.swipeContainer)
+    SwipeRefreshLayout swipeContainer;
+
+
     public ProductAdapter getProductsAdapter() {
         return mProductsAdapter;
     }
@@ -75,7 +80,25 @@ public class ProductsRecyclerViewFragment extends Fragment {
         mProductRecyclerView.setAdapter(alphaAdapter);
         FlipInLeftYAnimator animator = new FlipInLeftYAnimator();
         mProductRecyclerView.setItemAnimator(animator);
-        mProductRecyclerView.getItemAnimator().setAddDuration(400);
+        mProductRecyclerView.getItemAnimator().setAddDuration(300);
+
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                Log.i("info", "Refresh to get new items ");
+                getAllProductsFromParse();
+
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
 
         ItemClickSupport.addTo(mProductRecyclerView).setOnItemClickListener(
@@ -95,21 +118,21 @@ public class ProductsRecyclerViewFragment extends Fragment {
                     }
                 });
 
-        ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
-        query.setLimit(50);
-        query.setMaxCacheAge(60000*60);
-        query.orderByDescending("createdAt");
-        query.include("productPostedBy");
-        query.include("address");
+        getAllProductsFromParse();
 
-        query.findInBackground(new FindCallback<Product>() {
+        return view;
+    }
+
+    public void getAllProductsFromParse(){
+
+        Product.fetchProducts(new FindCallback<Product>() {
             @Override
             public void done(List<Product> products, ParseException e) {
-                if (e == null) {
+                swipeContainer.setRefreshing(false);
+                if (e == null && products.size() > 0) {
                     Log.d("DEBUG", "Retrieved " + products.size() + " products");
                     for(Product p: products) {
-                        Log.i("info","product price: "+String.valueOf(p.getPrice()));
-                        Log.i("info","parse url : "+String.valueOf(p.getProductPostedBy().getProfilePictureURL()));
+                        Log.i("info","username : "+String.valueOf(p.getProductPostedBy().getUsername()));
                         Log.i("info", "Latitude : " + p.getAddress().getLatitude());
                         Log.i("info", "Longitude : " + p.getAddress().getLongitude());
                     }
@@ -120,7 +143,6 @@ public class ProductsRecyclerViewFragment extends Fragment {
             }
         });
 
-        return view;
     }
 
     public void addNewProductToList(Product product){

@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
 
     CircleImageView mProfileImage;
     Button mBtnFb;
-    ParseUser parseUser;
+    User parseUser;
 
     public static final List<String> mPermissions = new ArrayList<String>() {{
         add("public_profile");
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void saveNewUser(final User user) {
-        parseUser = ParseUser.getCurrentUser();
+        parseUser = (User) ParseUser.getCurrentUser();
         parseUser.setUsername(user.getUsername());
         parseUser.setEmail(user.getEmail());
         parseUser.put("profilePictureUrl", user.getProfilePictureURL());
