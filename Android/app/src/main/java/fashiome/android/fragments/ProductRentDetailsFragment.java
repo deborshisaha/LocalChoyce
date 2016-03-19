@@ -159,12 +159,8 @@ public class ProductRentDetailsFragment extends DialogFragment implements View.O
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //String profileUrl = self.getProfile_image_url();
-        //mUserName.setText(self.getName());
-        //mScreenName.setText("@" + self.getScreenName());
-
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
-                R.array.orderItems, android.R.layout.simple_spinner_dropdown_item);
+                R.array.sizeEnum, android.R.layout.simple_spinner_dropdown_item);
 
         String title = product.getProductName() + " $"+ String.valueOf((int)product.getPrice()) + "/day";
         getDialog().setTitle(title);
