@@ -87,7 +87,7 @@ public class HeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             super(itemView);
             mTitleView = (TextView) itemView.findViewById(R.id.tvItemName);
             mItemPhoto = (ImageView) itemView.findViewById(R.id.ivItemPhoto);
-            mDuration = (TextView) itemView.findViewById(R.id.tvDistance);
+            mDuration = (TextView) itemView.findViewById(R.id.tvPrice);
         }
     }
 

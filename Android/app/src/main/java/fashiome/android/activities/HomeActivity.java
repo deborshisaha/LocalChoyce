@@ -31,7 +31,6 @@ public class HomeActivity extends AppCompatActivity {
 
     ImageView mProfileLogo;
     ProductsRecyclerViewFragment mProductsFragment;
-    ArrayList<Product> mProducts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +57,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        mProducts = new ArrayList<Product>();
-        loadProductsFromBackend();
-
         mProductsFragment = (ProductsRecyclerViewFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragmentProducts);
     }
@@ -68,43 +64,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-public void loadProductsFromBackend(){
-    ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
-    query.setLimit(50);
-    query.setMaxCacheAge(60000 * 60);
-    query.orderByDescending("createdAt");
-    query.include("productPostedBy");
-    query.include("address");
 
-    query.findInBackground(new FindCallback<Product>() {
-        @Override
-        public void done(List<Product> products, ParseException e) {
-            if (e == null) {
-                Log.d("DEBUG", "Retrieved " + products.size() + " products");
-                mProducts.addAll(products);
-                for(int i=0;i<mProducts.size();i++) {
-                    Product product = mProducts.get(i);
-                    System.out.println("Address of each product -> "+product.getAddress().getLatitude()+"," + product.getAddress().getLongitude());
-                    System.out.println("image url----"+product.getProductPrimaryImageCloudinaryPublicId());
-                    System.out.println("id -> "+product.getObjectId());
-                    System.out.println("desc ->"+product.getProductDescription());
-                    System.out.println("name ->" +product.getProductName());
-                    System.out.println("sku -> "+product.getProductSKU());
-                    System.out.println("currency ->"+ product.getCurrency());
-                    System.out.println("photos -> "+product.getPhotos().size());
-                    System.out.println("posted by -> " + product.getProductPostedBy());
-                    System.out.println("rating ->" + product.getProductRating());
-                    System.out.println("fav ->" + product.getNumberOfFavorites());
-                    System.out.println("views ->" + product.getNumberOfViews());
-                    System.out.println("reviews- >" + product.getNumberOfReviews());
-                    System.out.println("price _>" + product.getPrice());
-                }
-            } else {
-                Log.d("DEBUG", "Error: " + e.getMessage());
-            }
-        }
-    });
-}
     public void setToolBar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         View logo = getLayoutInflater().inflate(R.layout.home_activity_toolbar, null);
@@ -205,40 +165,9 @@ public void loadProductsFromBackend(){
 
     public void launchMap(View view) {
         Intent i = new Intent(HomeActivity.this,MapFullScreenActivity.class);
-        ArrayList<Product> filteredProducts = filterProductswithImage();
-        for(int j=0;j<filteredProducts.size();j++) {
-            Product product = filteredProducts.get(j);
-            System.out.println("Address of each filtered product -> "+product.getAddress().getLatitude()+"," + product.getAddress().getLongitude());
-            System.out.println("image url----"+product.getProductPrimaryImageCloudinaryPublicId());
-            System.out.println("id -> "+product.getObjectId());
-            System.out.println("desc ->"+product.getProductDescription());
-            System.out.println("name ->" +product.getProductName());
-            System.out.println("sku -> "+product.getProductSKU());
-            System.out.println("currency ->"+ product.getCurrency());
-            System.out.println("photos -> "+product.getPhotos().size());
-            System.out.println("photos -> "+product.getPhotos().get(0));
-            System.out.println("posted by -> "+product.getProductPostedBy());
-            System.out.println("rating ->"+ product.getProductRating());
-            System.out.println("fav ->"+product.getNumberOfFavorites());
-            System.out.println("views ->"+product.getNumberOfViews());
-            System.out.println("reviews- >"+product.getNumberOfReviews());
-            System.out.println("price _>"+product.getPrice());
-        }
-        i.putParcelableArrayListExtra("products", filteredProducts);
-        //i.putParcelableArrayListExtra("products", mProducts);
-        System.out.println("Size of the fetched products ----------------" + mProducts.size());
         startActivity(i);
     }
 
-    public ArrayList<Product> filterProductswithImage(){
-        ArrayList<Product> filteredProducts = new ArrayList<>();
-        for (int i=0;i<mProducts.size();i++) {
-            Product product = mProducts.get(i);
-            if (product.getProductPrimaryImageCloudinaryPublicId() !=null && !product.getProductPrimaryImageCloudinaryPublicId().isEmpty()){
-                filteredProducts.add(product);
-            }
-        }
-        return filteredProducts;
-    }
+
 
 }

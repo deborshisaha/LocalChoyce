@@ -129,6 +129,14 @@ public class Product extends ParseObject implements Parcelable {
         String string = this.productSize;
         return string;
     }
+
+    public List<String> getPhotos() {
+        if (photos ==null){
+            photos = getList("photos");
+        }
+        return photos;
+    }
+
     public void setAddress(Address address) {
         this.address = address;
         put("address", address);
@@ -222,18 +230,16 @@ public class Product extends ParseObject implements Parcelable {
 
     public void setPhotos(ArrayList<String> photoCloudinaryPublicIdList) {
 
-        photos = getList("photos");
+        List tPhotos = getList("photos");
 
-        if (photos != null) {
-            removeAll("photos", photos);
+        if (tPhotos != null) {
+            removeAll("photos", tPhotos);
         }
 
         addAll("photos", photoCloudinaryPublicIdList);
     }
 
-    public List<String> getPhotos() {
-        return photos;
-    }
+
 
     @Override
     public int describeContents() {

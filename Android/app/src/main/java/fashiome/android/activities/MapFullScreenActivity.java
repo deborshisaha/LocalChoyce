@@ -101,10 +101,14 @@ public class MapFullScreenActivity extends AppCompatActivity implements
 
     ArrayList<Product> mItems;
     private HashMap<String, Product> mMarkers= new HashMap<String, Product>();
+
+    //footer elements
     ImageView pic;
     TextView title;
     TextView desc;
     TextView price;
+    TextView rating;
+    TextView numReviews;
 
     Product mSelectedProduct;
     Marker prevMarker;
@@ -115,7 +119,15 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_map_full_screen);
 
 
-        mItems = getIntent().getParcelableArrayListExtra("products");
+       // mItems = getIntent().getExtras().getParcelableArrayList("products");
+        //mItems = getIntent().getParcelableArrayListExtra("products");
+        mItems = new ArrayList<Product>();
+        loadProductsFromBackend();
+
+        System.out.println("Product address---->  "+getIntent().getParcelableExtra("address"));
+        System.out.println("Product string photos list ----> " + getIntent().getParcelableArrayListExtra("productPhotos"));
+        System.out.println("Product one product---->  "+getIntent().getParcelableExtra("oneProduct"));
+
         System.out.println("Size of the parceled products ----------------"+mItems.size());
         for(int i=0;i<mItems.size();i++) {
             Product product = mItems.get(i);
@@ -127,18 +139,20 @@ public class MapFullScreenActivity extends AppCompatActivity implements
             System.out.println("sku -> "+product.getProductSKU());
             System.out.println("currency ->"+ product.getCurrency());
             System.out.println("photos -> "+product.getPhotos());
-            System.out.println("posted by -> "+product.getProductPostedBy());
+           /* System.out.println("posted by -> "+product.getProductPostedBy());
             System.out.println("rating ->"+ product.getProductRating());
             System.out.println("fav ->"+product.getNumberOfFavorites());
             System.out.println("views ->"+product.getNumberOfViews());
             System.out.println("reviews- >"+product.getNumberOfReviews());
-            System.out.println("price _>"+product.getPrice());
+            System.out.println("price _>"+product.getPrice());*/
         }
 
          pic =(ImageView) findViewById(R.id.ivItemPhoto);
          title = (TextView) findViewById(R.id.tvItemName);
          desc = (TextView) findViewById(R.id.tvDesc);
          price = (TextView) findViewById(R.id.tvPrice);
+        rating = (TextView) findViewById(R.id.productRating);
+       // numReviews = (TextView) findViewById(R.id.tvNumReviews);
 
         RelativeLayout footer = (RelativeLayout) findViewById(R.id.rlFooter);
         footer.setOnClickListener(new View.OnClickListener() {
@@ -178,6 +192,44 @@ public class MapFullScreenActivity extends AppCompatActivity implements
 
     }
 
+    public void loadProductsFromBackend(){
+        ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
+        query.setLimit(50);
+        query.setMaxCacheAge(60000 * 60);
+        query.orderByDescending("createdAt");
+        query.include("productPostedBy");
+        query.include("address");
+
+        query.findInBackground(new FindCallback<Product>() {
+            @Override
+            public void done(List<Product> products, ParseException e) {
+                if (e == null) {
+                    Log.d("DEBUG", "Retrieved " + products.size() + " products");
+                    mItems.addAll(products);
+                    loadMarkersFromItems(mItems);
+                    for (int i = 0; i < mItems.size(); i++) {
+                        Product product = mItems.get(i);
+                        System.out.println("Address of each product -> " + product.getAddress().getLatitude() + "," + product.getAddress().getLongitude());
+                        System.out.println("image url----" + product.getProductPrimaryImageCloudinaryPublicId());
+                        System.out.println("id -> " + product.getObjectId());
+                        System.out.println("desc ->" + product.getProductDescription());
+                        System.out.println("name ->" + product.getProductName());
+                        System.out.println("sku -> " + product.getProductSKU());
+                        System.out.println("currency ->" + product.getCurrency());
+                        System.out.println("photos -> " + product.getPhotos());
+                        System.out.println("posted by -> " + product.getProductPostedBy());
+                        System.out.println("rating ->" + product.getProductRating());
+                        System.out.println("fav ->" + product.getNumberOfFavorites());
+                        System.out.println("views ->" + product.getNumberOfViews());
+                        System.out.println("reviews- >" + product.getNumberOfReviews());
+                        System.out.println("price _>" + product.getPrice());
+                    }
+                } else {
+                    Log.d("DEBUG", "Error: " + e.getMessage());
+                }
+            }
+        });
+    }
     private void moveToLocation(LatLng latLng, final boolean moveCamera) {
         if (latLng == null) {
             return;
@@ -234,7 +286,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         title.setText(product.getProductName());
         desc.setText(product.getProductDescription());
         price.setText("$"+product.getPrice()+"");
-
+        rating.setText(product.getProductRating()+"/5.0");
 
     }
 
@@ -285,7 +337,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
                     loadMarkersFromItems(mItems);
                 }
             },1, 1000);*/
-            loadMarkersFromItems(mItems);
+            //loadMarkersFromItems(mItems);
                    // Attach marker click listener to the map here
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 public boolean onMarkerClick(Marker marker) {
