@@ -50,6 +50,7 @@ public class HomeActivity extends AppCompatActivity {
                     intent = new Intent(HomeActivity.this, LoginActivity.class);
                     startActivityForResult(intent, 300);
                 } else {
+
                     intent = new Intent(HomeActivity.this, ProductFormActivity.class);
                     startActivityForResult(intent, 100);
                 }
@@ -62,6 +63,9 @@ public class HomeActivity extends AppCompatActivity {
         mProductsFragment = (ProductsRecyclerViewFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragmentProducts);
     }
+
+
+
 
 public void loadProductsFromBackend(){
     ParseQuery<Product> query = ParseQuery.getQuery(Product.class);

@@ -260,6 +260,10 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         if (map != null) {
             // Map is ready
             map.getUiSettings().setMapToolbarEnabled(true);
+            map.getUiSettings().setCompassEnabled(true);
+            map.getUiSettings().setZoomControlsEnabled(true);
+
+
             /*final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(10);
             executor.schedule(new Runnable() {
                 @Override
