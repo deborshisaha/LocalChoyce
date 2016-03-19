@@ -124,7 +124,6 @@ public class ProductsRecyclerViewFragment extends Fragment {
                 mProductRecyclerView.scrollToPosition(0);
             }
         }, 1000);
-
     }
 
     // TODO - 1 this is currently not working. I want to receive back the rented product
@@ -141,13 +140,5 @@ public class ProductsRecyclerViewFragment extends Fragment {
 
         }
     }
-//    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//        startContentAnimation();
-//    }
-//
-//    private void startContentAnimation() {
-//        mProductsAdapter.updateItems(true);
-//    }
 
 }

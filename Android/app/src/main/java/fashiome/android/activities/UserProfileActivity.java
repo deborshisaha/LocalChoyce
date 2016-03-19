@@ -17,11 +17,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.models.SellerReview;
 import fashiome.android.models.User;
 import fashiome.android.utils.ImageURLGenerator;
 import fashiome.android.utils.Utils;
@@ -56,7 +61,7 @@ public class UserProfileActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        User user = (User) User.getCurrentUser();
+        final User user = (User) User.getCurrentUser();
 
         if (user != null) {
             URLString = ImageURLGenerator.getInstance(this).URLForFBProfilePicture(user.getFacebookId(), Utils.getScreenWidthInDp(this));
@@ -70,7 +75,15 @@ public class UserProfileActivity extends AppCompatActivity {
             Glide.with(this).load(URLString).into(rivProfilePicture);
         }
 
+        /* Demo the call should be like this */
+        SellerReview.fetchSellerReview(user, new FindCallback<SellerReview>() {
+            @Override
+            public void done(List<SellerReview> objects, ParseException e) {
+
+            }
+        });
     }
+
 
     /*
     private void initViewPagerAndTabs() {
