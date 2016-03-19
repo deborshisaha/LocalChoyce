@@ -113,10 +113,13 @@ dependencies {
         transitive = true;
     }
 
-    //card.io
+    /* App Intro */
+    compile 'com.github.paolorotolo:appintro:3.4.0'
+
+    /* card.io */
     compile 'io.card:android-sdk:5.3.0'
 
-    // discrete seekbar
+    /* discrete seekbar */
     compile 'org.adw.library:discrete-seekbar:1.0.1'
 
 }

@@ -87,7 +87,7 @@
             android:name="com.parse.CLIENT_KEY"
             android:value="@string/parse_client_key"/>
 
-        <!-- Activities responsible for gathering payment info -->
+        <!-- !!!!!!!! Activities !!!!!!! -->
         <activity
             android:name="io.card.payment.CardIOActivity"
             android:configChanges="keyboardHidden|orientation"/>
@@ -137,28 +137,58 @@
             android:name=".activities.SignUpActivity"
             android:label="@string/title_activity_sign_up"
             android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity android:name=".activities.MapFullScreenActivity"/>
+
         <activity android:name=".activities.GoogleDriveFilesListActivity"/>
+
         <activity
             android:name=".activities.UserProfileActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
-            android:name=".activities.HomeActivity"
+
+        <activity android:name=".activities.EntryActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.BookingDetailsActivity"
             android:label="@string/title_activity_booking_details"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <service android:name="com.parse.PushService"/>
+        <activity
+            android:name=".activities.ProductFilterSettingsActivity"
+            android:label="@string/title_activity_product_filter_settings"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <!--HomeActivity-->
+        <activity
+            android:name=".activities.UserDetailsActivity"
+            android:label="@string/title_activity_user_details"
+            android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name= ".activities.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name= ".activities.IntroAndLoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- No Activities below this -->
+
+
+
+        <!-- !!!!!!!! Services !!!!!!! -->
+        <service android:name="com.parse.PushService"/>
+        <!-- No services below this line -->
+
+        <!-- !!!!!!!! Receivers !!!!!!! -->
         <receiver
             android:name="com.parse.ParsePushBroadcastReceiver"
             android:exported="false">
@@ -168,6 +198,7 @@
                 <action android:name="com.parse.push.intent.OPEN"/>
             </intent-filter>
         </receiver>
+
         <receiver
             android:name="com.parse.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
@@ -178,17 +209,9 @@
                 <category android:name="fashiome.android"/>
             </intent-filter>
         </receiver>
+        <!-- No receivers below this line -->
 
-        <activity
-            android:name=".activities.ProductFilterSettingsActivity"
-            android:label="@string/title_activity_product_filter_settings"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
-            android:name=".activities.UserDetailsActivity"
-            android:label="@string/title_activity_user_details"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+
     </application>
 
 </manifest>
