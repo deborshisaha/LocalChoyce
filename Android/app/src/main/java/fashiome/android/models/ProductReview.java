@@ -109,11 +109,11 @@ public class ProductReview extends ParseObject implements Parcelable {
         }
     };
 
-    public static void fetchProductReview(User user, FindCallback<ProductReview> productReviewsLoadedBlock) {
+    public static void fetchProductReview(Product product, FindCallback<ProductReview> productReviewsLoadedBlock) {
         ParseQuery<ProductReview> query = ParseQuery.getQuery(ProductReview.class);
         query.setLimit(50);
         query.setMaxCacheAge(60000 * 60);
-        query.whereEqualTo("user", user);
+        query.whereEqualTo("product", product);
         query.orderByDescending("createdAt");
         query.include("user");
         query.findInBackground(productReviewsLoadedBlock);
