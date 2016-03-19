@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.style.TtsSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -70,7 +71,7 @@ public class HomeActivity extends AppCompatActivity {
 public void loadProductsFromBackend(){
     ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
     query.setLimit(50);
-    query.setMaxCacheAge(60000*60);
+    query.setMaxCacheAge(60000 * 60);
     query.orderByDescending("createdAt");
     query.include("productPostedBy");
     query.include("address");
@@ -84,6 +85,19 @@ public void loadProductsFromBackend(){
                 for(int i=0;i<mProducts.size();i++) {
                     Product product = mProducts.get(i);
                     System.out.println("Address of each product -> "+product.getAddress().getLatitude()+"," + product.getAddress().getLongitude());
+                    System.out.println("image url----"+product.getProductPrimaryImageCloudinaryPublicId());
+                    System.out.println("id -> "+product.getObjectId());
+                    System.out.println("desc ->"+product.getProductDescription());
+                    System.out.println("name ->" +product.getProductName());
+                    System.out.println("sku -> "+product.getProductSKU());
+                    System.out.println("currency ->"+ product.getCurrency());
+                    System.out.println("photos -> "+product.getPhotos().size());
+                    System.out.println("posted by -> " + product.getProductPostedBy());
+                    System.out.println("rating ->" + product.getProductRating());
+                    System.out.println("fav ->" + product.getNumberOfFavorites());
+                    System.out.println("views ->" + product.getNumberOfViews());
+                    System.out.println("reviews- >" + product.getNumberOfReviews());
+                    System.out.println("price _>" + product.getPrice());
                 }
             } else {
                 Log.d("DEBUG", "Error: " + e.getMessage());
@@ -102,7 +116,7 @@ public void loadProductsFromBackend(){
         mProfileLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ParseUser.getCurrentUser() != null) {
+                if (ParseUser.getCurrentUser() != null) {
                     Intent i = new Intent(HomeActivity.this, UserProfileActivity.class);
                     startActivity(i);
                 } else {
@@ -191,9 +205,40 @@ public void loadProductsFromBackend(){
 
     public void launchMap(View view) {
         Intent i = new Intent(HomeActivity.this,MapFullScreenActivity.class);
-        i.putParcelableArrayListExtra("products", mProducts);
+        ArrayList<Product> filteredProducts = filterProductswithImage();
+        for(int j=0;j<filteredProducts.size();j++) {
+            Product product = filteredProducts.get(j);
+            System.out.println("Address of each filtered product -> "+product.getAddress().getLatitude()+"," + product.getAddress().getLongitude());
+            System.out.println("image url----"+product.getProductPrimaryImageCloudinaryPublicId());
+            System.out.println("id -> "+product.getObjectId());
+            System.out.println("desc ->"+product.getProductDescription());
+            System.out.println("name ->" +product.getProductName());
+            System.out.println("sku -> "+product.getProductSKU());
+            System.out.println("currency ->"+ product.getCurrency());
+            System.out.println("photos -> "+product.getPhotos().size());
+            System.out.println("photos -> "+product.getPhotos().get(0));
+            System.out.println("posted by -> "+product.getProductPostedBy());
+            System.out.println("rating ->"+ product.getProductRating());
+            System.out.println("fav ->"+product.getNumberOfFavorites());
+            System.out.println("views ->"+product.getNumberOfViews());
+            System.out.println("reviews- >"+product.getNumberOfReviews());
+            System.out.println("price _>"+product.getPrice());
+        }
+        i.putParcelableArrayListExtra("products", filteredProducts);
+        //i.putParcelableArrayListExtra("products", mProducts);
         System.out.println("Size of the fetched products ----------------" + mProducts.size());
         startActivity(i);
+    }
+
+    public ArrayList<Product> filterProductswithImage(){
+        ArrayList<Product> filteredProducts = new ArrayList<>();
+        for (int i=0;i<mProducts.size();i++) {
+            Product product = mProducts.get(i);
+            if (product.getProductPrimaryImageCloudinaryPublicId() !=null && !product.getProductPrimaryImageCloudinaryPublicId().isEmpty()){
+                filteredProducts.add(product);
+            }
+        }
+        return filteredProducts;
     }
 
 }

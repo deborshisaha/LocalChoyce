@@ -55,14 +55,14 @@ public class Product extends ParseObject implements Parcelable {
         return this.address;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
-        put("address", address);
-    }
 
-    public void setProductPostedBy(User user) {
-        this.productPostedBy = user;
-        put("productPostedBy", user);
+    public String getProductDescription() {
+
+        if (this.productDescription == null) {
+            this.productDescription = getString("productDescription");
+        }
+        String string= this.productDescription;
+        return string;
     }
 
     public User getProductPostedBy() {
@@ -81,12 +81,6 @@ public class Product extends ParseObject implements Parcelable {
         }
         return this.numberOfReviews;
     }
-
-    public void setNumberOfReviews(int numberOfReviews) {
-        this.numberOfReviews = numberOfReviews;
-        put("numberOfReviews", numberOfReviews);
-    }
-
     public int getNumberOfViews() {
 
         if(this.numberOfViews == 0){
@@ -94,12 +88,6 @@ public class Product extends ParseObject implements Parcelable {
         }
         return this.numberOfViews;
     }
-
-    public void setNumberOfViews(int numberOfViews) {
-        this.numberOfViews = numberOfViews;
-        put("numberOfViews", numberOfViews);
-    }
-
     public int getNumberOfFavorites() {
 
         if(this.numberOfFavorites == 0) {
@@ -107,12 +95,6 @@ public class Product extends ParseObject implements Parcelable {
         }
         return this.numberOfFavorites;
     }
-
-    public void setNumberOfFavorites(int numberOfFavorites) {
-        this.numberOfFavorites = numberOfFavorites;
-        put("numberOfFavorites", numberOfFavorites);
-    }
-
     public double getPrice() {
 
         if (this.price == 0) {
@@ -121,12 +103,6 @@ public class Product extends ParseObject implements Parcelable {
 
         return this.price;
     }
-
-    public void setPrice(double price) {
-        this.price = price;
-        put("price", price);
-    }
-
     public String getCurrency() {
 
         if (this.currency == null) {
@@ -134,25 +110,6 @@ public class Product extends ParseObject implements Parcelable {
         }
 
         return this.currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-        put("currency", currency);
-    }
-
-    public String getProductDescription() {
-
-        if (this.productDescription == null) {
-            this.productDescription = getString("productDescription");
-        }
-        String string= this.productDescription;
-        return string;
-    }
-
-    public void setProductDescription(String mProductDescription) {
-        this.productDescription = mProductDescription;
-        put("productDescription", mProductDescription);
     }
 
     public String getProductName() {
@@ -164,11 +121,6 @@ public class Product extends ParseObject implements Parcelable {
         return string;
     }
 
-    public void setProductName(String mProductName) {
-        this.productName = mProductName;
-        put("productName", mProductName);
-    }
-
     public String getProductSize() {
 
         if (this.productSize == null) {
@@ -177,6 +129,62 @@ public class Product extends ParseObject implements Parcelable {
         String string = this.productSize;
         return string;
     }
+    public void setAddress(Address address) {
+        this.address = address;
+        put("address", address);
+    }
+
+    public void setProductPostedBy(User user) {
+        this.productPostedBy = user;
+        put("productPostedBy", user);
+    }
+
+    public void setNumberOfReviews(int numberOfReviews) {
+        this.numberOfReviews = numberOfReviews;
+        put("numberOfReviews", numberOfReviews);
+    }
+
+
+
+    public void setNumberOfViews(int numberOfViews) {
+        this.numberOfViews = numberOfViews;
+        put("numberOfViews", numberOfViews);
+    }
+
+
+    public void setNumberOfFavorites(int numberOfFavorites) {
+        this.numberOfFavorites = numberOfFavorites;
+        put("numberOfFavorites", numberOfFavorites);
+    }
+
+
+
+    public void setPrice(double price) {
+        this.price = price;
+        put("price", price);
+    }
+
+
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+        put("currency", currency);
+    }
+
+
+    public void setProductDescription(String mProductDescription) {
+        this.productDescription = mProductDescription;
+        put("productDescription", mProductDescription);
+    }
+
+
+
+    public void setProductName(String mProductName) {
+        this.productName = mProductName;
+        put("productName", mProductName);
+    }
+
+
 
     public void setProductSize(String mProductSize) {
         this.productSize = mProductSize;

@@ -380,7 +380,7 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
         if (location != null) {
             Toast.makeText(this, "GPS location was found! Lat:"+ location.getLatitude() +" Long:"+location.getLongitude(), Toast.LENGTH_SHORT).show();
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            product.setAddress(new Address(latLng));
+            product.setAddress(new Address(Item.getRandomLocation(latLng.latitude, latLng.longitude,5000)));
         } else {
             Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }
