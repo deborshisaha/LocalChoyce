@@ -9,7 +9,6 @@ import com.parse.ParseACL;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
 
 import fashiome.android.models.Address;
 import fashiome.android.models.Product;

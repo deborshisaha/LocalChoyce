@@ -5,7 +5,7 @@
     <uses-sdk android:minSdkVersion="8"/>
 
     <permission
-        android:name="com.parse.starter.permission.C2D_MESSAGE"
+        android:name="fashiome.android.permission.C2D_MESSAGE"
         android:protectionLevel="signature"/>
     <!-- Permission to vibrate - recommended, allows vibration feedback on scan -->
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -48,7 +48,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
-    <uses-permission android:name="com.parse.starter.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="fashiome.android.permission.C2D_MESSAGE"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -78,14 +78,6 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
-
-        <!-- Parse -->
-        <meta-data
-            android:name="com.parse.APPLICATION_ID"
-            android:value="@string/parse_app_id"/>
-        <meta-data
-            android:name="com.parse.CLIENT_KEY"
-            android:value="@string/parse_client_key"/>
 
         <!-- !!!!!!!! Activities !!!!!!! -->
         <activity
@@ -183,6 +175,13 @@
         <!-- No Activities below this -->
 
 
+        <!-- Parse -->
+        <meta-data
+            android:name="com.parse.APPLICATION_ID"
+            android:value="@string/parse_app_id"/>
+        <meta-data
+            android:name="com.parse.CLIENT_KEY"
+            android:value="@string/parse_client_key"/>
 
         <!-- !!!!!!!! Services !!!!!!! -->
         <service android:name="com.parse.PushService"/>
