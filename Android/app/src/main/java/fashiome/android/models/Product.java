@@ -4,11 +4,8 @@ package fashiome.android.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.bumptech.glide.util.Util;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
-import com.parse.ParseRelation;
-import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
