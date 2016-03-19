@@ -101,8 +101,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
         mProduct = getIntent().getExtras().getParcelable("product");
 
-        Log.i("info"," url after "+mProduct.getProductPostedBy().getObjectId()+mProduct.getProductPostedBy().getProfilePictureURL());
-
         // Get Intent for a product here
 //        int numberOfRatings = 5;
 //        LinearLayout mLL = (LinearLayout)findViewById(R.id.llRatingBar);
@@ -116,6 +114,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 //        }
 
         mProductTitle.setText(mProduct.getProductName());
+        mSeller.setText(mProduct.getProductPostedBy().getUsername());
         mProductDescription.setText(String.valueOf(mProduct.getProductDescription()));
         Glide.with(ProductDetailsActivity.this)
                 .load(mProduct.getProductPostedBy().getProfilePictureURL())

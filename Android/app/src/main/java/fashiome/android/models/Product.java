@@ -3,9 +3,13 @@ package fashiome.android.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -279,4 +283,16 @@ public class Product extends ParseObject implements Parcelable {
 
         return this.getObjectId() + this.photos.get(position);
     }
+
+    public static void fetchProducts(FindCallback<Product> productsLoadedBlock){
+
+        ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
+        query.setLimit(20);
+        query.setMaxCacheAge(60000*60);
+        query.orderByDescending("createdAt");
+        query.include("productPostedBy");
+        query.include("address");
+        query.findInBackground(productsLoadedBlock);
+    }
+
 }

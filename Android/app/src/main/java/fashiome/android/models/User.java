@@ -2,6 +2,7 @@ package fashiome.android.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
@@ -80,7 +81,10 @@ public class User extends ParseUser implements Parcelable {
     }
 
     public String getEmail() {
-        return getString("email");
+        if(this.email == null) {
+            this.email = getString("email");
+        }
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -97,15 +101,25 @@ public class User extends ParseUser implements Parcelable {
         return getFirstName()+ " " +getLastName();
     }
 
+    public String getUsername() {
+        if(this.username == null) {
+            this.username = getString("username");
+        }
+        return this.username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+        put("username", username);
+    }
+
     private String firstName;
     private String lastName;
     private String profilePictureURL;
     private double rating;
     private String email;
+    private String username;
 
-    /**
-     * Parcelable
-     */
     @Override
     public int describeContents() {
         return 0;
@@ -113,24 +127,28 @@ public class User extends ParseUser implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getObjectId());
+        dest.writeString(this.facebookId);
         dest.writeString(this.firstName);
         dest.writeString(this.lastName);
         dest.writeString(this.profilePictureURL);
         dest.writeDouble(this.rating);
-        dest.writeString(this.email);
-        dest.writeString(this.facebookId);
+        dest.writeString(getEmail());
+        dest.writeString(getUsername());
     }
 
     protected User(Parcel in) {
+        this.setObjectId(in.readString());
+        this.facebookId = in.readString();
         this.firstName = in.readString();
         this.lastName = in.readString();
         this.profilePictureURL = in.readString();
         this.rating = in.readDouble();
         this.email = in.readString();
-        this.facebookId = in.readString();
+        this.username = in.readString();
     }
 
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+    public static final Creator<User> CREATOR = new Creator<User>() {
         public User createFromParcel(Parcel source) {
             return new User(source);
         }
@@ -139,5 +157,4 @@ public class User extends ParseUser implements Parcelable {
             return new User[size];
         }
     };
-
 }
