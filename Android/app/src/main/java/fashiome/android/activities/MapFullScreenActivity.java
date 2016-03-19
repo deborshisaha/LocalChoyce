@@ -124,29 +124,6 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         mItems = new ArrayList<Product>();
         loadProductsFromBackend();
 
-        System.out.println("Product address---->  "+getIntent().getParcelableExtra("address"));
-        System.out.println("Product string photos list ----> " + getIntent().getParcelableArrayListExtra("productPhotos"));
-        System.out.println("Product one product---->  "+getIntent().getParcelableExtra("oneProduct"));
-
-        System.out.println("Size of the parceled products ----------------"+mItems.size());
-        for(int i=0;i<mItems.size();i++) {
-            Product product = mItems.get(i);
-            System.out.println("Address of each product -> "+product.getAddress().getLatitude()+"," + product.getAddress().getLongitude());
-            System.out.println("image url----"+product.getProductPrimaryImageCloudinaryPublicId());
-            System.out.println("id -> "+product.getObjectId());
-            System.out.println("desc ->"+product.getProductDescription());
-            System.out.println("name ->" +product.getProductName());
-            System.out.println("sku -> "+product.getProductSKU());
-            System.out.println("currency ->"+ product.getCurrency());
-            System.out.println("photos -> "+product.getPhotos());
-           /* System.out.println("posted by -> "+product.getProductPostedBy());
-            System.out.println("rating ->"+ product.getProductRating());
-            System.out.println("fav ->"+product.getNumberOfFavorites());
-            System.out.println("views ->"+product.getNumberOfViews());
-            System.out.println("reviews- >"+product.getNumberOfReviews());
-            System.out.println("price _>"+product.getPrice());*/
-        }
-
          pic =(ImageView) findViewById(R.id.ivItemPhoto);
          title = (TextView) findViewById(R.id.tvItemName);
          desc = (TextView) findViewById(R.id.tvDesc);
@@ -274,11 +251,9 @@ public class MapFullScreenActivity extends AppCompatActivity implements
 
     public void updateFooter(Product product){
         mSelectedProduct = product;
-
         String URLString = ImageURLGenerator.getInstance(this).URLForImageWithCloudinaryPublicId(product.getProductPrimaryImageCloudinaryPublicId(),Utils.getScreenWidthInDp(this));
 
         Log.d("DEBUG testing the image", URLString);
-
         if (URLString != null || URLString.length() > 0) {
             Log.i("info", "Loading image from glide " + URLString);
             Glide.with(this).load(URLString).into(pic);
@@ -286,6 +261,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         title.setText(product.getProductName());
         desc.setText(product.getProductDescription());
         price.setText("$"+product.getPrice()+"");
+
         rating.setText(product.getProductRating()+"/5.0");
 
     }

@@ -69,7 +69,7 @@ dependencies {
 
     /* Dynamic permission dispatcher */
     compile 'com.github.hotchemi:permissionsdispatcher:2.0.6'
-    apt 'com.github.hotchemi:permissionsdispatcher-processor:2.0.7'
+    apt 'com.github.hotchemi:permissionsdispatcher-processor:2.0.6'
 
 
     /* Custom library for recyclerview animations */

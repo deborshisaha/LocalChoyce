@@ -31,6 +31,7 @@ public class HomeActivity extends AppCompatActivity {
 
     ImageView mProfileLogo;
     ProductsRecyclerViewFragment mProductsFragment;
+    ArrayList<Product> mProducts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +58,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+
         mProductsFragment = (ProductsRecyclerViewFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragmentProducts);
     }
-
-
 
 
 
@@ -165,6 +165,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void launchMap(View view) {
         Intent i = new Intent(HomeActivity.this,MapFullScreenActivity.class);
+
         startActivity(i);
     }
 
