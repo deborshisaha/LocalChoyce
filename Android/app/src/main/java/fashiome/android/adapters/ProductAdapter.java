@@ -30,6 +30,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.utils.Constants;
 import fashiome.android.utils.Utils;
 import fashiome.android.models.Address;
 import fashiome.android.models.Product;
@@ -106,24 +107,33 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         mProducts.add(index,product);
     }
 
-    public void updateItems(boolean animated, List<Product> products) {
+    public void updateItems(int operation, List<Product> products) {
 
         if (mProducts == null) {
             mProducts = new ArrayList<Product>();
         }
 
-        if (mProducts.size() > 0) {
+        if (mProducts.size() > 0 && operation == Constants.NEW_SEARCH_OPERATION) {
+            Log.i("info","Clearing items for new search results");
             mProducts.clear();
-        }
-
-        if (products !=null) {
-            mProducts.addAll(products);
-        }
-
-        if (animated) {
-            notifyItemRangeInserted(0, mProducts.size());
-        } else {
             notifyDataSetChanged();
+        }
+
+        if (products != null && products.size() > 0) {
+            if(operation == Constants.NEW_SEARCH_OPERATION) {
+                int size = mProducts.size();
+                Log.i("info", "appending " + products.size() + " items to earlier " + mProducts.size());
+                mProducts.addAll(products);
+                Log.i("info", "new range 0 to " + mProducts.size());
+                notifyItemRangeInserted(size, products.size());
+            }
+            if(operation == Constants.REFRESH_OPERATION) {
+                Log.i("info", "prepending " + products.size() + " items to earlier " + mProducts.size());
+                mProducts.addAll(0, products);
+                Log.i("info", "new range 0 to " + mProducts.size());
+                notifyItemRangeInserted(0, products.size());
+
+            }
         }
     }
 
