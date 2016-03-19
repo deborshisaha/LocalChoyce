@@ -1,21 +1,31 @@
 package fashiome.android.activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.CursorLoader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.cloudinary.Cloudinary;
@@ -65,6 +75,7 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
         LocationListener {
 
     private static final String TAG = "ProductFormActivity";
+
     @Bind(R.id.etProductName)
     EditText etProductName;
 
@@ -83,7 +94,12 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
     @Bind(R.id.btnSaveProduct)
     Button btnSaveProduct;
 
+    @Bind(R.id.spinnerSize)
+    Spinner size;
+
+
     private static final int REQUEST_CAMERA = 0;
+    private static final int SELECT_FILE = 1;
     private int imageTapped = -1;
     private List<Bitmap> arrayOfBitmaps = new ArrayList<Bitmap>();
     private GoogleApiClient mGoogleApiClient;
@@ -98,15 +114,26 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.product_form);
+        setContentView(R.layout.activity_add_new_product);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getSupportActionBar().setTitle("Post a product");
 
         ButterKnife.bind(this);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(ProductFormActivity.this,
+                R.array.orderItems, android.R.layout.simple_spinner_dropdown_item);
+
+        size.setAdapter(adapter);
 
         View.OnClickListener imageOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 imageTapped = v.getId();
-                launchCamera(v);
+                selectImage(v);
 //                Intent intent = new Intent(ProductFormActivity.this, GoogleDriveFilesListActivity.class);
 //                startActivity(intent);
             }
@@ -130,6 +157,7 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
             }
         });
 
+
     }
 
     @Override
@@ -149,6 +177,32 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
                 addImage(takenImage);
                 break;
             }
+
+            case SELECT_FILE: {
+
+                Uri selectedImageUri = data.getData();
+                String[] projection = { MediaStore.MediaColumns.DATA };
+                CursorLoader cursorLoader = new CursorLoader(this,selectedImageUri, projection, null, null,
+                        null);
+                Cursor cursor =cursorLoader.loadInBackground();
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+                cursor.moveToFirst();
+                String selectedImagePath = cursor.getString(column_index);
+                Bitmap bm;
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(selectedImagePath, options);
+                final int REQUIRED_SIZE = 200;
+                int scale = 1;
+                while (options.outWidth / scale / 2 >= REQUIRED_SIZE
+                        && options.outHeight / scale / 2 >= REQUIRED_SIZE)
+                    scale *= 2;
+                options.inSampleSize = scale;
+                options.inJustDecodeBounds = false;
+                bm = BitmapFactory.decodeFile(selectedImagePath, options);
+                addImage(bm);
+            }
+
         }
     }
 
@@ -169,6 +223,12 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
 
     private void saveProduct() {
 
+        final ProgressDialog pd = new ProgressDialog(ProductFormActivity.this);
+        pd.setMessage("Saving your product ...");
+        pd.isIndeterminate();
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.show();
+
         final Cloudinary cloudinaryObject = new Cloudinary(Utils.cloudinaryUrlFromContext(this));
 
         product.setProductName(etProductName.getText().toString());
@@ -176,7 +236,7 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
         product.setPrice(Double.parseDouble(etProductAskPrice.getText().toString()));
         product.setCurrency("USD");
         product.setProductPostedBy((User) User.getCurrentUser());
-
+        product.setProductSize(size.getSelectedItem().toString());
         product.setPhotos(getPhotoCloudinaryPublicIdList());
         product.saveInBackground(new SaveCallback() {
             @Override
@@ -203,8 +263,9 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
                         @Override
                         protected void onPostExecute(String s) {
                             super.onPostExecute(s);
-                            Toast.makeText(ProductFormActivity.this, "Wohoo!", Toast.LENGTH_LONG).show();
-                            Intent resultIntent  = new Intent();
+                            pd.setMessage("Done!");
+                            pd.dismiss();
+                            Intent resultIntent = new Intent();
                             resultIntent.putExtra("product", product);
                             setResult(RESULT_OK, resultIntent);
                             finish();
@@ -218,6 +279,30 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
                 }
             }
         });
+    }
+
+    private void selectImage(final View v) {
+        final CharSequence[] items = { "Take Photo", "Choose from Library", "Cancel" };
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProductFormActivity.this);
+        builder.setTitle("Add Photo!");
+        builder.setIcon(R.drawable.ic_camera);
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (items[item].equals("Take Photo")) {
+                    launchCamera(v);
+                } else if (items[item].equals("Choose from Library")) {
+                    Intent intent = new Intent(
+                            Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("image/*");
+                    startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
     }
 
     private void addImage(Bitmap takenImage) {
@@ -334,4 +419,13 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.e(TAG, "onConnectionFailed");
     }
+
+    /* this method is overridden to prevent the UP/BACK button_hollow from creating a new activity
+    instead of showing the old activity */
+    @Override
+    public Intent getSupportParentActivityIntent() {
+        finish();
+        return null;
+    }
+
 }

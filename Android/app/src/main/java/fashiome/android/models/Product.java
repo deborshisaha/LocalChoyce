@@ -23,7 +23,7 @@ public class Product extends ParseObject implements Parcelable {
 
     private Address address;
     private User productPostedBy;
-
+    private String productSize;
     private double productRating;
     private int numberOfReviews;
     private int numberOfViews;
@@ -163,6 +163,20 @@ public class Product extends ParseObject implements Parcelable {
     public void setProductName(String mProductName) {
         this.productName = mProductName;
         put("productName", mProductName);
+    }
+
+    public String getProductSize() {
+
+        if (this.productSize == null) {
+            this.productSize = getString("productSize");
+        }
+        String string = this.productSize;
+        return string;
+    }
+
+    public void setProductSize(String mProductSize) {
+        this.productSize = mProductSize;
+        put("productSize", mProductSize);
     }
 
     public double getProductRating() {

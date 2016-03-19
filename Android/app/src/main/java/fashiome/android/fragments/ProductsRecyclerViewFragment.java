@@ -27,6 +27,9 @@ import fashiome.android.adapters.ProductAdapter;
 import fashiome.android.animators.ProductResultsAnimator;
 import fashiome.android.helpers.ItemClickSupport;
 import fashiome.android.models.Product;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.FlipInLeftYAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -66,7 +69,13 @@ public class ProductsRecyclerViewFragment extends Fragment {
         mProductRecyclerView.setLayoutManager(mLayoutManager);
 
         mProductsAdapter = new ProductAdapter(getContext());
-        mProductRecyclerView.setAdapter(mProductsAdapter);
+        //mProductRecyclerView.setAdapter(mProductsAdapter);
+
+        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(mProductsAdapter);
+        mProductRecyclerView.setAdapter(alphaAdapter);
+        FlipInLeftYAnimator animator = new FlipInLeftYAnimator();
+        mProductRecyclerView.setItemAnimator(animator);
+        mProductRecyclerView.getItemAnimator().setAddDuration(400);
 
 
         ItemClickSupport.addTo(mProductRecyclerView).setOnItemClickListener(
