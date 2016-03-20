@@ -52,12 +52,13 @@
                 android:background="@drawable/transparent_to_black"
                 android:layout_gravity="bottom">
 
-                <TextView style="@style/HeaderRegular"
+                <TextView
                     android:id="@+id/tvProductTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="8dp"
+                    android:textSize="20sp"
                     android:textColor="#ffffff"/>
 
             </RelativeLayout>
@@ -76,10 +77,11 @@
 
     <include layout="@layout/content_product_details"/>
 
-    <Button style="@style/RegularLight.CustomButton"
+    <Button
         android:id="@+id/bRent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/CustomButton"
         android:text="RENT IT NOW!"
         android:textColor="#ffffff"
         android:onClick="processPayment"/>

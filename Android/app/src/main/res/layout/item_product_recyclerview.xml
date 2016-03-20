@@ -4,20 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="4dp"
-    android:paddingLeft="4dp"
-    android:paddingRight="4dp"
     android:clipToPadding="false">
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <ImageView
+        android:id="@+id/rivProductPrimaryImage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:id="@+id/rivProductPrimaryImage"
-
-        app:riv_corner_radius="4dp"
-        app:riv_mutate_background="false"
-        android:layout_centerHorizontal="true"/>
+        android:scaleType="centerCrop"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -46,10 +39,12 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/rivProfilePicture">
 
-            <TextView style="@style/RegularRegular"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:layout_centerVertical="true"
+                android:textSize="16sp"
                 android:layout_marginLeft="8dp"
                 android:textColor="#ffffff"
                 android:text="Test"
@@ -72,15 +67,17 @@
         android:background="@drawable/transparent_to_black"
         android:layout_alignParentBottom="true" >
 
-        <TextView style="@style/RegularRegular"
+        <TextView
             android:id="@+id/tvProductTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:textColor="#ffffff"/>
 
-        <TextView style="@style/SmallLight"
+        <TextView
             android:id="@+id/tvProductDescription"
             android:layout_below="@+id/tvProductTitle"
             android:layout_width="match_parent"
@@ -90,7 +87,9 @@
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="4dp"
             android:maxLines = "2"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:textStyle="normal"
+            android:textSize="14sp"/>
 
     </RelativeLayout>
 

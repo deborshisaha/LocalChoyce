@@ -128,7 +128,7 @@ public class User extends ParseUser implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(getObjectId());
-        dest.writeString(getFacebookId());
+        dest.writeString(this.facebookId);
         dest.writeString(this.firstName);
         dest.writeString(this.lastName);
         dest.writeString(this.profilePictureURL);
