@@ -55,11 +55,8 @@ import fashiome.android.adapters.ProductPagerAdapter;
 import fashiome.android.fragments.ProductRentDetailsFragment;
 import fashiome.android.models.Product;
 import fashiome.android.models.User;
-<<<<<<< Updated upstream
 import fashiome.android.utils.ImageURLGenerator;
 import fashiome.android.utils.Utils;
-=======
->>>>>>> Stashed changes
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
