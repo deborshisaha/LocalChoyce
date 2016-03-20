@@ -24,11 +24,10 @@
 
     <include layout="@layout/content_booking_details"/>
 
-    <Button
+    <Button style="@style/RegularLight.CustomButton"
         android:id="@+id/bConfirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/CustomButton"
         android:text="Pay Now"
         android:textColor="#ffffff"
         android:onClick="onScanPress"/>
