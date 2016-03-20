@@ -19,6 +19,7 @@ import com.facebook.Profile;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -81,8 +82,10 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("AppStarter", "Uh oh. The user cancelled the Facebook login.");
                         } else if (user.isNew()) {
                             Log.d("AppStarter", "User signed up and logged in through Facebook!");
+                            associateInstallationWithUser();
                             getUserDetailsFromFB();
                         } else {
+                            associateInstallationWithUser();
                             Log.d("AppStarter", "User logged in through Facebook!");
                             finish();
                             //getUserDetailsFromParse();
@@ -95,6 +98,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    private void associateInstallationWithUser () {
+        /**
+         * Parse installation
+         */
+        if (ParseUser.getCurrentUser() != null) {
+            ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+            installation.put("user", ParseUser.getCurrentUser());
+            installation.saveInBackground();
+        } else {
+            ParseInstallation.getCurrentInstallation().saveInBackground();
+        }
+    }
 
     private void saveNewUser(final User user) {
         parseUser = (User) ParseUser.getCurrentUser();
