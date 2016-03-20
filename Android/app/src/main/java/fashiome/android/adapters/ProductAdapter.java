@@ -140,39 +140,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public ArrayList<Product> getAll(){
         return mProducts;
     }
-    /*
-    private List<Product> getDummyProducts () {
-
-        final List<Product> mProducts = new ArrayList<Product>();
-        final User user = new User();
-        user.setPassword("test!@#");
-        user.signUpInBackground(new SignUpCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.d("DEBUG", "Saved User");
-                    final Product p2 = new Product();
-                    p2.setProductPostedBy(user);
-                    p2.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                mProducts.add(p2);
-                                Log.d("DEBUG", "Associated");
-                            } else {
-                                Log.d("DEBUG", e.getMessage());
-                            }
-                        }
-                    });
-                } else {
-                    Log.d("DEBUG", "Error >>" + e.getMessage());
-                }
-            }
-        });
-
-        return mProducts;
-    }
-    */
 
     /**
      * Inner class
@@ -181,7 +148,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         /* View bindings */
         @Bind(R.id.rivProductPrimaryImage)
-        ImageView rivProductPrimaryImage;
+        RoundedImageView rivProductPrimaryImage;
 
         @Bind(R.id.tvProductDescription)
         TextView tvProductDescription;
@@ -208,25 +175,30 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         public void configure(Product product) {
 
-            String URLString = ImageURLGenerator.getInstance(this.mContext).URLForImageWithCloudinaryPublicId(product.getProductPrimaryImageCloudinaryPublicId(), Utils.getScreenWidthInDp(this.mContext));
+            User user = product.getProductPostedBy();
 
-            Log.d("DEBUG", URLString);
+            String productImageURLString = ImageURLGenerator.getInstance(this.mContext).URLForImageWithCloudinaryPublicId(product.getProductPrimaryImageCloudinaryPublicId(), Utils.getScreenWidthInDp(this.mContext));
+            String profileImageURLString = null;
+
+            Log.d("DEBUG", productImageURLString);
 
             Log.i("info","adapter price: "+String.valueOf(product.getPrice()));
 
-            //Glide.get(mContext).setMemoryCategory(MemoryCategory.HIGH);
 
-            if (URLString != null || URLString.length() > 0) {
-                Glide.with(this.mContext)
-                        .load(URLString)
-                        .into(rivProductPrimaryImage);
+            if (productImageURLString != null || productImageURLString.length() > 0) {
+                Glide.with(this.mContext).load(productImageURLString).into(rivProductPrimaryImage);
             }
 
             tvProductTitle.setText(product.getProductName());
             tvProductDescription.setText(product.getProductDescription());
 
-         if (product.getProductPostedBy() != null) {
-                tvProductByUserName.setText(product.getProductPostedBy().getUsername());
+            if (user != null) {
+                tvProductByUserName.setText(user.getUsername());
+                profileImageURLString = ImageURLGenerator.getInstance(this.mContext).URLForFBProfilePicture(user.getFacebookId(), Utils.getScreenWidthInDp(this.mContext));
+
+                if (profileImageURLString != null || profileImageURLString.length() > 0) {
+                    Glide.with(this.mContext).load(profileImageURLString).into(rivProfilePicture);
+                }
 
             }
 
