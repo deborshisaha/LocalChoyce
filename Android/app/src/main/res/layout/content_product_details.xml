@@ -8,79 +8,152 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.ProductDetailsActivity"
     tools:showIn="@layout/activity_product_details">
+
     <android.support.v4.widget.NestedScrollView
         android:enabled="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="#e3dede">
+            android:background="@color/product_detail_gray_bg">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginRight="32dp" >
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_female"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="4dp"
+                            android:id="@+id/ivGender"/>
+
+                        <TextView style="@style/SmallRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#000000"
+                            android:text="Female"
+                            android:layout_gravity="center"
+                            android:textAlignment="center"
+                            android:id="@+id/tvGender"/>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="32dp"
+                        android:orientation="vertical">
+
+                        <TextView style="@style/HeaderMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:textColor="#000000"
+                            android:text="25"
+                            android:layout_gravity="center"
+
+                            android:textAlignment="center"
+                            android:layout_marginBottom="4dp"
+                            android:id="@+id/tvNumberOfLikes"/>
+
+                        <TextView style="@style/SmallRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#000000"
+                            android:text="Rented"
+                            android:layout_gravity="center"
+                            android:textAlignment="center"
+                            android:id="@+id/tvLiked"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="32dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_hot"
+                            android:layout_marginBottom="4dp"
+                            android:id="@+id/ivHot"/>
+
+                        <TextView style="@style/SmallRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#000000"
+                            android:text="Hot"
+                            android:layout_gravity="center"
+                            android:textAlignment="center"
+                            android:id="@+id/tvHot"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_favorite"
+                            android:layout_marginBottom="4dp"
+                            android:id="@+id/ivFavorited"/>
+
+                        <TextView style="@style/SmallRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#000000"
+                            android:text="2.5K"
+                            android:layout_gravity="center"
+                            android:textAlignment="center"
+                            android:id="@+id/tvFavorited"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
-                android:padding="16dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingBottom="8dp"
+                android:paddingRight="16dp"
                 android:id="@+id/productMetadataContainerOne">
 
-                <TextView
+                <TextView style="@style/RegularLight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tvProductDescription"
                     android:textSize="16sp"
                     android:layout_gravity="center_vertical|left"
                     android:textColor="#525252"/>
-
-                <View style="@style/DividerHorizontal"
-                    android:layout_marginTop="16dp"
-                    android:layout_below="@+id/tvProductDescription"
-                    android:id="@+id/vDivider" />
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginTop="16dp"
-                    android:scaleType="centerCrop"
-                    android:id="@+id/rivSellerProfile"
-                    android:layout_below="@+id/vDivider"
-                    app:riv_corner_radius="4dp"
-                    app:riv_border_color="#F5F5F5"
-                    app:riv_mutate_background="false"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:text="Deepak Barge"
-                    android:id="@+id/tvSeller"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#525252"
-                    android:gravity="center_vertical"
-                    android:layout_alignTop="@+id/rivSellerProfile"
-                    android:layout_toRightOf="@+id/rivSellerProfile"
-                    android:layout_marginLeft="16dp" />
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:id="@+id/ivCall"
-                    android:src="@drawable/ic_call"
-                    android:layout_marginTop="16dp"
-                    android:layout_below="@+id/vDivider"
-                    android:layout_alignParentRight="true"/>
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:id="@+id/ivMessage"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="16dp"
-                    android:src="@drawable/ic_chat"
-                    android:layout_below="@+id/vDivider"
-                    android:layout_toLeftOf="@+id/ivCall" />
 
             </RelativeLayout>
 
@@ -92,30 +165,115 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="200dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/blurred_map"/>
 
-                <TextView
+                <TextView style="@style/RegularMedium"
                     android:id="@+id/tvAddress"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
                     android:text="1 Hacker Way,\n Menlo Park, CA 94025"
-                    android:textStyle="bold"
                     android:textColor="#525252"
-                    android:layout_centerVertical="true"/>
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_alignParentTop="true" />
 
-                <TextView
+                <TextView style="@style/RegularMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="16dp"
                     android:textColor="#525252"
                     android:text="3.9m away"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"/>
+                    android:layout_marginLeft="16dp"
+                    android:layout_below="@+id/tvAddress"
+                    android:id="@+id/tvDistance" />
 
             </RelativeLayout>
+
+            <!-- Seller -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="32dp"
+                android:background="@color/white">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:scaleType="centerCrop"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/rivSellerProfile"
+                    android:layout_centerHorizontal="true"
+
+                    app:riv_corner_radius="40dp"
+                    app:riv_border_color="@color/colorPrimary"
+                    app:riv_border_width="2dp"
+                    app:riv_mutate_background="false"/>
+
+                <TextView style="@style/BigRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deepak Barge"
+                    android:id="@+id/tvSeller"
+                    android:textColor="#525252"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/rivSellerProfile"
+                    android:layout_marginTop="8dp" />
+
+                <TextView style="@style/RegularLight"
+                    android:layout_width="268dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/about_me_text"
+                    android:id="@+id/tvSellerAbout"
+                    android:textAlignment="center"
+                    android:textColor="#525252"
+                    android:maxLines="4"
+                    android:layout_marginTop="4dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/tvSeller"  />
+
+            </RelativeLayout>
+
+            <!-- Contact Seller -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="60dp"
+                android:padding="32dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:id="@+id/ivCall"
+                    android:src="@drawable/ic_call"
+                    android:layout_centerHorizontal="true" />
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:id="@+id/ivMessage"
+                    android:layout_marginRight="64dp"
+                    android:src="@drawable/ic_chat"
+                    android:layout_toLeftOf="@+id/ivCall" />
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:id="@+id/ivSkype"
+                    android:layout_marginLeft="64dp"
+                    android:src="@drawable/ic_skype"
+                    android:layout_toRightOf="@+id/ivCall" />
+
+            </RelativeLayout>
+
+            <!--Review-->
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rvProductReview" />
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </RelativeLayout>

@@ -54,6 +54,9 @@ import fashiome.android.R;
 import fashiome.android.adapters.ProductPagerAdapter;
 import fashiome.android.fragments.ProductRentDetailsFragment;
 import fashiome.android.models.Product;
+import fashiome.android.models.User;
+import fashiome.android.utils.ImageURLGenerator;
+import fashiome.android.utils.Utils;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
@@ -89,6 +92,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     @Bind(R.id.bRent)
     Button mRent;
 
+    private String URLString = null;
+    private User user = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,25 +109,23 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
         mProduct = getIntent().getExtras().getParcelable("product");
 
-        // Get Intent for a product here
-//        int numberOfRatings = 5;
-//        LinearLayout mLL = (LinearLayout)findViewById(R.id.llRatingBar);
-//        for(int i = 0;i<numberOfRatings;i++){
-//
-//            ImageView iv = new ImageView(this);
-//            iv.setImageResource(R.drawable.ic_star_filled);
-//            android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(40,40);
-//            iv.setLayoutParams(layoutParams);
-//            mLL.addView(iv);
-//        }
+        if (mProduct == null) {
+            return;
+        }
+
+        user = mProduct.getProductPostedBy();
+
+        if (user != null) {
+            URLString = ImageURLGenerator.getInstance(this).URLForFBProfilePicture(user.getFacebookId(), Utils.getScreenWidthInDp(this));
+        }
+
+        if (URLString != null || URLString.length() > 0) {
+            Glide.with(ProductDetailsActivity.this).load(URLString).into(mSellerProfile);
+        }
 
         mProductTitle.setText(mProduct.getProductName());
         mSeller.setText(mProduct.getProductPostedBy().getUsername());
         mProductDescription.setText(String.valueOf(mProduct.getProductDescription()));
-        Glide.with(ProductDetailsActivity.this)
-                .load(mProduct.getProductPostedBy().getProfilePictureURL())
-                .into(mSellerProfile);
-
 
         setViewPagerItemsWithAdapter();
         setUiPageViewController();
@@ -206,7 +210,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         MenuItem item = menu.findItem(R.id.menu_item_like);
 
         if(isLiked){
-            item.setIcon(R.drawable.ic_like);
+            item.setIcon(R.drawable.ic_favorite);
         }
 
         return super.onPrepareOptionsMenu(menu);

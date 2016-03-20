@@ -29,9 +29,84 @@
         <item name="android:background">#9c9a9a</item>
     </style>
 
-    <style name="CustomButton">
+    <style name="RegularLight.CustomButton">
         <item name="android:background">@drawable/submit_state_button</item>
         <item name="android:layout_gravity">bottom|end</item>
     </style>
 
+    <style name="TinyLight">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">8sp</item>
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
+    <style name="TinyRegular">
+        <item name="android:fontFamily">sans-serif-regular</item>
+        <item name="android:textSize">8sp</item>
+    </style>
+
+    <style name="TinyMedium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">8sp</item>
+    </style>
+
+    <style name="SmallLight">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="SmallRegular">
+        <item name="android:fontFamily">sans-serif-regular</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="SmallMedium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="RegularLight">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="RegularRegular">
+        <item name="android:fontFamily">sans-serif-regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="RegularMedium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BigLight">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="BigRegular">
+        <item name="android:fontFamily">sans-serif-regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="BigMedium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="HeaderLight">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="HeaderRegular">
+        <item name="android:fontFamily">sans-serif-regular</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="HeaderMedium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">24sp</item>
+    </style>
 </resources>
