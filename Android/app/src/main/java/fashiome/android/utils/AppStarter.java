@@ -9,6 +9,7 @@ import com.parse.ParseACL;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import fashiome.android.models.Address;
 import fashiome.android.models.Product;
@@ -40,7 +41,14 @@ public class AppStarter extends Application {
         /**
          * Parse installation
          */
-        ParseInstallation.getCurrentInstallation().saveInBackground();
+        if (ParseUser.getCurrentUser() != null) {
+            ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+            installation.put("user", ParseUser.getCurrentUser());
+            installation.saveInBackground();
+        } else {
+            ParseInstallation.getCurrentInstallation().saveInBackground();
+        }
+
 
         //auto user not good for our use cases disabling it
         //ParseUser.enableAutomaticUser();

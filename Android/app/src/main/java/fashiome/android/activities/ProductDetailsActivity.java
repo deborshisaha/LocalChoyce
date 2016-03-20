@@ -36,7 +36,9 @@ import com.parse.FunctionCallback;
 import com.parse.Parse;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -251,6 +253,18 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
                     Log.i("info", "Liked successfully");
                     isLiked = true;
                     invalidateOptionsMenu();
+
+                    // WRONG WAY TO SEND PUSH - INSECURE!
+                    ParseQuery pushQuery = ParseInstallation.getQuery();
+                    pushQuery.whereEqualTo("productPostedBy", mProduct.getProductPostedBy());
+                    User currentUser = (User) ParseUser.getCurrentUser();
+                    String message = currentUser.getUsername() + " liked "+mProduct.getProductName();
+
+                    ParsePush push = new ParsePush();
+                    push.setQuery(pushQuery); // Set our Installation query
+                    push.setMessage(message);
+                    push.sendInBackground();
+
                 } else {
                     e.printStackTrace();
                 }
