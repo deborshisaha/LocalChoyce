@@ -260,7 +260,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
                     // WRONG WAY TO SEND PUSH - INSECURE!
                     ParseQuery pushQuery = ParseInstallation.getQuery();
-                    pushQuery.whereEqualTo("productPostedBy", mProduct.getProductPostedBy());
+                    pushQuery.whereEqualTo("user", mProduct.getProductPostedBy());
                     User currentUser = (User) ParseUser.getCurrentUser();
                     String message = currentUser.getUsername() + " liked "+mProduct.getProductName();
 
