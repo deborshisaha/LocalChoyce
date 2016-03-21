@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.cloudinary.utils.StringUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -45,6 +46,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,6 +59,7 @@ import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.adapters.ProductPagerAdapter;
 import fashiome.android.fragments.ProductRentDetailsFragment;
+import fashiome.android.managers.Push;
 import fashiome.android.models.Product;
 import fashiome.android.models.User;
 import fashiome.android.utils.ImageURLGenerator;
@@ -66,16 +70,22 @@ import io.card.payment.CreditCard;
 
 public class ProductDetailsActivity extends AppCompatActivity implements ProductRentDetailsFragment.ProductRentDetailsDialogListener {
 
+    private static String TAG= "ProductDetailsActivity";
+
     private LinearLayout dotsLayout;
     private int dotsCount;
     private TextView[] dots;
     private ViewPager mViewPager;
     private ProductPagerAdapter productPagerAdapter;
     private ShareActionProvider miShareAction;
-    private Product mProduct;
+
     private boolean isLiked = false;
     private int totalAmount = 0;
     private int MY_SCAN_REQUEST_CODE = 100; // arbitrary int
+    private String URLString = null;
+    private User user = null;
+    private String mProductIDString = null;
+    private Product mProduct = null;
 
     User currentUser;
     ProgressDialog pd;
@@ -98,8 +108,11 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     @Bind(R.id.bRent)
     Button mRent;
 
-    private String URLString = null;
-    private User user = null;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,11 +128,32 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
         mProduct = getIntent().getExtras().getParcelable("product");
 
-        if (mProduct == null) {
+        if (mProduct == null ) {
+            mProductIDString = getIntent().getExtras().getString(Product.PRODUCT_ID);
+        }  else {
+            populateViewWithProduct(mProduct);
             return;
         }
 
-        user = mProduct.getProductPostedBy();
+        if (StringUtils.isEmpty(mProductIDString)) {
+            return;
+        }
+
+        Log.d(TAG,"mProductIDString: "+mProductIDString);
+
+        Product.fetchProductWithId(mProductIDString, new FindCallback<Product>() {
+            @Override
+            public void done(List<Product> objects, ParseException e) {
+                if (objects.size() == 1) {
+                    mProduct = objects.get(0);
+                    populateViewWithProduct(mProduct);
+                }
+            }
+        });
+    }
+
+    private void populateViewWithProduct (Product product) {
+        user = product.getProductPostedBy();
 
         if (user != null) {
             URLString = ImageURLGenerator.getInstance(this).URLForFBProfilePicture(user.getFacebookId(), Utils.getScreenWidthInDp(this));
@@ -129,18 +163,18 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             Glide.with(ProductDetailsActivity.this).load(URLString).into(mSellerProfile);
         }
 
-        mProductTitle.setText(mProduct.getProductName());
-        mSeller.setText(mProduct.getProductPostedBy().getUsername());
-        mProductDescription.setText(String.valueOf(mProduct.getProductDescription()));
+        mProductTitle.setText(product.getProductName());
+        mSeller.setText(product.getProductPostedBy().getUsername());
+        mProductDescription.setText(String.valueOf(product.getProductDescription()));
 
-        setViewPagerItemsWithAdapter();
+        setViewPagerItemsWithAdapter(product);
         setUiPageViewController();
 
         if(ParseUser.getCurrentUser() != null) {
-            parseCallForIsLiked();
+            parseCallForIsLiked(product);
         }
 
-        getProductLocationAddress();
+        getProductLocationAddress(product);
     }
 
     private void setUiPageViewController() {
@@ -161,9 +195,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         }
     }
 
-    private void setViewPagerItemsWithAdapter() {
+    private void setViewPagerItemsWithAdapter(Product product) {
 
-        productPagerAdapter = new ProductPagerAdapter(ProductDetailsActivity.this, mProduct);
+        productPagerAdapter = new ProductPagerAdapter(ProductDetailsActivity.this, product);
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(productPagerAdapter);
@@ -234,9 +268,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
                 if(ParseUser.getCurrentUser() != null) {
 
                     if (isLiked) {
-                        parseCallForRemoveLike();
+                        parseCallForRemoveLike(mProduct);
                     } else {
-                        parseCallForAddLike();
+                        parseCallForAddLike(mProduct);
                     }
                 } else {
                     startActivity(new Intent(ProductDetailsActivity.this, LoginActivity.class));
@@ -250,11 +284,11 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         return super.onOptionsItemSelected(item);
     }
 
-    public void parseCallForAddLike(){
+    public void parseCallForAddLike(final Product product){
 
         ParseObject addLike = new ParseObject("UserProduct");
         addLike.put("userId", ParseUser.getCurrentUser());
-        addLike.put("productId", mProduct);
+        addLike.put("productId", product);
         addLike.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -264,16 +298,12 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
                     isLiked = true;
                     invalidateOptionsMenu();
 
-                    // WRONG WAY TO SEND PUSH - INSECURE!
-                    ParseQuery pushQuery = ParseInstallation.getQuery();
-                    pushQuery.whereEqualTo("user", mProduct.getProductPostedBy());
-                    User currentUser = (User) ParseUser.getCurrentUser();
-                    String message = currentUser.getUsername() + " liked "+mProduct.getProductName();
+                    try {
+                        Push.userLikedProduct(product);
+                    } catch (JSONException jsonException) {
+                        jsonException.printStackTrace();
+                    }
 
-                    ParsePush push = new ParsePush();
-                    push.setQuery(pushQuery); // Set our Installation query
-                    push.setMessage(message);
-                    push.sendInBackground();
 
                 } else {
                     e.printStackTrace();
@@ -282,14 +312,14 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         });
     }
 
-    public void parseCallForRemoveLike(){
+    public void parseCallForRemoveLike(Product product){
 
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserProduct");
         query.whereEqualTo("userId", ParseUser.getCurrentUser());
-        query.whereEqualTo("productId", mProduct);
+        query.whereEqualTo("productId", product);
         Log.i("info", "user " + ParseUser.getCurrentUser().getObjectId());
-        Log.i("info", "product  " + mProduct.getObjectId());
+        Log.i("info", "product  " + product.getObjectId());
 
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> deleteList, ParseException e) {
@@ -318,12 +348,12 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         });
     }
 
-    public void parseCallForIsLiked(){
+    public void parseCallForIsLiked(Product product){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserProduct");
         query.whereEqualTo("userId", ParseUser.getCurrentUser());
-        query.whereEqualTo("productId", mProduct);
+        query.whereEqualTo("productId", product);
         Log.i("info", "user " + ParseUser.getCurrentUser().getObjectId());
-        Log.i("info", "product  " + mProduct.getObjectId());
+        Log.i("info", "product  " + product.getObjectId());
 
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> likeList, ParseException e) {
@@ -343,16 +373,16 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     public void processPayment(View view) {
 
         if(totalAmount <= 0) {
-            showEditDialog();
+            showEditDialog(mProduct);
         } else {
             onScanPress(view);
         }
     }
 
-    private void showEditDialog() {
+    private void showEditDialog(Product product) {
         FragmentManager fm = getSupportFragmentManager();
-        Log.i("info", "Price before: " + mProduct.getPrice());
-        ProductRentDetailsFragment rentDetailsFragment = ProductRentDetailsFragment.newInstance(mProduct);
+        Log.i("info", "Price before: " + product.getPrice());
+        ProductRentDetailsFragment rentDetailsFragment = ProductRentDetailsFragment.newInstance(product);
         rentDetailsFragment.context = this;
         rentDetailsFragment.listener = this;
         rentDetailsFragment.show(fm, "fragment_rent_details");
@@ -468,14 +498,14 @@ instead of showing the old activity */
         });
     }
 
-    public void getProductLocationAddress() {
+    public void getProductLocationAddress(Product product) {
 
         Geocoder geocoder= new Geocoder(this, Locale.ENGLISH);
 
         try {
 
-            List<Address> addresses = geocoder.getFromLocation(mProduct.getAddress().getLatitude(),
-                    mProduct.getAddress().getLongitude(), 1);
+            List<Address> addresses = geocoder.getFromLocation(product.getAddress().getLatitude(),
+                    product.getAddress().getLongitude(), 1);
 
             if(addresses != null && addresses.size() > 0) {
 

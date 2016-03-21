@@ -42,16 +42,19 @@
     <string name="title_activity_user_details">UserDetailsActivity</string>
     <string name="title_activity_add_new_product">AddNewProductActivity</string>
 
-    <string name="introTitle4">Sign up</string>
-    <string name="introDesc4">Feeling lazy? Connect with Facebook. Signing up helps ypu keep track of your stuff</string>
+    <string name="introTitle5">Sign up</string>
+    <string name="introDesc5">Signing up helps you keep track of what you like</string>
 
-    <string name="introTitle3">Always New</string>
-    <string name="introDesc3">Pay as you go and never repeat a dress at parties</string>
+    <string name="introTitle4">Designers</string>
+    <string name="introDesc4">Put your best design out there. Get paid on stuff sitting on shelf!</string>
 
     <string name="introTitle2">Make money</string>
-    <string name="introDesc2">Put your eclectic wardrobe to work</string>
+    <string name="introDesc2">Putting clothes to work</string>
+
+    <string name="introTitle3">Always new</string>
+    <string name="introDesc3">One of those parties where you can\'t repeat?</string>
 
     <string name="introTitle1">Special occasions</string>
-    <string name="introDesc1">Awe everyone with best clothing without spending the most</string>
+    <string name="introDesc1">Awe everyone without spending huge</string>
 
 </resources>

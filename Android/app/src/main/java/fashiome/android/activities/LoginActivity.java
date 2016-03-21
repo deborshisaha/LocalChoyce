@@ -87,7 +87,6 @@ public class LoginActivity extends AppCompatActivity {
                             associateInstallationWithUser();
                             Log.d("AppStarter", "User logged in through Facebook!");
                             finish();
-                            //getUserDetailsFromParse();
                         }
                     }
                 });

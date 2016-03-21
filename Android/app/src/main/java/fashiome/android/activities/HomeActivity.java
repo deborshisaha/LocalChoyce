@@ -43,7 +43,8 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = null;
 
                 if (ParseUser.getCurrentUser() == null) {
-                    intent = new Intent(HomeActivity.this, LoginActivity.class);
+                    intent = new Intent(HomeActivity.this, IntroAndLoginActivity.class);
+                    intent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, true);
                     startActivityForResult(intent, 300);
                 } else {
                     intent = new Intent(HomeActivity.this, ProductFormActivity.class);
@@ -75,7 +76,8 @@ public class HomeActivity extends AppCompatActivity {
                     i.putExtra("objectId", ParseUser.getCurrentUser().getObjectId());
                     startActivity(i);
                 } else {
-                    Intent i = new Intent(HomeActivity.this, LoginActivity.class);
+                    Intent i = new Intent(HomeActivity.this, IntroAndLoginActivity.class);
+                    i.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, true);
                     startActivityForResult(i, 200);
 
                 }
@@ -101,16 +103,10 @@ public class HomeActivity extends AppCompatActivity {
 
                     Product p = data.getParcelableExtra("product");
                     Log.i("info"," Pid"+p.getObjectId());
-                    // this never returns the user . Nested parse objects are not serialized using parcelable
-                    //Log.i("info"," User"+p.getProductPostedBy().getUsername());
-
                     ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
                     query.include("productPostedBy");
                     query.include("productBoughtBy");
                     query.include("address");
-                    // First try to find from the cache and only then go to network
-                    // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK); // or CACHE_ONLY
-                    // Execute the query to find the object with ID
                     query.getInBackground(p.getObjectId(), new GetCallback<Product>() {
                         public void done(Product product, ParseException e) {
                             if (e == null) {
@@ -131,8 +127,12 @@ public class HomeActivity extends AppCompatActivity {
                 break;
 
             case 300:
-                Intent intent = new Intent(HomeActivity.this, ProductFormActivity.class);
-                startActivityForResult(intent, 100);
+
+                if (ParseUser.getCurrentUser() != null) {
+                    Intent intent = new Intent(HomeActivity.this, ProductFormActivity.class);
+                    startActivityForResult(intent, 100);
+                }
+
                 break;
 
             default:
