@@ -9,7 +9,9 @@ import com.parse.ParseACL;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseUser;
+import com.parse.PushService;
 
 import fashiome.android.models.Address;
 import fashiome.android.models.Product;
@@ -50,11 +52,7 @@ public class AppStarter extends Application {
         }
 
 
-        //auto user not good for our use cases disabling it
-        //ParseUser.enableAutomaticUser();
-
         ParseACL defaultACL = new ParseACL();
-        // Optionally enable public read and write access.
         defaultACL.setPublicReadAccess(true);
         defaultACL.setPublicWriteAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);

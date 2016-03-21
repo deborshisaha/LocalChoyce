@@ -1,5 +1,6 @@
 package fashiome.android.listeners;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -28,6 +29,11 @@ public class RemoteNotificationReceiver extends ParsePushBroadcastReceiver {
 
     private static final String TAG = "RemoteNotificationReceiver";
     private static final int EVENT_ON_PRODUCT_NOTIFICATION_ID = 1;
+
+    @Override
+    protected Class<? extends Activity> getActivity(Context context, Intent intent) {
+        return super.getActivity(context, intent);
+    }
 
     @Override
     public void onPushReceive(Context context, Intent intent) {
