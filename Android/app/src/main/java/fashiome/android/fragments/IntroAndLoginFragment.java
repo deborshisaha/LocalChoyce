@@ -3,6 +3,7 @@ package fashiome.android.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ public class IntroAndLoginFragment extends Fragment {
     private static final String ARG_TITLE = "title";
     private static final String ARG_DESC = "description";
     private static final String ARG_BTN_TITLE = "buttonTitle";
-
+    private View.OnClickListener mOnClickListener;
 
     public static IntroAndLoginFragment newInstance(int layoutResId, int imageResourceId, String title, String description, String btnTitle) {
         IntroAndLoginFragment sampleSlide = new IntroAndLoginFragment();
@@ -89,8 +90,17 @@ public class IntroAndLoginFragment extends Fragment {
             button.setVisibility(View.GONE);
         } else {
             button.setText(mButtonTitle);
+
+            if (this.mOnClickListener != null) {
+                button.setOnClickListener(this.mOnClickListener);
+            }
         }
 
         return v;
     }
+
+    public void setOnClicklistener (View.OnClickListener listener) {
+        this.mOnClickListener = listener;
+    }
+
 }
