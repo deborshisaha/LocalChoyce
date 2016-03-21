@@ -246,17 +246,18 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:id="@+id/ivCall"
+                    android:id="@+id/iBtnCall"
                     android:src="@drawable/ic_call"
                     android:layout_centerHorizontal="true" />
 
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:id="@+id/ivMessage"
+                    android:id="@+id/iBtnMessage"
                     android:layout_marginRight="64dp"
+                    android:stateListAnimator="@anim/lift_on_touch"
                     android:src="@drawable/ic_chat"
-                    android:layout_toLeftOf="@+id/ivCall" />
+                    android:layout_toLeftOf="@+id/iBtnCall" />
 
                 <ImageView
                     android:layout_width="32dp"
@@ -264,7 +265,7 @@
                     android:id="@+id/ivSkype"
                     android:layout_marginLeft="64dp"
                     android:src="@drawable/ic_skype"
-                    android:layout_toRightOf="@+id/ivCall" />
+                    android:layout_toRightOf="@+id/iBtnCall" />
 
             </RelativeLayout>
 

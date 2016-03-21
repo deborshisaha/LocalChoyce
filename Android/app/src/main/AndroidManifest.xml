@@ -85,6 +85,8 @@
             android:name="io.card.payment.CardIOActivity"
             android:configChanges="keyboardHidden|orientation"/>
 
+        <activity android:name=".activities.ChatRoomActivity" android:screenOrientation="portrait" />
+
         <activity android:name="io.card.payment.DataEntryActivity" android:screenOrientation="portrait" />
 
         <activity

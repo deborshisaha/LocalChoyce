@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -108,6 +109,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     @Bind(R.id.bRent)
     Button mRent;
 
+    @Bind(R.id.iBtnMessage)
+    ImageView mImageViewMessage;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -166,6 +170,14 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         mProductTitle.setText(product.getProductName());
         mSeller.setText(product.getProductPostedBy().getUsername());
         mProductDescription.setText(String.valueOf(product.getProductDescription()));
+        mImageViewMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("HELLO", "OnClickListener");
+                Intent intent = new Intent(ProductDetailsActivity.this, ChatRoomActivity.class);
+                startActivity(intent);
+            }
+        });
 
         setViewPagerItemsWithAdapter(product);
         setUiPageViewController();
