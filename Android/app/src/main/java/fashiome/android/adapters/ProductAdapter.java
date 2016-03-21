@@ -1,6 +1,8 @@
 package fashiome.android.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +32,10 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.activities.ProductDetailsActivity;
+import fashiome.android.activities.UserDetailsActivity;
+import fashiome.android.activities.UserProfileActivity;
+import fashiome.android.helpers.ItemClickSupport;
 import fashiome.android.utils.Constants;
 import fashiome.android.utils.Utils;
 import fashiome.android.models.Address;
@@ -144,7 +150,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     /**
      * Inner class
      */
-    public static class ProductViewHolder extends RecyclerView.ViewHolder{
+    public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         /* View bindings */
         @Bind(R.id.rivProductPrimaryImage)
@@ -159,7 +165,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         @Bind(R.id.rivProfilePicture)
         RoundedImageView rivProfilePicture;
 
-        @Bind(R.id.tvProductByUserName )
+        @Bind(R.id.tvProductByUserName)
         TextView tvProductByUserName;
 
         /* Private variables */
@@ -171,6 +177,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             ButterKnife.bind(this, itemView);
 
             this.mContext = context;
+            itemView.setOnClickListener(this);
+            rivProfilePicture.setOnClickListener(this);
+            tvProductByUserName.setOnClickListener(this);
+            tvProductTitle.setOnClickListener(this);
+            tvProductDescription.setOnClickListener(this);
         }
 
         public void configure(Product product) {
@@ -205,5 +216,45 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             Log.d("DEBUG", "Latitude : "+product.getAddress().getLatitude());
             Log.d("DEBUG", "Longitude : "+product.getAddress().getLongitude());
         }
+
+        @Override
+        public void onClick(View v) {
+
+            Log.i("info", "click detected");
+
+            switch (v.getId()) {
+
+                case R.id.rivProfilePicture:
+
+                    Log.i("info", "user profile image clicked");
+                    Intent i = new Intent(mContext, UserDetailsActivity.class);
+                    i.putExtra("objectId", mProducts.get(getLayoutPosition()).getProductPostedBy().getObjectId());
+                    mContext.startActivity(i);
+                    //((Activity)context).overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    break;
+
+/*
+                default:
+                    Product product = mProducts.get(getLayoutPosition());
+
+                    Log.i("info","list item clicked");
+                    Log.i("info", "url before: " + String.valueOf(product.getProductPostedBy().getProfilePictureURL()));
+
+                    Intent intent = new Intent(context, ProductDetailsActivity.class);
+                    intent.putExtra("product", product);
+
+                    context.startActivity(intent);
+                    break;
+*/
+
+            }
+        }
+
     }
+
 }
+    /*
+    private List<Product> getDummyProducts () {
+*/
+
+

@@ -28,6 +28,7 @@ public class Product extends ParseObject implements Parcelable {
 
     private Address address;
     private User productPostedBy;
+    private User productBoughtBy;
     private String productSize;
     private String gender;
     private double productRating;
@@ -75,6 +76,21 @@ public class Product extends ParseObject implements Parcelable {
 
         return this.productPostedBy;
     }
+
+    public void setProductBoughtBy(User user) {
+        this.productBoughtBy = user;
+        put("productBoughtBy", user);
+    }
+
+    public User getProductBoughtBy() {
+
+        if (this.productBoughtBy == null) {
+            this.productBoughtBy = (User) getParseObject("productBoughtBy");
+        }
+
+        return this.productBoughtBy;
+    }
+
 
     public int getNumberOfReviews() {
 
@@ -240,7 +256,11 @@ public class Product extends ParseObject implements Parcelable {
     }
 
     public List<String> getPhotos() {
-        return photos;
+
+        if(this.photos == null){
+            this.photos = getList("photos");
+        }
+        return this.photos;
     }
 
     @Override
@@ -260,6 +280,7 @@ public class Product extends ParseObject implements Parcelable {
         dest.writeStringList(getPhotos());
         dest.writeParcelable(getAddress(), 0);
         dest.writeParcelable(getProductPostedBy() , 0);
+        dest.writeParcelable(getProductBoughtBy() , 0);
         dest.writeDouble(getProductRating());
         dest.writeInt(getNumberOfFavorites());
         dest.writeInt(getNumberOfViews());
@@ -278,6 +299,7 @@ public class Product extends ParseObject implements Parcelable {
         this.photos = in.createStringArrayList();
         this.address = in.readParcelable(Address.class.getClassLoader());
         this.productPostedBy = in.readParcelable(User.class.getClassLoader());
+        this.productBoughtBy = in.readParcelable(User.class.getClassLoader());
         this.productRating = in.readDouble();
         this.numberOfFavorites = in.readInt();
         this.numberOfViews = in.readInt();
@@ -314,6 +336,7 @@ public class Product extends ParseObject implements Parcelable {
             query.whereGreaterThan("createdAt", date);
         }
         query.include("productPostedBy");
+        query.include("productBoughtBy");
         query.include("address");
         query.findInBackground(productsLoadedBlock);
     }

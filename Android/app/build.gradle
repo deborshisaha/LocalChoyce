@@ -122,4 +122,8 @@ dependencies {
     /* discrete seekbar */
     compile 'org.adw.library:discrete-seekbar:1.0.1'
 
+    //View pager with PagerSlidingTabStrip
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+
+
 }

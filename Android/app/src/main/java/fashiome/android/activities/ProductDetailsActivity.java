@@ -1,5 +1,6 @@
 package fashiome.android.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
@@ -33,6 +34,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.FunctionCallback;
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
@@ -44,6 +46,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -73,6 +76,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     private boolean isLiked = false;
     private int totalAmount = 0;
     private int MY_SCAN_REQUEST_CODE = 100; // arbitrary int
+
+    User currentUser;
+    ProgressDialog pd;
 
     @Bind(R.id.tvProductTitle)
     TextView mProductTitle;
@@ -413,17 +419,53 @@ instead of showing the old activity */
             }
             // do something with resultDisplayStr, maybe display it in a textView
             // resultTextView.setText(resultDisplayStr);
-            Toast.makeText(ProductDetailsActivity.this, "Congratulations!! Payment done", Toast.LENGTH_LONG).show();
+            //Toast.makeText(ProductDetailsActivity.this, "Congratulations!! Payment done", Toast.LENGTH_LONG).show();
 
             // TODO - 1 this is currently not working. I want to send back the rented product back to the HomeActivity or
             // map activity but its a fragment ProductsRecyclerViewFragment
+            // add the bought item to the order table
+            pd = new ProgressDialog(ProductDetailsActivity.this);
+            pd.setMessage("Completing your purchase ...");
+            pd.isIndeterminate();
+            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pd.show();
 
+            getUserAndSaveProduct();
+/*
             Intent resultIntent  = new Intent();
             resultIntent.putExtra("product", mProduct);
             setResult(RESULT_OK, resultIntent);
-            finish();
+*/
         }
         // else handle other activity results
+    }
+
+    public void saveBoughtProductDetailsToParse (final User user){
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Product");
+        query.setLimit(20);
+        query.include("productPostedBy");
+        query.include("productBoughtBy");
+        query.include("address");
+        // Retrieve the object by id
+        query.getInBackground(mProduct.getObjectId(), new GetCallback<ParseObject>() {
+            public void done(ParseObject product, ParseException e) {
+                if (e == null) {
+
+                    product.put("productBoughtBy", user);
+                    product.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            Log.i("info", "Successfully updated the bought item");
+                            pd.setMessage("Congratulations!");
+                            pd.dismiss();
+                            finish();
+                        }
+
+                    });
+                }
+            }
+        });
     }
 
     public void getProductLocationAddress() {
@@ -435,7 +477,7 @@ instead of showing the old activity */
             List<Address> addresses = geocoder.getFromLocation(mProduct.getAddress().getLatitude(),
                     mProduct.getAddress().getLongitude(), 1);
 
-            if(addresses != null) {
+            if(addresses != null && addresses.size() > 0) {
 
                 Address fetchedAddress = addresses.get(0);
                 StringBuilder strAddress = new StringBuilder();
@@ -460,4 +502,27 @@ instead of showing the old activity */
             Toast.makeText(getApplicationContext(),"Could not get address..!", Toast.LENGTH_LONG).show();
         }
     }
+
+    public void getUserAndSaveProduct(){
+
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereEqualTo("objectId", ParseUser.getCurrentUser().getObjectId());
+        query.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+                    Log.i("info", " user found");
+                    //ParseUser u = objects.get(0);
+                    currentUser = (User) objects.get(0);
+                    saveBoughtProductDetailsToParse(currentUser);
+                    // The query was successful.
+                } else {
+                    currentUser = null;
+                    Toast.makeText(ProductDetailsActivity.this, "Sorry couldn't complete the purchase", Toast.LENGTH_LONG).show();
+                    finish();
+                    // Something went wrong.
+                }
+            }
+        });
+    }
+
 }

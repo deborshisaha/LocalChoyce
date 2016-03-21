@@ -175,19 +175,4 @@ public class ProductsRecyclerViewFragment extends Fragment {
         }, 1000);
     }
 
-    // TODO - 1 this is currently not working. I want to receive back the rented product
-    // look in ProductDetailsActivity
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        Log.i("info","Product bought");
-
-        if (resultCode == getActivity().RESULT_OK) {
-
-            Product p = data.getParcelableExtra("product");
-            Log.i("info", "got the bought product Pid" + p.getObjectId());
-
-        }
-    }
-
 }
