@@ -19,6 +19,7 @@ import java.util.List;
 public class Product extends ParseObject implements Parcelable {
 
     public static final String PRODUCT_KEY = "fashiome.product";
+    public static final String PRODUCT_ID = "fashiome.product.id";
 
     private String productDescription;
     private String productName;
@@ -316,6 +317,16 @@ public class Product extends ParseObject implements Parcelable {
         query.include("productPostedBy");
         query.include("address");
         query.findInBackground(productsLoadedBlock);
+    }
+
+    public static void fetchProductWithId (String idString, FindCallback<Product> productsLoadedBlock) {
+
+        ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
+        query.whereEqualTo("objectId", idString);
+        query.include("productPostedBy");
+        query.include("address");
+        query.findInBackground(productsLoadedBlock);
+
     }
 
 }

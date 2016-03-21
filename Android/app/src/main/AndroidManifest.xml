@@ -81,64 +81,66 @@
 
         <!-- !!!!!!!! Activities !!!!!!! -->
         <activity
+            android:screenOrientation="portrait"
             android:name="io.card.payment.CardIOActivity"
             android:configChanges="keyboardHidden|orientation"/>
-        <activity android:name="io.card.payment.DataEntryActivity"/>
+
+        <activity android:name="io.card.payment.DataEntryActivity" android:screenOrientation="portrait" />
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <activity android:name=".activities.PaymentActivity"/>
+
+        <activity android:name=".activities.PaymentActivity" android:screenOrientation="portrait" />
+
         <activity
             android:name=".activities.MapListActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
         <activity
             android:name=".activities.ProductFormActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".activities.ProductDetailsActivity"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name="com.desmond.squarecamera.CameraActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <uses-library
-            android:name="com.google.android.maps"
-            android:required="true"/>
-
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBWmsGrhbcnPejDp0HfLdjliL8Tse9cprs"/>
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
-
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activities.SignUpActivity"
             android:label="@string/title_activity_sign_up"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" android:screenOrientation="portrait" />
 
-        <activity android:name=".activities.MapFullScreenActivity"/>
+        <activity android:name=".activities.MapFullScreenActivity" android:screenOrientation="portrait"/>
 
-        <activity android:name=".activities.GoogleDriveFilesListActivity"/>
+        <activity android:name=".activities.GoogleDriveFilesListActivity" android:screenOrientation="portrait"/>
 
         <activity
             android:name=".activities.UserProfileActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".activities.EntryActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
@@ -150,26 +152,32 @@
         <activity
             android:name=".activities.BookingDetailsActivity"
             android:label="@string/title_activity_booking_details"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
             android:name=".activities.ProductFilterSettingsActivity"
             android:label="@string/title_activity_product_filter_settings"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
         <!--HomeActivity-->
         <activity
             android:name=".activities.UserDetailsActivity"
             android:label="@string/title_activity_user_details"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name= ".activities.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name= ".activities.IntroAndLoginActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- No Activities below this -->
@@ -183,13 +191,24 @@
             android:name="com.parse.CLIENT_KEY"
             android:value="@string/parse_client_key"/>
 
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBWmsGrhbcnPejDp0HfLdjliL8Tse9cprs"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+
+        <uses-library
+            android:name="com.google.android.maps"
+            android:required="true"/>
+
         <!-- !!!!!!!! Services !!!!!!! -->
         <service android:name="com.parse.PushService"/>
         <!-- No services below this line -->
 
         <!-- !!!!!!!! Receivers !!!!!!! -->
         <receiver
-            android:name="com.parse.ParsePushBroadcastReceiver"
+            android:name="fashiome.android.listeners.RemoteNotificationReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE"/>
