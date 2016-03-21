@@ -23,6 +23,50 @@
             app:expandedTitleMarginStart="38dp"
             app:expandedTitleMarginEnd="54dp">
 
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"
+                    android:id="@+id/rivProfilePicture"
+
+                    app:riv_corner_radius="30dp"
+                    app:riv_border_color="#F5F5F5"
+                    app:riv_border_width="2dp"
+                    app:riv_mutate_background="false"
+                    android:layout_centerHorizontal="true"/>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_below="@+id/rivProfilePicture">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvUserFullname"
+                        android:textSize="20sp"
+                        android:textColor="@color/squarecamera__white"
+                        android:text="Deepak Barge"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvUserCity"
+                        android:textSize="14sp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/tvUserFullname"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
             <ImageView
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
@@ -42,7 +86,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_user_details"/>
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        layout="@layout/content_user_details"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

@@ -21,6 +21,7 @@ import com.parse.ParseUser;
 import fashiome.android.R;
 import fashiome.android.fragments.ProductsRecyclerViewFragment;
 import fashiome.android.models.Product;
+import fashiome.android.models.User;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -70,7 +71,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(ParseUser.getCurrentUser() != null) {
-                    Intent i = new Intent(HomeActivity.this, UserProfileActivity.class);
+                    //Intent i = new Intent(HomeActivity.this, UserProfileActivity.class);
+                    Intent i = new Intent(HomeActivity.this, UserDetailsActivity.class);
+                    i.putExtra("objectId", ParseUser.getCurrentUser().getObjectId());
                     startActivity(i);
                 } else {
                     Intent i = new Intent(HomeActivity.this, IntroAndLoginActivity.class);
@@ -102,6 +105,7 @@ public class HomeActivity extends AppCompatActivity {
                     Log.i("info"," Pid"+p.getObjectId());
                     ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
                     query.include("productPostedBy");
+                    query.include("productBoughtBy");
                     query.include("address");
                     query.getInBackground(p.getObjectId(), new GetCallback<Product>() {
                         public void done(Product product, ParseException e) {
