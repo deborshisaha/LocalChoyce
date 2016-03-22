@@ -52,6 +52,7 @@ import fashiome.android.R;
 import fashiome.android.adapters.ProductPagerAdapter;
 import fashiome.android.fragments.ProductRentDetailsFragment;
 import fashiome.android.managers.Push;
+import fashiome.android.models.Conversation;
 import fashiome.android.models.Product;
 import fashiome.android.models.User;
 import fashiome.android.utils.ImageURLGenerator;
@@ -153,7 +154,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         });
     }
 
-    private void populateViewWithProduct (Product product) {
+    private void populateViewWithProduct (final Product product) {
         user = product.getProductPostedBy();
 
         if (user != null) {
@@ -170,8 +171,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         mImageViewMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("HELLO", "OnClickListener");
                 Intent intent = new Intent(ProductDetailsActivity.this, ChatRoomActivity.class);
+                intent.putExtra(Conversation.CONVERSATION_IDENTIFIER, Conversation.getIdentifierFromUserId(product.getProductPostedBy().getObjectId(), ParseUser.getCurrentUser().getObjectId()));
                 startActivity(intent);
             }
         });
@@ -296,8 +297,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-
-        //shareIntent.putExtra(Intent.EXTRA_TEXT, wvView.getUrl());
 
         miShareAction.setShareIntent(shareIntent);
 

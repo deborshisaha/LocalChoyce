@@ -56,5 +56,7 @@
 
     <string name="introTitle1">Special occasions</string>
     <string name="introDesc1">Awe everyone without spending huge</string>
+    <string name="send">Send</string>
+    <string name="message_hint">Type your message</string>
 
 </resources>
