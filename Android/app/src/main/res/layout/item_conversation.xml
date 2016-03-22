@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:minHeight="64dp"
+    android:layout_marginLeft="16dp"
+    android:paddingTop="8dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/rivProfilePicture"
+        android:layout_alignParentLeft="true"
+        android:scaleType="centerCrop"
+
+        app:riv_corner_radius="24dp"
+        app:riv_border_color="@color/colorPrimary"
+        app:riv_border_width="2dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/metadata_container"
+        android:layout_toRightOf="@+id/rivProfilePicture">
+
+        <TextView style="@style/RegularMedium"
+            android:layout_marginLeft="4dp"
+            android:padding="8dp"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/colorPrimaryText"
+            android:id="@+id/tvUserFullname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView style="@style/RegularLight"
+            android:padding="8dp"
+            android:layout_marginRight="8dp"
+            android:textColor="@color/colorSecondaryText"
+            android:id="@+id/tvTimeAgo"
+            android:layout_width="80dp"
+            android:text="8h ago"
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"  />
+
+    </RelativeLayout>
+
+    <TextView style="@style/RegularRegular"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="12dp"
+        android:paddingRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_me_text"
+        android:gravity="fill"
+        android:maxLines="2"
+        android:id="@+id/tvMoreText"
+        android:layout_below="@+id/metadata_container"
+        android:layout_toRightOf="@+id/rivProfilePicture"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="1dp"
+        android:background="#EAEAEA"/>
+
+</RelativeLayout>
