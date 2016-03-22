@@ -73,7 +73,7 @@
 
                             android:textAlignment="center"
                             android:layout_marginBottom="4dp"
-                            android:id="@+id/tvNumberOfLikes"/>
+                            android:id="@+id/tvNumberOfTimesRented"/>
 
                         <TextView style="@style/SmallRegular"
                             android:layout_width="wrap_content"
@@ -129,7 +129,7 @@
                             android:text="2.5K"
                             android:layout_gravity="center"
                             android:textAlignment="center"
-                            android:id="@+id/tvFavorited"/>
+                            android:id="@+id/tvNumberOfTimesFavorited"/>
 
                     </LinearLayout>
 
@@ -206,10 +206,10 @@
                     android:gravity="center_horizontal"
                     android:id="@+id/rivSellerProfile"
                     android:layout_centerHorizontal="true"
-
                     app:riv_corner_radius="40dp"
                     app:riv_border_color="@color/colorPrimary"
                     app:riv_border_width="2dp"
+                    android:onClick="sellerProfileClicked"
                     app:riv_mutate_background="false"/>
 
                 <TextView style="@style/BigRegular"
@@ -222,6 +222,16 @@
                     android:layout_below="@+id/rivSellerProfile"
                     android:layout_marginTop="8dp" />
 
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:id="@+id/llRatingBar1"
+                    android:layout_below="@id/tvSeller"
+                    android:layout_width="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content">
+
+                </LinearLayout>
+
                 <TextView style="@style/RegularLight"
                     android:layout_width="268dp"
                     android:layout_height="wrap_content"
@@ -232,7 +242,7 @@
                     android:maxLines="4"
                     android:layout_marginTop="4dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/tvSeller"  />
+                    android:layout_below="@+id/llRatingBar1"  />
 
             </RelativeLayout>
 

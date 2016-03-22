@@ -62,6 +62,18 @@ public class User extends ParseUser implements Parcelable {
         put("lastName", lastName);
     }
 
+    public String getPhoneNumber() {
+        if (this.phoneNumber == null) {
+            this.phoneNumber = getString("phoneNumber");
+        }
+        return this.phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        put("phoneNumber", phoneNumber);
+    }
+
     public String getProfilePictureURL() {
         if (this.profilePictureURL == null) {
             this.profilePictureURL = getString("profilePictureUrl");
@@ -74,11 +86,16 @@ public class User extends ParseUser implements Parcelable {
         put("profilePictureURL", profilePictureURL);
     }
 
-    public double getRating() {
-        return getDouble("rating");
+
+    public int getRating() {
+
+        //if (this.rating == 0) {
+            this.rating = getInt("rating");
+        //}
+        return this.rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(int rating) {
         this.rating = rating;
         put("rating", rating);
     }
@@ -119,9 +136,11 @@ public class User extends ParseUser implements Parcelable {
     private String firstName;
     private String lastName;
     private String profilePictureURL;
-    private double rating;
+    private int rating;
     private String email;
     private String username;
+    //private String skypeId;
+    private String phoneNumber;
 
     @Override
     public int describeContents() {
@@ -135,7 +154,8 @@ public class User extends ParseUser implements Parcelable {
         dest.writeString(this.firstName);
         dest.writeString(this.lastName);
         dest.writeString(this.profilePictureURL);
-        dest.writeDouble(this.rating);
+        dest.writeString(this.phoneNumber);
+        dest.writeInt(this.rating);
         dest.writeString(getEmail());
         dest.writeString(getUsername());
     }
@@ -146,7 +166,8 @@ public class User extends ParseUser implements Parcelable {
         this.firstName = in.readString();
         this.lastName = in.readString();
         this.profilePictureURL = in.readString();
-        this.rating = in.readDouble();
+        this.phoneNumber = in.readString();
+        this.rating = in.readInt();
         this.email = in.readString();
         this.username = in.readString();
     }

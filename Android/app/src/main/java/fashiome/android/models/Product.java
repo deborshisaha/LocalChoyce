@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -32,7 +33,7 @@ public class Product extends ParseObject implements Parcelable {
     private User productBoughtBy;
     private String productSize;
     private String gender;
-    private double productRating;
+    private int productRating;
     private int numberOfReviews;
     private int numberOfViews;
     private int numberOfFavorites;
@@ -216,15 +217,15 @@ public class Product extends ParseObject implements Parcelable {
         put("gender", mGender);
     }
 
-    public double getProductRating() {
+    public int getProductRating() {
 
-        if (this.productRating == 0) {
-            this.productRating = getDouble("productRating");
-        }
+//        if (this.productRating == 0) {
+            this.productRating = getInt("productRating");
+ //       }
         return this.productRating;
     }
 
-    public void setProductRating(float productRating) {
+    public void setProductRating(int productRating) {
         this.productRating = productRating;
         put("productRating", productRating);
     }
@@ -282,7 +283,7 @@ public class Product extends ParseObject implements Parcelable {
         dest.writeParcelable(getAddress(), 0);
         dest.writeParcelable(getProductPostedBy() , 0);
         dest.writeParcelable(getProductBoughtBy() , 0);
-        dest.writeDouble(getProductRating());
+        dest.writeInt(getProductRating());
         dest.writeInt(getNumberOfFavorites());
         dest.writeInt(getNumberOfViews());
         dest.writeInt(getNumberOfReviews());
@@ -301,7 +302,7 @@ public class Product extends ParseObject implements Parcelable {
         this.address = in.readParcelable(Address.class.getClassLoader());
         this.productPostedBy = in.readParcelable(User.class.getClassLoader());
         this.productBoughtBy = in.readParcelable(User.class.getClassLoader());
-        this.productRating = in.readDouble();
+        this.productRating = in.readInt();
         this.numberOfFavorites = in.readInt();
         this.numberOfViews = in.readInt();
         this.numberOfReviews = in.readInt();
@@ -347,9 +348,37 @@ public class Product extends ParseObject implements Parcelable {
         ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
         query.whereEqualTo("objectId", idString);
         query.include("productPostedBy");
+        query.include("productBoughtBy");
         query.include("address");
         query.findInBackground(productsLoadedBlock);
 
     }
+
+    public static void fetchProductWithSearchTerm (String term, FindCallback<Product> productsLoadedBlock) {
+
+
+        ParseQuery<Product> query1 = ParseQuery.getQuery(Product.class);
+        query1.whereContains("productName", term);
+
+        ParseQuery<Product> query2 = ParseQuery.getQuery(Product.class);
+        query2.whereContains("productDescription", term);
+
+        List<ParseQuery<Product>> queries = new ArrayList<>();
+        queries.add(query1);
+        queries.add(query2);
+
+        ParseQuery<Product> mainQuery = ParseQuery.or(queries);
+
+        //ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
+        //query.whereContains("productName", term);
+        //query.whereContains("productDescription", term);
+        mainQuery.orderByDescending("createdAt");
+        mainQuery.include("productPostedBy");
+        mainQuery.include("productBoughtBy");
+        mainQuery.include("address");
+        mainQuery.findInBackground(productsLoadedBlock);
+
+    }
+
 
 }

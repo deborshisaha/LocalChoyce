@@ -1,6 +1,9 @@
 package fashiome.android.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
@@ -17,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,6 +44,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -98,6 +103,12 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     @Bind(R.id.iBtnMessage)
     ImageView mImageViewMessage;
 
+    @Bind(R.id.tvNumberOfTimesFavorited)
+    TextView mTimesLiked;
+
+    @Bind(R.id.tvNumberOfTimesRented)
+    TextView mTimesRented;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -129,7 +140,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             return;
         }
 
-        Log.d(TAG,"mProductIDString: "+mProductIDString);
+        Log.d(TAG, "mProductIDString: " + mProductIDString);
 
         Product.fetchProductWithId(mProductIDString, new FindCallback<Product>() {
             @Override
@@ -164,6 +175,58 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
                 startActivity(intent);
             }
         });
+        mTimesLiked.setText(String.valueOf(new Random().nextInt(1000) + 10));
+        mTimesRented.setText(String.valueOf(new Random().nextInt(100) + 10));
+
+        int numberOfUserRatings = product.getProductPostedBy().getRating();
+        int numberOfProductRatings = product.getProductRating();
+        Log.i("info"," user ratings "+String.valueOf(numberOfUserRatings));
+        Log.i("info"," product ratings "+String.valueOf(numberOfProductRatings));
+
+        LinearLayout mLL1 = (LinearLayout)findViewById(R.id.llRatingBar1);
+        int i;
+        int temp = new Random().nextInt(4) + 1;
+        for(i = 0;i<temp;i++){
+
+            ImageView iv = new ImageView(this);
+            iv.setImageResource(R.drawable.ic_star_filled);
+            android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(48,48);
+            iv.setLayoutParams(layoutParams);
+            mLL1.addView(iv);
+        }
+
+        if(i < 5){
+            for( ;i<5;i++){
+                ImageView iv = new ImageView(this);
+                iv.setImageResource(R.drawable.ic_star_empty);
+                android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(48,48);
+                iv.setLayoutParams(layoutParams);
+                mLL1.addView(iv);
+            }
+
+        }
+
+        LinearLayout mLL2 = (LinearLayout)findViewById(R.id.llRatingBar2);
+        temp = new Random().nextInt(4) + 1;
+        for(i = 0;i<temp;i++){
+
+            ImageView iv = new ImageView(this);
+            iv.setImageResource(R.drawable.ic_star_filled);
+            android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(48,48);
+            iv.setLayoutParams(layoutParams);
+            mLL2.addView(iv);
+        }
+
+        if(i < 5){
+            for( ;i<5;i++){
+                ImageView iv = new ImageView(this);
+                iv.setImageResource(R.drawable.ic_star_empty);
+                android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(48,48);
+                iv.setLayoutParams(layoutParams);
+                mLL2.addView(iv);
+            }
+
+        }
 
         setViewPagerItemsWithAdapter(product);
         setUiPageViewController();
@@ -271,7 +334,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
                         parseCallForAddLike(mProduct);
                     }
                 } else {
-                    startActivity(new Intent(ProductDetailsActivity.this, LoginActivity.class));
+                    Intent intent = new Intent(ProductDetailsActivity.this, IntroAndLoginActivity.class);
+                    intent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, true);
+                    startActivity(intent);
                 }
                 break;
 
@@ -284,12 +349,19 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
     public void parseCallForAddLike(final Product product){
 
+        final ProgressDialog pd = new ProgressDialog(ProductDetailsActivity.this);
+        pd.isIndeterminate();
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.show();
+
         ParseObject addLike = new ParseObject("UserProduct");
         addLike.put("userId", ParseUser.getCurrentUser());
         addLike.put("productId", product);
         addLike.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
+
+                pd.dismiss();
 
                 if (e == null) {
                     Log.i("info", "Liked successfully");
@@ -312,6 +384,10 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
     public void parseCallForRemoveLike(Product product){
 
+        final ProgressDialog pd = new ProgressDialog(ProductDetailsActivity.this);
+        pd.isIndeterminate();
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.show();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserProduct");
         query.whereEqualTo("userId", ParseUser.getCurrentUser());
@@ -328,6 +404,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
                             del.deleteInBackground(new DeleteCallback() {
                                 @Override
                                 public void done(ParseException e) {
+                                    pd.dismiss();
                                     if (e == null) {
                                         Log.i("info", "Removed like successfully");
                                         isLiked = false;
@@ -373,7 +450,13 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         if(totalAmount <= 0) {
             showEditDialog(mProduct);
         } else {
-            onScanPress(view);
+            if(ParseUser.getCurrentUser()!= null) {
+                onScanPress(view);
+            } else {
+                Intent intent = new Intent(ProductDetailsActivity.this, IntroAndLoginActivity.class);
+                intent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, true);
+                startActivityForResult(intent, 300);
+            }
         }
     }
 
@@ -445,6 +528,7 @@ instead of showing the old activity */
             else {
                 resultDisplayStr = "Scan was canceled.";
             }
+
             // do something with resultDisplayStr, maybe display it in a textView
             // resultTextView.setText(resultDisplayStr);
             //Toast.makeText(ProductDetailsActivity.this, "Congratulations!! Payment done", Toast.LENGTH_LONG).show();
@@ -459,11 +543,15 @@ instead of showing the old activity */
             pd.show();
 
             getUserAndSaveProduct();
-/*
-            Intent resultIntent  = new Intent();
-            resultIntent.putExtra("product", mProduct);
-            setResult(RESULT_OK, resultIntent);
-*/
+
+        }
+        if(requestCode == 300){
+            if (ParseUser.getCurrentUser() != null) {
+                //Intent intent = new Intent(ProductDetailsActivity.this, ProductFormActivity.class);
+                //startActivityForResult(intent, 100);
+                processPayment(null);
+            }
+
         }
         // else handle other activity results
     }
@@ -485,7 +573,7 @@ instead of showing the old activity */
                         @Override
                         public void done(ParseException e) {
                             Log.i("info", "Successfully updated the bought item");
-                            pd.setMessage("Congratulations!");
+                            pd.setMessage("Purchase done!");
                             pd.dismiss();
 
                             try {
@@ -494,7 +582,9 @@ instead of showing the old activity */
                                 e1.printStackTrace();
                             }
 
-                            finish();
+                            showPurchaseCompleteDialog();
+
+                            //finish();
                         }
 
                     });
@@ -507,35 +597,38 @@ instead of showing the old activity */
 
         Geocoder geocoder= new Geocoder(this, Locale.ENGLISH);
 
-        try {
 
-            List<Address> addresses = geocoder.getFromLocation(product.getAddress().getLatitude(),
-                    product.getAddress().getLongitude(), 1);
+        //if(product.getAddress() != null) {
+            try {
 
-            if(addresses != null && addresses.size() > 0) {
+                Log.i("info", "Latitude : " + product.getAddress().getLatitude());
+                Log.i("info", "Longitude : " + product.getAddress().getLongitude());
 
-                Address fetchedAddress = addresses.get(0);
-                StringBuilder strAddress = new StringBuilder();
+                List<Address> addresses = geocoder.getFromLocation(product.getAddress().getLatitude(),
+                        product.getAddress().getLongitude(), 1);
 
-                for(int i=0; i<fetchedAddress.getMaxAddressLineIndex(); i++) {
-                    strAddress.append(fetchedAddress.getAddressLine(i)).append("\n");
-                }
+                if (addresses != null && addresses.size() > 0) {
 
-                Log.i("I am at: ", strAddress.toString());
-                if(strAddress.length()>0 && !strAddress.equals("")){
-                    mAddress.setText(strAddress.toString());
-                }
+                    Address fetchedAddress = addresses.get(0);
+                    StringBuilder strAddress = new StringBuilder();
 
+                    for (int i = 0; i < fetchedAddress.getMaxAddressLineIndex(); i++) {
+                        strAddress.append(fetchedAddress.getAddressLine(i)).append("\n");
+                    }
+
+                    Log.i("I am at: ", strAddress.toString());
+                    if (strAddress.length() > 0 && !strAddress.equals("")) {
+                        mAddress.setText(strAddress.toString());
+                    }
+
+                } else
+                    Log.i("info", "No location found..!");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Could not get address..!", Toast.LENGTH_LONG).show();
             }
-
-            else
-                Log.i("info","No location found..!");
-
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(),"Could not get address..!", Toast.LENGTH_LONG).show();
-        }
+        //}
     }
 
     public void getUserAndSaveProduct(){
@@ -553,6 +646,7 @@ instead of showing the old activity */
                 } else {
                     currentUser = null;
                     Toast.makeText(ProductDetailsActivity.this, "Sorry couldn't complete the purchase", Toast.LENGTH_LONG).show();
+                    pd.dismiss();
                     finish();
                     // Something went wrong.
                 }
@@ -560,4 +654,33 @@ instead of showing the old activity */
         });
     }
 
+    public void showPurchaseCompleteDialog() {
+
+        String message = "Congratulations!";
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ProductDetailsActivity.this);
+
+        alertDialogBuilder
+                .setTitle(message)
+                .setCancelable(true)
+                .setIcon(R.drawable.ic_purchase_complete)
+                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        finish();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
+    public void sellerProfileClicked(View view) {
+        Intent i = new Intent(ProductDetailsActivity.this, UserDetailsActivity.class);
+        i.putExtra("objectId", mProduct.getProductPostedBy().getObjectId());
+        startActivity(i);
+
+    }
 }

@@ -1,5 +1,6 @@
 package fashiome.android.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -129,9 +130,16 @@ public class ProductsRecyclerViewFragment extends Fragment {
 
     public void getAllProductsFromParse(final int operation, Date date){
 
+        final ProgressDialog pd = new ProgressDialog(getContext());
+                pd.isIndeterminate();
+                pd.setMessage("Fetching your styles...");
+                pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                pd.show();
+
         Product.fetchProducts(date, new FindCallback<Product>() {
             @Override
             public void done(List<Product> products, ParseException e) {
+                pd.dismiss();
                 swipeContainer.setRefreshing(false);
                 if (e == null && products.size() > 0) {
                     Log.d("DEBUG", "Retrieved " + products.size() + " products");
@@ -160,6 +168,21 @@ public class ProductsRecyclerViewFragment extends Fragment {
                 }
             }
         });
+
+    }
+
+
+    public void addNewProductsToList(ArrayList<Product> products){
+        mProductsAdapter.removeAll();
+        mProductsAdapter.notifyDataSetChanged();
+        mProductsAdapter.addAll(0, products);
+        mProductsAdapter.notifyItemRangeInserted(0, products.size());
+        mProductRecyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mProductRecyclerView.scrollToPosition(0);
+            }
+        }, 1000);
 
     }
 

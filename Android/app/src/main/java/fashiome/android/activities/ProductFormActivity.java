@@ -42,6 +42,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -230,6 +231,10 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
         product.setProductSize(size.getSelectedItem().toString());
         product.setGender(gender.getSelectedItem().toString());
         product.setPhotos(getPhotoCloudinaryPublicIdList());
+        product.setProductRating(new Random().nextInt(4) + 1);
+        product.setNumberOfFavorites(new Random().nextInt(500) + 100);
+        product.setNumberOfReviews(new Random().nextInt(20) + 1);
+        product.setNumberOfViews(new Random().nextInt(1000) + 100);
         product.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
