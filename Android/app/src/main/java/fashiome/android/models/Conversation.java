@@ -9,7 +9,7 @@ public class Conversation  extends ParseObject {
     public static String getIdentifierFromUserId(String userObjectIdOne, String userObjectIdTwo) {
         String identifier = null;
         if (userObjectIdOne.charAt(0) <= userObjectIdTwo.charAt(0)) {
-            identifier = userObjectIdOne+'_'+userObjectIdTwo;
+            identifier = userObjectIdOne+SPLITER+userObjectIdTwo;
         } else {
             identifier = userObjectIdTwo+SPLITER+ userObjectIdOne;
         }
