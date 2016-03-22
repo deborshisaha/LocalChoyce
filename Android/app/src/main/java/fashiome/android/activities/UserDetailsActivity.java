@@ -2,6 +2,7 @@ package fashiome.android.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -10,6 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -23,6 +27,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,6 +55,9 @@ public class UserDetailsActivity extends AppCompatActivity {
 
     String URLString = null;
 
+    CollapsingToolbarLayout cl;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +70,8 @@ public class UserDetailsActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        cl = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +90,30 @@ public class UserDetailsActivity extends AppCompatActivity {
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         viewPager = (ViewPager) findViewById(R.id.viewpager1);
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+
+        LinearLayout mLL1 = (LinearLayout)findViewById(R.id.llRatingBar1);
+        int i;
+        int temp = new Random().nextInt(4) + 1;
+        for(i = 0;i<temp;i++){
+
+            ImageView iv = new ImageView(this);
+            iv.setImageResource(R.drawable.ic_star_filled);
+            android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(48,48);
+            iv.setLayoutParams(layoutParams);
+            mLL1.addView(iv);
+        }
+
+        if(i < 5){
+            for( ;i<5;i++){
+                ImageView iv = new ImageView(this);
+                iv.setImageResource(R.drawable.ic_star_empty);
+                android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(48,48);
+                iv.setLayoutParams(layoutParams);
+                mLL1.addView(iv);
+            }
+
+        }
+
 
     }
 
@@ -106,6 +140,8 @@ public class UserDetailsActivity extends AppCompatActivity {
                     user = (User) objects.get(0);
                     Log.i("info", u.getString("profilePictureUrl"));
                     Log.i("info", user.getProfilePictureURL());
+                    //cl.setTitle(user.getUsername());
+                    //getSupportActionBar().setTitle(user.getUsername());
                     setupHeader();
                     setupViewPagerTabs();
                     // The query was successful.
