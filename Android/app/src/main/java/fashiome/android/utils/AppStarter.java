@@ -14,6 +14,7 @@ import com.parse.ParseUser;
 import com.parse.PushService;
 
 import fashiome.android.models.Address;
+import fashiome.android.models.Message;
 import fashiome.android.models.Product;
 import fashiome.android.models.User;
 
@@ -31,6 +32,7 @@ public class AppStarter extends Application {
         ParseObject.registerSubclass(Product.class);
         ParseObject.registerSubclass(User.class);
         ParseObject.registerSubclass(Address.class);
+        ParseObject.registerSubclass(Message.class);
 
         Parse.initialize(this);
 
