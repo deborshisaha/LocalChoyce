@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import fashiome.android.R;
 import fashiome.android.fragments.IntroAndLoginFragment;
@@ -143,6 +144,9 @@ public class IntroAndLoginActivity extends AppIntro {
         parseUser.setUsername(user.getUsername());
         parseUser.setEmail(user.getEmail());
         parseUser.put("profilePictureUrl", user.getProfilePictureURL());
+        parseUser.setRating(new Random().nextInt(4) + 1);
+        parseUser.setPhoneNumber("4802088619");
+        //parseUser.put("skypeId","");
 
         //Finally save all the user details
         parseUser.saveInBackground(new SaveCallback() {

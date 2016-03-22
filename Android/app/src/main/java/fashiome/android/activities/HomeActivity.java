@@ -1,9 +1,14 @@
 package fashiome.android.activities;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -13,20 +18,29 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import fashiome.android.R;
 import fashiome.android.fragments.ProductsRecyclerViewFragment;
 import fashiome.android.models.Product;
 import fashiome.android.models.User;
+import fashiome.android.utils.Constants;
 
 public class HomeActivity extends AppCompatActivity {
 
     ImageView mProfileLogo;
     ProductsRecyclerViewFragment mProductsFragment;
+    boolean isAllProducts = true;
+    MenuItem searchItem;
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +75,13 @@ public class HomeActivity extends AppCompatActivity {
 
     public void setToolBar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        View logo = getLayoutInflater().inflate(R.layout.home_activity_toolbar, null);
-        toolbar.addView(logo);
+        //View logo = getLayoutInflater().inflate(R.layout.home_activity_toolbar, null);
+        //toolbar.addView(logo);
         setSupportActionBar(toolbar);
 
+
         getSupportActionBar().setIcon(R.drawable.ic_app_logo);
+/*
         mProfileLogo = (RoundedImageView) findViewById(R.id.ivProfileLogo);
         mProfileLogo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +104,7 @@ public class HomeActivity extends AppCompatActivity {
             String profileUrl = ParseUser.getCurrentUser().get("profilePictureUrl").toString();
             Glide.with(HomeActivity.this).load(profileUrl).into(mProfileLogo);
         }
+*/
 
     }
 
@@ -143,7 +160,45 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-       return true;
+
+            getMenuInflater().inflate(R.menu.menu_home_activity, menu);
+
+            searchItem = menu.findItem(R.id.action_search);
+
+            searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+
+                    Log.i("info", "query " + query);
+
+                    getProductsWithSearchTerm(query);
+                    return true;
+                    //return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+
+                    Log.i("info", "query " + newText);
+
+                    if((newText.length() == 0) && (!isAllProducts)) {
+                        //searchView.setQueryHint("Search ...");
+                        mProductsFragment.getAllProductsFromParse(Constants.NEW_SEARCH_OPERATION, null);
+                        //ideally should be set true in the getall callback success
+                        isAllProducts = true;
+                        return true;
+                    }
+                    //getProductsWithSearchTerm(newText);
+
+                    //return true;
+                    return false;
+                }
+            });
+
+            return super.onCreateOptionsMenu(menu);
+//            return true;
     }
 
    @Override
@@ -163,6 +218,71 @@ public class HomeActivity extends AppCompatActivity {
         Intent i = new Intent(HomeActivity.this,MapFullScreenActivity.class);
         i.putParcelableArrayListExtra("products", mProductsFragment.getProductsAdapter().getAll());
         startActivity(i);
+    }
+
+    public void getProductsWithSearchTerm(final String term){
+
+        final ProgressDialog pd = new ProgressDialog(HomeActivity.this);
+        pd.isIndeterminate();
+        pd.setMessage("Fetching your styles for " + term);
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.show();
+
+        Product.fetchProductWithSearchTerm(term, new FindCallback<Product>() {
+
+            @Override
+            public void done(List<Product> products, ParseException e) {
+                pd.dismiss();
+                isAllProducts = false;
+                //swipeContainer.setRefreshing(false);
+                if (e == null && products.size() > 0) {
+                    //searchView.setQueryHint(String.valueOf(products.size())+ " results found");
+                    Log.d("DEBUG", "Retrieved searched products " + products.size() + " products");
+                    //lastSeen = products.get(0).getCreatedAt();
+                    //Log.i("Last seen date: ", lastSeen.toString());
+                    for (Product p : products) {
+                        Log.i("info", "Productname: " + p.getProductName());
+                        Log.i("info", "username : " + String.valueOf(p.getProductPostedBy().getUsername()));
+                        Log.i("info", "Latitude : " + p.getAddress().getLatitude());
+                        Log.i("info", "Longitude : " + p.getAddress().getLongitude());
+                    }
+
+                    mProductsFragment.addNewProductsToList((ArrayList<Product>) products);
+                    //mProductsAdapter.updateItems(operation, products);
+
+                } else {
+                    if (e == null) {
+                        Log.i("info", "no results found");
+                        //searchView.setQueryHint("No results");
+                        //showNoResultsDialog(term);
+                    } else {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }
+
+    public void showNoResultsDialog(String term) {
+
+        String message = "No results for "+term;
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(HomeActivity.this);
+
+        alertDialogBuilder
+                .setTitle(message)
+                .setCancelable(false)
+                .setIcon(R.drawable.ic_info)
+                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
 }
