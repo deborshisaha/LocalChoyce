@@ -33,4 +33,20 @@ public class Push {
         push.setData(data);
         push.sendInBackground();
     }
+
+    public static void userRentedProduct(Product product) throws JSONException {
+
+        ParseQuery pushQuery = ParseInstallation.getQuery();
+        pushQuery.whereEqualTo("user", product.getProductPostedBy());
+
+        User currentUser = (User) ParseUser.getCurrentUser();
+        String message = currentUser.getUsername() + " rented "+ product.getProductName();
+
+        JSONObject data = new JSONObject("{\"alert\":\""+message+"\", \"data\":{\""+Product.PRODUCT_ID+"\":\""+ product.getObjectId() +"\"}}");
+
+        ParsePush push = new ParsePush();
+        push.setQuery(pushQuery);
+        push.setData(data);
+        push.sendInBackground();
+    }
 }
