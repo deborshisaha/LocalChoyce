@@ -20,6 +20,9 @@ import java.util.Iterator;
 
 import fashiome.android.R;
 import fashiome.android.activities.ProductDetailsActivity;
+import fashiome.android.activities.UserDetailsActivity;
+import fashiome.android.activities.UserProfileActivity;
+import fashiome.android.managers.Push;
 import fashiome.android.models.Product;
 
 /**
@@ -49,7 +52,6 @@ public class RemoteNotificationReceiver extends ParsePushBroadcastReceiver {
             JSONObject json = new JSONObject(intent.getExtras().getString("com.parse.Data"));
 
             if (json.optJSONObject("data") != null) {
-                Log.d(TAG, "has data");
                 JSONObject JSONDataObject = json.getJSONObject("data");
                 handleOnPushOpenNotification(JSONDataObject, context, intent);
             }
@@ -59,9 +61,7 @@ public class RemoteNotificationReceiver extends ParsePushBroadcastReceiver {
         }
     }
 
-    private void handleOnPushOpenNotification (JSONObject jsonObject, Context context, Intent intent) throws JSONException{
-
-        Log.d(TAG, "handleOnPushOpenNotification");
+    private void handleOnPushOpenNotification (JSONObject jsonObject, Context context, Intent intent) throws JSONException {
 
         String productID = null;
         String chatWindowID = null;
@@ -69,10 +69,17 @@ public class RemoteNotificationReceiver extends ParsePushBroadcastReceiver {
         if (jsonObject.optString(Product.PRODUCT_ID) != null) {
             productID = jsonObject.getString(Product.PRODUCT_ID);
 
-            Intent productDetailsLauncherIntent = new Intent(context, ProductDetailsActivity.class);
-            productDetailsLauncherIntent.putExtra(Product.PRODUCT_ID, productID);
-            productDetailsLauncherIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(productDetailsLauncherIntent);
+            if (jsonObject.getString(Push.PUSH_TYPE).equals(Push.PUSH_TYPE_LIKE)) {
+                Intent productDetailsLauncherIntent = new Intent(context, ProductDetailsActivity.class);
+                productDetailsLauncherIntent.putExtra(Product.PRODUCT_ID, productID);
+                productDetailsLauncherIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(productDetailsLauncherIntent);
+            } else if (jsonObject.getString(Push.PUSH_TYPE).equals(Push.PUSH_TYPE_RENT)) {
+                Intent userDetailsLauncherIntent = new Intent(context, UserDetailsActivity.class);
+                userDetailsLauncherIntent.putExtra(Product.PRODUCT_ID, productID);
+                userDetailsLauncherIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(userDetailsLauncherIntent);
+            }
 
         } else if (jsonObject.optString("CHAT") != null) {
             chatWindowID = jsonObject.getString("CHAT");

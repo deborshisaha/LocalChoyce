@@ -191,11 +191,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             String productImageURLString = ImageURLGenerator.getInstance(this.mContext).URLForImageWithCloudinaryPublicId(product.getProductPrimaryImageCloudinaryPublicId(), Utils.getScreenWidthInDp(this.mContext));
             String profileImageURLString = null;
 
-            Log.d("DEBUG", productImageURLString);
-
-            Log.i("info","adapter price: "+String.valueOf(product.getPrice()));
-
-
             if (productImageURLString != null || productImageURLString.length() > 0) {
                 Glide.with(this.mContext).load(productImageURLString).into(rivProductPrimaryImage);
             }
@@ -230,23 +225,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     Intent i = new Intent(mContext, UserDetailsActivity.class);
                     i.putExtra("objectId", mProducts.get(getLayoutPosition()).getProductPostedBy().getObjectId());
                     mContext.startActivity(i);
-                    //((Activity)context).overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                     break;
-
-/*
-                default:
-                    Product product = mProducts.get(getLayoutPosition());
-
-                    Log.i("info","list item clicked");
-                    Log.i("info", "url before: " + String.valueOf(product.getProductPostedBy().getProfilePictureURL()));
-
-                    Intent intent = new Intent(context, ProductDetailsActivity.class);
-                    intent.putExtra("product", product);
-
-                    context.startActivity(intent);
-                    break;
-*/
-
             }
         }
 

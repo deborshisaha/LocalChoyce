@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,22 +25,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cloudinary.utils.StringUtils;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
-import com.parse.FunctionCallback;
 import com.parse.GetCallback;
-import com.parse.Parse;
-import com.parse.ParseCloud;
 import com.parse.ParseException;
-import com.parse.ParseInstallation;
 import com.parse.ParseObject;
-import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -49,8 +38,6 @@ import com.parse.SaveCallback;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -107,6 +94,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
     @Bind(R.id.bRent)
     Button mRent;
+
+    @Bind(R.id.iBtnMessage)
+    ImageView mImageViewMessage;
 
     @Override
     protected void onResume() {
@@ -166,6 +156,14 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         mProductTitle.setText(product.getProductName());
         mSeller.setText(product.getProductPostedBy().getUsername());
         mProductDescription.setText(String.valueOf(product.getProductDescription()));
+        mImageViewMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("HELLO", "OnClickListener");
+                Intent intent = new Intent(ProductDetailsActivity.this, ChatRoomActivity.class);
+                startActivity(intent);
+            }
+        });
 
         setViewPagerItemsWithAdapter(product);
         setUiPageViewController();
@@ -472,14 +470,14 @@ instead of showing the old activity */
 
     public void saveBoughtProductDetailsToParse (final User user){
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Product");
+        ParseQuery<Product> query = ParseQuery.getQuery("Product");
         query.setLimit(20);
         query.include("productPostedBy");
         query.include("productBoughtBy");
         query.include("address");
-        // Retrieve the object by id
-        query.getInBackground(mProduct.getObjectId(), new GetCallback<ParseObject>() {
-            public void done(ParseObject product, ParseException e) {
+
+        query.getInBackground(mProduct.getObjectId(), new GetCallback<Product>() {
+            public void done(final Product product, ParseException e) {
                 if (e == null) {
 
                     product.put("productBoughtBy", user);
@@ -489,6 +487,13 @@ instead of showing the old activity */
                             Log.i("info", "Successfully updated the bought item");
                             pd.setMessage("Congratulations!");
                             pd.dismiss();
+
+                            try {
+                                Push.userRentedProduct(product);
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            }
+
                             finish();
                         }
 
