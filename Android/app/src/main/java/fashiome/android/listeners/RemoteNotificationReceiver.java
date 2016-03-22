@@ -80,7 +80,7 @@ public class RemoteNotificationReceiver extends ParsePushBroadcastReceiver {
                 userDetailsLauncherIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(userDetailsLauncherIntent);
             }
-            
+
         } else if (jsonObject.optString("CHAT") != null) {
             chatWindowID = jsonObject.getString("CHAT");
         }
