@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#e53935</color>
     <color name="colorPrimaryLight">#fce8ea</color>
     <color name="colorAccent">#36b475</color>
-    <color name="colorPrimaryText">#263238</color>
+    <color name="colorPrimaryText">#525252</color>
     <color name="colorSecondaryText">#757575</color>
     <color name="textColor">#525252</color>
     <color name="product_detail_gray_bg">#F5F5F5</color>

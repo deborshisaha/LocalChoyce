@@ -20,7 +20,7 @@
         app:riv_border_width="2dp" />
 
     <TextView style="@style/SmallRegular"
-        android:width="88dp"
+        android:width="176dp"
         android:layout_marginLeft="4dp"
         android:layout_centerVertical="true"
         android:padding="8dp"

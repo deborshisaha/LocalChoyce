@@ -1,5 +1,6 @@
 package fashiome.android.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -90,9 +91,22 @@ public class MessagesFragment extends Fragment {
     }
 
     private  void  loadMessages (String identifier) {
+
+        final ProgressDialog pd = new ProgressDialog(getActivity());
+        pd.isIndeterminate();
+        pd.setMessage("Loading messages");
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+        if (mMessagesRecyclerViewAdapter !=null && mMessagesRecyclerViewAdapter.getItemCount() == 0) {
+            pd.show();
+        }
+
         Message.fetchMessagesOfConversationIdentifier(identifier, new FindCallback<Message>() {
             @Override
             public void done(List<Message> messages, ParseException e) {
+
+                pd.dismiss();
+
                 if (e == null) {
 
                     if (messages.size() > mPreviousMessageCount) {
@@ -180,5 +194,12 @@ public class MessagesFragment extends Fragment {
         }
 
         return null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mHandler.removeCallbacks(mRefreshMessagesRunnable);
+        mRefreshMessagesRunnable = null;
     }
 }

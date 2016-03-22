@@ -138,6 +138,10 @@
         <activity android:name=".activities.GoogleDriveFilesListActivity" android:screenOrientation="portrait"/>
 
         <activity
+            android:name=".activities.ConversationActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".activities.UserProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
