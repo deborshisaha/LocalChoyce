@@ -11,7 +11,7 @@
     <com.makeramen.roundedimageview.RoundedImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="240dp"
         android:scaleType="centerCrop"
         android:id="@+id/rivProductPrimaryImage"
 
@@ -47,7 +47,7 @@
             android:layout_marginLeft="2dp"
             android:layout_marginTop="0dp"
             android:scaleType="centerCrop"
-            android:id="@+id/rivProfilePicture"
+            android:id="@+id/rivImg"
             app:riv_corner_radius="16dp"
             app:riv_border_color="#F5F5F5"
             app:riv_border_width="1dp"
@@ -56,7 +56,7 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/rivProfilePicture">
+            android:layout_toRightOf="@id/rivImg">
 
             <TextView style="@style/RegularRegular"
                 android:layout_width="wrap_content"

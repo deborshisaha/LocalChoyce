@@ -16,7 +16,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
-import fashiome.android.activities.ProductDetailsActivity;
 import fashiome.android.models.Message;
 import fashiome.android.utils.ImageURLGenerator;
 import fashiome.android.utils.Utils;
@@ -90,7 +89,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<MessagesRe
 
     public class MessageViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.rivProfilePicture)
+        @Bind(R.id.rivImg)
         RoundedImageView rivUserProfileImage;
 
         @Bind(R.id.tvText)

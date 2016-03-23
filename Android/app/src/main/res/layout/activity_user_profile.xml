@@ -32,7 +32,7 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:scaleType="centerCrop"
-                    android:id="@+id/rivProfilePicture"
+                    android:id="@+id/rivImg"
 
                     app:riv_corner_radius="30dp"
                     app:riv_border_color="#F5F5F5"
@@ -44,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_below="@+id/rivProfilePicture">
+                    android:layout_below="@+id/rivImg">
 
                     <TextView
                         android:layout_width="wrap_content"
