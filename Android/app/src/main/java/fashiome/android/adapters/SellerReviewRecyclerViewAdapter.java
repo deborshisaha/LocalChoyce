@@ -103,7 +103,7 @@ public class SellerReviewRecyclerViewAdapter extends RecyclerView.Adapter<Seller
 
             Utils.setRating(starLinearLayout, (int) sellerReview.getRating(), mContext);
             tvMoreText.setText(sellerReview.getBody());
-            tvTitle.setText(sellerReview.getTitle());
+            tvTitle.setText(sellerReview.getHeader());
             tvTimeAgo.setText("7h");
         }
 

@@ -88,9 +88,9 @@
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-
-
         </activity>
+
+        <activity android:name=".activities.ProductReviewActivity" />
 
         <activity
             android:screenOrientation="portrait"
