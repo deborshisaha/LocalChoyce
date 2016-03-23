@@ -69,13 +69,13 @@ public class ProductReview extends ParseObject implements Parcelable, ReviewInte
     }
 
     @Override
-    public String getTitle() {
-        return null;
+    public String getHeader() {
+        return getUser().getUsername();
     }
 
     @Override
     public String getBody() {
-        return null;
+        return getReviewText();
     }
 
     public double getRating() {
@@ -129,6 +129,16 @@ public class ProductReview extends ParseObject implements Parcelable, ReviewInte
     public static void fetchProductReview(Product product, FindCallback<ProductReview> productReviewsLoadedBlock) {
         ParseQuery<ProductReview> query = ParseQuery.getQuery(ProductReview.class);
         query.setLimit(50);
+        query.setMaxCacheAge(60000 * 60);
+        query.whereEqualTo("product", product);
+        query.orderByDescending("createdAt");
+        query.include("user");
+        query.findInBackground(productReviewsLoadedBlock);
+    }
+
+    public static void fetchProductReview(Product product, int limit, FindCallback<ProductReview> productReviewsLoadedBlock) {
+        ParseQuery<ProductReview> query = ParseQuery.getQuery(ProductReview.class);
+        query.setLimit(limit);
         query.setMaxCacheAge(60000 * 60);
         query.whereEqualTo("product", product);
         query.orderByDescending("createdAt");

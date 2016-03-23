@@ -83,7 +83,7 @@ public class SellerReview extends ParseObject implements Parcelable, ReviewInter
     }
 
     @Override
-    public String getTitle() {
+    public String getHeader() {
         return getUser().getUsername();
     }
 

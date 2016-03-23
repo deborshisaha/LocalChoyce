@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -62,6 +63,7 @@ public class ProductReviewRecyclerViewAdapter extends RecyclerView.Adapter<Produ
 
     public void setProductReviews(List<ProductReview> productReviews) {
         this.mProductReviews = productReviews;
+        notifyDataSetChanged();
     }
 
     public class ProductReviewViewHolder extends RecyclerView.ViewHolder {
@@ -77,6 +79,9 @@ public class ProductReviewRecyclerViewAdapter extends RecyclerView.Adapter<Produ
 
         @Bind(R.id.tvTimeAgo)
         TextView tvTimeAgo;
+
+        @Bind(R.id.ratingUser)
+        LinearLayout starLinearLayout;
 
         Context mContext = null;
 
@@ -96,8 +101,9 @@ public class ProductReviewRecyclerViewAdapter extends RecyclerView.Adapter<Produ
                 Glide.with(mContext).load(URLString).into(rivUserProfileImage);
             }
 
+            Utils.setRating(starLinearLayout, (int) productReview.getRating(), mContext);
             tvMoreText.setText(productReview.getBody());
-            tvTitle.setText(productReview.getTitle());
+            tvTitle.setText(productReview.getHeader());
             tvTimeAgo.setText("9h");
         }
 

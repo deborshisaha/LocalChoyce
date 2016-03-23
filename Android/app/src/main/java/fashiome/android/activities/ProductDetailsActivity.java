@@ -13,6 +13,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -51,10 +53,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.adapters.ProductPagerAdapter;
+import fashiome.android.adapters.ProductReviewRecyclerViewAdapter;
 import fashiome.android.fragments.ProductRentDetailsFragment;
 import fashiome.android.managers.Push;
 import fashiome.android.models.Conversation;
 import fashiome.android.models.Product;
+import fashiome.android.models.ProductReview;
 import fashiome.android.models.User;
 import fashiome.android.utils.ImageURLGenerator;
 import fashiome.android.utils.Utils;
@@ -80,6 +84,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     private User user = null;
     private String mProductIDString = null;
     private Product mProduct = null;
+    //private ProductReviewRecyclerViewAdapter mProductReviewRecyclerViewAdapter = null;
 
     User currentUser;
     ProgressDialog pd;
@@ -114,6 +119,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     @Bind(R.id.tvRelativeTimestamp)
     TextView mRelativeTime;
 
+    @Bind(R.id.tvViewMore)
+    TextView mViewMore;
+
 
     @Override
     protected void onResume() {
@@ -134,6 +142,10 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         getSupportActionBar().setTitle("");
 
         mProduct = getIntent().getExtras().getParcelable("product");
+
+//        rvProductReview.setLayoutManager(new LinearLayoutManager(this));
+//        mProductReviewRecyclerViewAdapter = new ProductReviewRecyclerViewAdapter();
+//        rvProductReview.setAdapter(mProductReviewRecyclerViewAdapter);
 
         if (mProduct == null ) {
             mProductIDString = getIntent().getExtras().getString(Product.PRODUCT_ID);
@@ -170,15 +182,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             Glide.with(ProductDetailsActivity.this).load(URLString).into(mSellerProfile);
         }
 
-/*
-        Log.i("info","CreatedAt: "+product.getCreatedAt().toString());
-
-        String relativeTimeAgo = DateUtils.getRelativeTimeSpanString(product.getCreatedAt().getTime(),
-                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
-
-        mRelativeTime.setText(relativeTimeAgo);
-*/
-        //mRelativeTime.setText(relativeTimeAgo);
         mProductTitle.setText(product.getProductName());
         mSeller.setText(product.getProductPostedBy().getUsername());
         mProductDescription.setText(String.valueOf(product.getProductDescription()));
@@ -190,58 +193,39 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
                 startActivity(intent);
             }
         });
+
+        mViewMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductDetailsActivity.this, ProductReviewActivity.class);
+                intent.putExtra(Product.PRODUCT_KEY, product);
+                startActivity(intent);
+            }
+        });
+
+        ProductReview.fetchProductReview(product, 4, new FindCallback<ProductReview>() {
+            @Override
+            public void done(List<ProductReview> productReviews, ParseException e) {
+                if (e == null) {
+                    //mProductReviewRecyclerViewAdapter.setProductReviews(productReviews);
+                }
+            }
+        });
+
         mTimesLiked.setText(String.valueOf(new Random().nextInt(1000) + 10));
         mTimesRented.setText(String.valueOf(new Random().nextInt(100) + 10));
 
         int numberOfUserRatings = product.getProductPostedBy().getRating();
         int numberOfProductRatings = product.getProductRating();
         Log.i("info"," user ratings "+String.valueOf(numberOfUserRatings));
-        Log.i("info"," product ratings "+String.valueOf(numberOfProductRatings));
+        Log.i("info", " product ratings " + String.valueOf(numberOfProductRatings));
+
 
         LinearLayout mLL1 = (LinearLayout)findViewById(R.id.llRatingBar1);
-        int i;
-        int temp = new Random().nextInt(4) + 1;
-        for(i = 0;i<temp;i++){
-
-            ImageView iv = new ImageView(this);
-            iv.setImageResource(R.drawable.ic_star_filled);
-            android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(48,48);
-            iv.setLayoutParams(layoutParams);
-            mLL1.addView(iv);
-        }
-
-        if(i < 5){
-            for( ;i<5;i++){
-                ImageView iv = new ImageView(this);
-                iv.setImageResource(R.drawable.ic_star_empty);
-                android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(48,48);
-                iv.setLayoutParams(layoutParams);
-                mLL1.addView(iv);
-            }
-
-        }
+        Utils.setRating(mLL1, product.getProductRating(), this);
 
         LinearLayout mLL2 = (LinearLayout)findViewById(R.id.llRatingBar2);
-        temp = new Random().nextInt(4) + 1;
-        for(i = 0;i<temp;i++){
-
-            ImageView iv = new ImageView(this);
-            iv.setImageResource(R.drawable.ic_star_filled);
-            android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(48,48);
-            iv.setLayoutParams(layoutParams);
-            mLL2.addView(iv);
-        }
-
-        if(i < 5){
-            for( ;i<5;i++){
-                ImageView iv = new ImageView(this);
-                iv.setImageResource(R.drawable.ic_star_empty);
-                android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(48,48);
-                iv.setLayoutParams(layoutParams);
-                mLL2.addView(iv);
-            }
-
-        }
+        Utils.setRating(mLL2, product.getProductRating(), this);
 
         setViewPagerItemsWithAdapter(product);
         setUiPageViewController();
@@ -703,4 +687,5 @@ instead of showing the old activity */
             startActivity(intent);
         }
     }
+
 }

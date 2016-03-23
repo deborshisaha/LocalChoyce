@@ -3,6 +3,8 @@ package fashiome.android.activities;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import fashiome.android.R;
 import fashiome.android.fragments.ConversationFragment;
@@ -33,5 +35,21 @@ public class ProductReviewActivity extends AppCompatActivity {
         mProductReviewFragment =  ProductReviewFragment.newInstance(product);
         ft.replace(R.id.fragment_placeholder, mProductReviewFragment);
         ft.commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_modal_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.close) {
+            finish();
+        }
+
+        return true;
     }
 }
