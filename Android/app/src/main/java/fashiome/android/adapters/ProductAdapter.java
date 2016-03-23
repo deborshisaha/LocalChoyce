@@ -37,7 +37,10 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.activities.HomeActivity;
+import fashiome.android.activities.IntroAndLoginActivity;
 import fashiome.android.activities.ProductDetailsActivity;
+import fashiome.android.activities.ProductFormActivity;
 import fashiome.android.activities.UserDetailsActivity;
 import fashiome.android.activities.UserProfileActivity;
 import fashiome.android.helpers.ItemClickSupport;
@@ -261,10 +264,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
                 case R.id.rivProfilePicture:
 
-                    Log.i("info", "user profile image clicked");
-                    Intent i = new Intent(mContext, UserDetailsActivity.class);
-                    i.putExtra("objectId", mProducts.get(getLayoutPosition()).getProductPostedBy().getObjectId());
-                    mContext.startActivity(i);
+                    Intent intent = null;
+
+                    if (ParseUser.getCurrentUser() == null) {
+                        intent = new Intent(mContext, IntroAndLoginActivity.class);
+                        intent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, true);
+                        mContext.startActivity(intent);
+                    } else {
+                        Log.i("info", "user profile image clicked");
+                        intent = new Intent(mContext, UserDetailsActivity.class);
+                        intent.putExtra("objectId", mProducts.get(getLayoutPosition()).getProductPostedBy().getObjectId());
+                        mContext.startActivity(intent);
+                    }
+                    break;
+
+                default:
                     break;
             }
         }

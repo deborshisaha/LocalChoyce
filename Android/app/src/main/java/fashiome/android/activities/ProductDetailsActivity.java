@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -110,6 +111,10 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     @Bind(R.id.tvNumberOfTimesRented)
     TextView mTimesRented;
 
+    @Bind(R.id.tvRelativeTimestamp)
+    TextView mRelativeTime;
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -165,6 +170,15 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             Glide.with(ProductDetailsActivity.this).load(URLString).into(mSellerProfile);
         }
 
+/*
+        Log.i("info","CreatedAt: "+product.getCreatedAt().toString());
+
+        String relativeTimeAgo = DateUtils.getRelativeTimeSpanString(product.getCreatedAt().getTime(),
+                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+
+        mRelativeTime.setText(relativeTimeAgo);
+*/
+        //mRelativeTime.setText(relativeTimeAgo);
         mProductTitle.setText(product.getProductName());
         mSeller.setText(product.getProductPostedBy().getUsername());
         mProductDescription.setText(String.valueOf(product.getProductDescription()));
@@ -677,9 +691,16 @@ instead of showing the old activity */
 
 
     public void sellerProfileClicked(View view) {
-        Intent i = new Intent(ProductDetailsActivity.this, UserDetailsActivity.class);
-        i.putExtra("objectId", mProduct.getProductPostedBy().getObjectId());
-        startActivity(i);
 
+        Intent intent = null;
+        if (ParseUser.getCurrentUser() == null) {
+            intent = new Intent(ProductDetailsActivity.this, IntroAndLoginActivity.class);
+            intent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, true);
+            startActivity(intent);
+        } else {
+            intent = new Intent(ProductDetailsActivity.this, UserDetailsActivity.class);
+            intent.putExtra("objectId", mProduct.getProductPostedBy().getObjectId());
+            startActivity(intent);
+        }
     }
 }

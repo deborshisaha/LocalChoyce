@@ -208,13 +208,14 @@ public class HomeActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.map_launcher) {
+            launchMap();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void launchMap(View view) {
+    public void launchMap() {
         Intent i = new Intent(HomeActivity.this,MapFullScreenActivity.class);
         i.putParcelableArrayListExtra("products", mProductsFragment.getProductsAdapter().getAll());
         startActivity(i);

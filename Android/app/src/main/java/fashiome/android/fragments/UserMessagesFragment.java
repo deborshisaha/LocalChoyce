@@ -47,7 +47,7 @@ public class UserMessagesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_collection_list, container, false);
         //ButterKnife.bind(view);
 
-        rvMessage = (RecyclerView) view.findViewById(R.id.rvTweets);
+        rvMessage = (RecyclerView) view.findViewById(R.id.rvItems);
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 
         Log.i("info", "oncreateview");

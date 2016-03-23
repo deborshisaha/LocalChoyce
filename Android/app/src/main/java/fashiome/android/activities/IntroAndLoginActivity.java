@@ -1,5 +1,6 @@
 package fashiome.android.activities;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -120,7 +121,18 @@ public class IntroAndLoginActivity extends AppIntro {
                 } else {
                     associateInstallationWithUser();
                     Log.d("AppStarter", "User logged in through Facebook!");
-                    finish();
+                    ActivityManager mngr = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+
+                    List<ActivityManager.RunningTaskInfo> taskList = mngr.getRunningTasks(10);
+
+                    Log.i("info",taskList.get(0).topActivity.getClassName()+" "+this.getClass().getEnclosingClass().getName());
+
+                    if (taskList.get(0).numActivities == 1 &&
+                            taskList.get(0).topActivity.getClassName().equals(this.getClass().getEnclosingClass().getName())) {
+                        startActivity(new Intent(IntroAndLoginActivity.this, HomeActivity.class));
+                    } else {
+                        finish();
+                    }
                 }
             }
         });

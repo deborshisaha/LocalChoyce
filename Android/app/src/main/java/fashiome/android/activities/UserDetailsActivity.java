@@ -57,6 +57,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 
     CollapsingToolbarLayout cl;
 
+    String objectId = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +83,10 @@ public class UserDetailsActivity extends AppCompatActivity {
             }
         });
 
-        String objectId = getIntent().getStringExtra("objectId");
+        objectId = getIntent().getStringExtra("objectId");
 
+        Log.i("Current user Id: ",ParseUser.getCurrentUser().getObjectId());
+        Log.i("Clicked user Id: ",objectId);
         //Log.i("info", user.getUsername() + user.getEmail() + user.getProfilePictureURL() + user.getObjectId().toString());
         parseCallToGetUser(objectId);
 
@@ -118,7 +121,12 @@ public class UserDetailsActivity extends AppCompatActivity {
     }
 
     public void setupViewPagerTabs(){
-        adapter = new UserProfilePagerAdapter(getSupportFragmentManager(), user);
+
+        if(objectId.equals(ParseUser.getCurrentUser().getObjectId())){
+            adapter = new UserProfilePagerAdapter(getSupportFragmentManager(), user, true);
+        } else {
+            adapter = new UserProfilePagerAdapter(getSupportFragmentManager(), user, false);
+        }
         viewPager.setAdapter(adapter);
         // Bind the tabs to the ViewPager
         tabs.setViewPager(viewPager);

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import fashiome.android.animators.ProductResultsAnimator;
 import fashiome.android.helpers.ItemClickSupport;
 import fashiome.android.models.Product;
 import fashiome.android.utils.Constants;
+import fashiome.android.utils.Utils;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.FlipInLeftYAnimator;
 import jp.wasabeef.recyclerview.animators.FlipInRightYAnimator;
@@ -147,9 +149,16 @@ public class ProductsRecyclerViewFragment extends Fragment {
                     Log.i("Last seen date: ",lastSeen.toString());
                     for(Product p: products) {
                         Log.i("info","CreatedAt: "+p.getCreatedAt().toString());
+                        Log.i("info","CreatedAtmillis: "+p.getCreatedAt().getTime());
                         Log.i("info","username : "+String.valueOf(p.getProductPostedBy().getUsername()));
                         Log.i("info", "Latitude : " + p.getAddress().getLatitude());
                         Log.i("info", "Longitude : " + p.getAddress().getLongitude());
+
+                        String relativeTimeAgo = DateUtils.getRelativeTimeSpanString(p.getCreatedAt().getTime(),
+                                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+
+                        Log.i("info","Relative time "+ relativeTimeAgo);
+
                     }
                     mProductsAdapter.updateItems(operation, products);
                     mProductRecyclerView.postDelayed(new Runnable() {

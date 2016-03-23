@@ -69,6 +69,25 @@
 
                 </LinearLayout>
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/llRatingBar2"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/ivTime"
+                    android:src="@drawable/ic_time"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/ivTime"
+                    android:layout_below="@+id/llRatingBar2"
+                    android:text="12h ago"
+                    android:id="@+id/tvRelativeTimestamp"
+                    android:textSize="10sp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"/>
 
             </RelativeLayout>
 
