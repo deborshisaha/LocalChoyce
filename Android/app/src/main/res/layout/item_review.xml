@@ -10,7 +10,7 @@
 
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:id="@+id/rivImg"
+        android:id="@+id/rivProfilePicture"
         android:layout_alignParentLeft="true"
         android:scaleType="centerCrop"
 
@@ -22,14 +22,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/metadata_container"
-        android:layout_toRightOf="@+id/rivImg">
+        android:layout_toRightOf="@+id/rivProfilePicture">
 
-        <TextView style="@style/RegularMedium"
+        <TextView style="@style/RegularBold"
             android:layout_marginLeft="4dp"
             android:padding="8dp"
             android:layout_alignParentLeft="true"
             android:textColor="@color/colorPrimaryText"
-            android:id="@+id/tvUserFullname"
+            android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -46,7 +46,18 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/ratingUser"
+        android:paddingLeft="8dp"
+        android:layout_below="@id/metadata_container"
+        android:layout_width="wrap_content"
+        android:layout_alignLeft="@+id/metadata_container"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content" />
+
     <TextView style="@style/RegularRegular"
+        android:layout_alignLeft="@+id/metadata_container"
         android:paddingLeft="8dp"
         android:paddingTop="4dp"
         android:paddingBottom="12dp"
@@ -54,13 +65,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/about_me_text"
-        android:gravity="fill"
-        android:maxLines="2"
         android:id="@+id/tvMoreText"
-        android:layout_below="@+id/metadata_container"
-        android:layout_toRightOf="@+id/rivImg"/>
+        android:layout_below="@+id/ratingUser"/>
 
-    <View style="@style/DividerHorizontal"
-        android:id="@+id/vDivider" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="1dp"
+        android:background="#EAEAEA"/>
 
 </RelativeLayout>

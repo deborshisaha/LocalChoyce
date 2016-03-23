@@ -7,33 +7,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import com.cloudinary.utils.StringUtils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.SaveCallback;
-
-import org.json.JSONException;
 
 import java.util.List;
 
 import fashiome.android.R;
 import fashiome.android.activities.ChatRoomActivity;
-import fashiome.android.activities.ProductDetailsActivity;
 import fashiome.android.adapters.ConversationRecyclerViewAdapter;
-import fashiome.android.adapters.MessagesRecyclerViewAdapter;
 import fashiome.android.helpers.ItemClickSupport;
-import fashiome.android.managers.Push;
 import fashiome.android.models.Conversation;
-import fashiome.android.models.Message;
-import fashiome.android.models.Product;
 
 /**
  * Created by dsaha on 3/22/16.

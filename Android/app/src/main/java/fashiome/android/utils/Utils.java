@@ -8,12 +8,17 @@ import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import fashiome.android.R;
 
 /**
  * Created by dsaha on 3/5/16.
@@ -103,5 +108,26 @@ public class Utils {
         return convertedDate;
     }
 
+    public static void setRating (LinearLayout starLinearLayout, int rating, Context context) {
+        int i;
+        for(i = 0;i<rating;i++){
 
+            ImageView iv = new ImageView(context);
+            iv.setImageResource(R.drawable.ic_star_filled);
+            android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(48,48);
+            iv.setLayoutParams(layoutParams);
+            starLinearLayout.addView(iv);
+        }
+
+        if(i < 5){
+            for( ;i<5;i++){
+                ImageView iv = new ImageView(context);
+                iv.setImageResource(R.drawable.ic_star_empty);
+                android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(46,46);
+                iv.setLayoutParams(layoutParams);
+                starLinearLayout.addView(iv);
+            }
+
+        }
+    }
 }

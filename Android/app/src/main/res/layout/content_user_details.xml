@@ -1,40 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-        <View style="@style/DividerHorizontal"
-            android:id="@+id/vDivider" />
+    <View style="@style/DividerHorizontal"
+        android:id="@+id/vDivider" />
 
-        <com.astuetz.PagerSlidingTabStrip
-            android:id="@+id/tabs"
-            app:pstsShouldExpand="true"
-            app:pstsTextAllCaps="true"
-            android:layout_width="match_parent"
-            android:layout_height="48dp" />
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/tabs"
+        app:pstsShouldExpand="true"
+        app:pstsTextAllCaps="true"
+        style="@style/RegularLight"
+        app:pstsIndicatorColor="@color/colorPrimary"
+        android:textColor = "@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
 
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#f4f5f7" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f4f5f7" />
 
 </LinearLayout>
-    <!--android.support.v4.widget.NestedScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="fashiome.android.activities.UserDetailsActivity"
-        tools:showIn="@layout/activity_user_details"
-        android:enabled="false"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"-->
-
-
-<!--/android.support.v4.widget.NestedScrollView-->
