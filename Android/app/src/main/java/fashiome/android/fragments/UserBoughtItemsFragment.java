@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -20,7 +19,6 @@ import java.util.List;
 
 import fashiome.android.R;
 import fashiome.android.adapters.UserBoughtItemsAdapter;
-import fashiome.android.adapters.UserMessagesAdapter;
 import fashiome.android.models.Product;
 import fashiome.android.models.User;
 

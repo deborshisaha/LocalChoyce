@@ -37,12 +37,14 @@ import fashiome.android.models.User;
 import fashiome.android.utils.ImageURLGenerator;
 import fashiome.android.utils.Utils;
 
+import static fashiome.android.utils.Utils.*;
+
 public class UserDetailsActivity extends AppCompatActivity {
 
     User user;
     UserProfilePagerAdapter adapter = null;
     ViewPager viewPager = null;
-    PagerSlidingTabStrip tabs = null;
+    PagerSlidingTabStrip slidingTabStrip = null;
 
     @Bind(R.id.rivProfilePicture)
     RoundedImageView rivProfilePicture;
@@ -52,6 +54,9 @@ public class UserDetailsActivity extends AppCompatActivity {
 
     @Bind(R.id.tvUserCity)
     TextView tvUserCity;
+
+    @Bind(R.id.llRatingBar1)
+    LinearLayout starLinearLayout;
 
     String URLString = null;
 
@@ -85,55 +90,22 @@ public class UserDetailsActivity extends AppCompatActivity {
 
         objectId = getIntent().getStringExtra("objectId");
 
-        Log.i("Current user Id: ",ParseUser.getCurrentUser().getObjectId());
-        Log.i("Clicked user Id: ",objectId);
+        Log.i("Current user Id: ", ParseUser.getCurrentUser().getObjectId());
+        Log.i("Clicked user Id: ", objectId);
         //Log.i("info", user.getUsername() + user.getEmail() + user.getProfilePictureURL() + user.getObjectId().toString());
         parseCallToGetUser(objectId);
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         viewPager = (ViewPager) findViewById(R.id.viewpager1);
-        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-
-        LinearLayout mLL1 = (LinearLayout)findViewById(R.id.llRatingBar1);
-        int i;
-        int temp = new Random().nextInt(4) + 1;
-        for(i = 0;i<temp;i++){
-
-            ImageView iv = new ImageView(this);
-            iv.setImageResource(R.drawable.ic_star_filled);
-            android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(48,48);
-            iv.setLayoutParams(layoutParams);
-            mLL1.addView(iv);
-        }
-
-        if(i < 5){
-            for( ;i<5;i++){
-                ImageView iv = new ImageView(this);
-                iv.setImageResource(R.drawable.ic_star_empty);
-                android.view.ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(48,48);
-                iv.setLayoutParams(layoutParams);
-                mLL1.addView(iv);
-            }
-
-        }
-
-
+        slidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
     }
 
     public void setupViewPagerTabs(){
 
-        if(objectId.equals(ParseUser.getCurrentUser().getObjectId())){
-            adapter = new UserProfilePagerAdapter(getSupportFragmentManager(), user, true);
-        } else {
-            adapter = new UserProfilePagerAdapter(getSupportFragmentManager(), user, false);
-        }
+        adapter = new UserProfilePagerAdapter(getSupportFragmentManager(), user, this);
         viewPager.setAdapter(adapter);
-        // Bind the tabs to the ViewPager
-        tabs.setViewPager(viewPager);
-        tabs.setIndicatorHeight(8);
-        tabs.setIndicatorColor(0xFF55ACEE);
-        tabs.setTextColor(0xFF55ACEE);
-
+        slidingTabStrip.setViewPager(viewPager);
+        slidingTabStrip.setIndicatorHeight(8);
     }
 
     public void parseCallToGetUser(String objectId){
@@ -165,9 +137,10 @@ public class UserDetailsActivity extends AppCompatActivity {
         //final User user = (User) User.getCurrentUser();
 
         if (user != null) {
-            URLString = ImageURLGenerator.getInstance(this).URLForFBProfilePicture(user.getFacebookId(), Utils.getScreenWidthInDp(this));
+            URLString = ImageURLGenerator.getInstance(this).URLForFBProfilePicture(user.getFacebookId(), getScreenWidthInDp(this));
             tvUserFullname.setText(user.getUsername());
             tvUserCity.setText("San Francisco, CA");
+            Utils.setRating(starLinearLayout, user.getRating(), this);
         }
 
         Log.d("DEBUG", URLString);

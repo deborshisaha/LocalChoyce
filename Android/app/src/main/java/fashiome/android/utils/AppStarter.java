@@ -17,6 +17,7 @@ import fashiome.android.models.Address;
 import fashiome.android.models.Conversation;
 import fashiome.android.models.Message;
 import fashiome.android.models.Product;
+import fashiome.android.models.SellerReview;
 import fashiome.android.models.User;
 
 public class AppStarter extends Application {
@@ -35,6 +36,7 @@ public class AppStarter extends Application {
         ParseObject.registerSubclass(Address.class);
         ParseObject.registerSubclass(Message.class);
         ParseObject.registerSubclass(Conversation.class);
+        ParseObject.registerSubclass(SellerReview.class);
 
         Parse.initialize(this);
 

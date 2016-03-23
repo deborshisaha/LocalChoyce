@@ -58,5 +58,9 @@
     <string name="introDesc1">Awe everyone without spending huge</string>
     <string name="send">Send</string>
     <string name="message_hint">Type your message</string>
+    <string name="user_profile_products">Products</string>
+    <string name="user_profile_seller_reviews">Seller reviews</string>
+    <string name="user_profile_my_products">My products</string>
+    <string name="user_profile_my_reviews">Reviews</string>
 
 </resources>

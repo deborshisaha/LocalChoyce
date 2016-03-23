@@ -52,17 +52,17 @@
 
     <style name="SmallLight">
         <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">10sp</item>
     </style>
 
     <style name="SmallRegular">
         <item name="android:fontFamily">sans-serif-regular</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">10sp</item>
     </style>
 
     <style name="SmallMedium">
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">10sp</item>
     </style>
 
     <style name="RegularLight">
@@ -77,6 +77,11 @@
 
     <style name="RegularMedium">
         <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="RegularBold">
+        <item name="android:fontFamily">sans-serif-bold</item>
         <item name="android:textSize">14sp</item>
     </style>
 

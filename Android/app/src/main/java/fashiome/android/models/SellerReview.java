@@ -8,12 +8,14 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import fashiome.android.interfaces.ReviewInterface;
+
 /**
  * Created by dsaha on 3/18/16.
  */
 
 @ParseClassName("SellerReview")
-public class SellerReview extends ParseObject implements Parcelable {
+public class SellerReview extends ParseObject implements Parcelable, ReviewInterface {
 
     private User seller;
     private User user;
@@ -75,6 +77,20 @@ public class SellerReview extends ParseObject implements Parcelable {
         return this.rating;
     }
 
+    @Override
+    public String getRelativeTime() {
+        return null;
+    }
+
+    @Override
+    public String getTitle() {
+        return getUser().getUsername();
+    }
+
+    @Override
+    public String getBody() {
+        return getReviewText();
+    }
 
     @Override
     public int describeContents() {

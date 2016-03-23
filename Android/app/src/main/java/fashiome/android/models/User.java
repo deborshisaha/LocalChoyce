@@ -17,6 +17,7 @@ import java.util.List;
 @ParseClassName("_User")
 public class User extends ParseUser implements Parcelable {
 
+    public static final String USER_KEY = "fashiome.user.key" ;
     private String facebookId;
 
     public User() {}
@@ -89,9 +90,7 @@ public class User extends ParseUser implements Parcelable {
 
     public int getRating() {
 
-        //if (this.rating == 0) {
-            this.rating = getInt("rating");
-        //}
+        this.rating = getInt("rating");
         return this.rating;
     }
 

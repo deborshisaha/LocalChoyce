@@ -4,40 +4,29 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
-import com.astuetz.PagerSlidingTabStrip;
+import com.parse.ParseUser;
 
 import fashiome.android.R;
+import fashiome.android.fragments.SellerReviewFragment;
 import fashiome.android.fragments.UserBoughtItemsFragment;
-import fashiome.android.fragments.UserFollowerListFragment;
-import fashiome.android.fragments.UserMediaCollectionFragment;
-import fashiome.android.fragments.UserMessagesFragment;
 import fashiome.android.models.User;
 
-public class UserProfilePagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
+public class UserProfilePagerAdapter extends FragmentPagerAdapter {
 
     private String tabTitles[];
-
-    private int tabIcons[] ;
-
-    //private Context context;
-    private boolean isOwner;
-
     public User user;
+    private Context mContext;
 
-    public UserProfilePagerAdapter(FragmentManager fm, User user, boolean flag) {
+    public UserProfilePagerAdapter(FragmentManager fm, User user, Context context) {
         super(fm);
-        //this.context = context;
         this.user = user;
-        this.isOwner = flag;
-        if(isOwner){
-            tabTitles = new String[] { "Items bought", "followers", "messages", "collections" };
-            tabIcons = new int[] {R.drawable.ic_shopped, R.drawable.ic_user_followers,
-                    R.drawable.ic_user_messages, R.drawable.ic_other_collections};
+        this.mContext = context;
+
+        if(isOwner()){
+            tabTitles = new String[] { mContext.getResources().getText(R.string.user_profile_my_products).toString(), mContext.getResources().getText(R.string.user_profile_my_reviews).toString() };
         } else {
-            tabTitles = new String[] {"followers", "collections" };
-            tabIcons = new int[] {R.drawable.ic_user_followers, R.drawable.ic_other_collections};
+            tabTitles = new String[] { mContext.getResources().getText(R.string.user_profile_products).toString(), mContext.getResources().getText(R.string.user_profile_seller_reviews).toString() };
         }
     }
 
@@ -48,75 +37,28 @@ public class UserProfilePagerAdapter extends FragmentPagerAdapter implements Pag
 
     @Override
     public Fragment getItem(int position) {
+        switch (position) {
 
-        if(isOwner) {
-            switch (position) {
+            case 0:
+                return UserBoughtItemsFragment.newInstance(user);
 
-                case 0:
-                    return UserBoughtItemsFragment.newInstance(user);
-                //break;
+            case 1:
+                return SellerReviewFragment.newInstance(user);
 
-                case 1:
-                    return UserFollowerListFragment.newInstance(user);
-                //break;
-
-                case 2:
-                    return UserMessagesFragment.newInstance(user);
-                //break;
-
-                case 3:
-                    return UserMediaCollectionFragment.newInstance(user);
-                //break;
-
-                default:
-                    return null;
-                //break;
-            }
-        } else {
-            switch (position) {
-
-                case 0:
-                    return UserFollowerListFragment.newInstance(user);
-                //break;
-
-                case 1:
-                    return UserMediaCollectionFragment.newInstance(user);
-                //break;
-
-                default:
-                    return null;
-                //break;
-            }
+            default:
+                return null;
         }
     }
 
-    @Override
-    public int getPageIconResId(int position) {
-        return tabIcons[position];
+    private boolean isOwner() {
+
+        if (this.user == null) return false;
+
+        return  ParseUser.getCurrentUser().getObjectId().equals(user.getObjectId());
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-
         return tabTitles[position];
-
-/*
-        switch (position) {
-            case 0:
-                return tabTitles[0];
-
-            case 1:
-                return tabTitles[1];
-
-            case 2:
-                return tabTitles[2];
-
-            case 3:
-                return tabTitles[3];
-
-            default:
-                return "";
-        }
-*/
     }
 }
