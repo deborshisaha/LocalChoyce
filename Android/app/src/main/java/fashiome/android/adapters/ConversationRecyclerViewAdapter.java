@@ -17,7 +17,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.models.Conversation;
-import fashiome.android.models.Message;
 import fashiome.android.utils.ImageURLGenerator;
 import fashiome.android.utils.Utils;
 
@@ -71,7 +70,7 @@ public class ConversationRecyclerViewAdapter extends RecyclerView.Adapter<Conver
 
     public class ConversationViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.rivProfilePicture)
+        @Bind(R.id.rivImg)
         RoundedImageView rivUserProfileImage;
 
         @Bind(R.id.tvUserFullname)

@@ -10,7 +10,7 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="260dp"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -43,7 +43,7 @@
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:scaleType="centerCrop"
-                    android:id="@+id/rivProfilePicture"
+                    android:id="@+id/rivImg"
                     app:riv_corner_radius="36dp"
                     app:riv_border_color="#F5F5F5"
                     app:riv_border_width="2dp"
@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_below="@+id/rivProfilePicture">
+                    android:layout_below="@+id/rivImg">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -65,6 +65,7 @@
                         android:text="Deepak Barge"/>
 
                     <TextView
+                        android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/tvUserCity"
@@ -73,6 +74,7 @@
                         android:layout_below="@id/tvUserFullname"/>
 
                     <LinearLayout
+                        android:layout_marginTop="10dp"
                         android:orientation="horizontal"
                         android:id="@+id/llRatingBar1"
                         android:layout_below="@id/tvUserCity"

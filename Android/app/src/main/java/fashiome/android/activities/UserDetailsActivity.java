@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,10 +20,8 @@ import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.List;
 import java.util.Random;
@@ -46,7 +43,7 @@ public class UserDetailsActivity extends AppCompatActivity {
     ViewPager viewPager = null;
     PagerSlidingTabStrip slidingTabStrip = null;
 
-    @Bind(R.id.rivProfilePicture)
+    @Bind(R.id.rivImg)
     RoundedImageView rivProfilePicture;
 
     @Bind(R.id.tvUserFullname)

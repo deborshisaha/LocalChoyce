@@ -220,13 +220,14 @@
                     android:textColor="#525252"
                     android:layout_centerHorizontal="true"
                     android:layout_below="@+id/rivSellerProfile"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="10dp" />
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:id="@+id/llRatingBar1"
                     android:layout_below="@id/tvSeller"
                     android:layout_width="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:layout_centerHorizontal="true"
                     android:layout_height="wrap_content">
 
@@ -240,7 +241,7 @@
                     android:textAlignment="center"
                     android:textColor="#525252"
                     android:maxLines="4"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="10dp"
                     android:layout_centerHorizontal="true"
                     android:layout_below="@+id/llRatingBar1"  />
 
