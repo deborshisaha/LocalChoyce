@@ -1,52 +1,31 @@
 package fashiome.android.adapters;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.telecom.Call;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.MemoryCategory;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.parse.ParseException;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import com.parse.SignUpCallback;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
-import fashiome.android.activities.HomeActivity;
 import fashiome.android.activities.IntroAndLoginActivity;
-import fashiome.android.activities.ProductDetailsActivity;
-import fashiome.android.activities.ProductFormActivity;
 import fashiome.android.activities.UserDetailsActivity;
-import fashiome.android.activities.UserProfileActivity;
-import fashiome.android.helpers.ItemClickSupport;
 import fashiome.android.utils.Constants;
 import fashiome.android.utils.Utils;
-import fashiome.android.models.Address;
 import fashiome.android.models.Product;
 import fashiome.android.models.User;
 import fashiome.android.utils.ImageURLGenerator;
@@ -179,7 +158,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         @Bind(R.id.tvProductTitle)
         TextView tvProductTitle;
 
-        @Bind(R.id.rivProfilePicture)
+        @Bind(R.id.rivImg)
         RoundedImageView rivProfilePicture;
 
         @Bind(R.id.tvProductByUserName)
@@ -262,7 +241,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
             switch (v.getId()) {
 
-                case R.id.rivProfilePicture:
+                case R.id.rivImg:
 
                     Intent intent = null;
 

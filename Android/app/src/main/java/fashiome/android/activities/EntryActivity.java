@@ -21,7 +21,7 @@ public class EntryActivity extends AppCompatActivity {
             launchIntent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, false);
             startActivity(launchIntent);
         } else {
-            Intent launchIntent = new Intent(EntryActivity.this, HomeActivity.class);
+            Intent launchIntent = new Intent(EntryActivity.this, MainActivity.class);
             startActivity(launchIntent);
         }
 

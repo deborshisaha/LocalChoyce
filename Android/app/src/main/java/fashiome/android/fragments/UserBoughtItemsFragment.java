@@ -102,6 +102,7 @@ public class UserBoughtItemsFragment extends Fragment {
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
                 Log.i("info", "refresh - new items needed ");
+                swipeContainer.setRefreshing(false);
                 //getTimeline(since_id, 0, null, REFRESH_OPERATION);
             }
         });

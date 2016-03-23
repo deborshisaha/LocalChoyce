@@ -85,9 +85,9 @@ public class IntroAndLoginActivity extends AppIntro {
 
     @Override
     public void onSkipPressed() {
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     @Override
@@ -129,7 +129,7 @@ public class IntroAndLoginActivity extends AppIntro {
 
                     if (taskList.get(0).numActivities == 1 &&
                             taskList.get(0).topActivity.getClassName().equals(this.getClass().getEnclosingClass().getName())) {
-                        startActivity(new Intent(IntroAndLoginActivity.this, HomeActivity.class));
+                        startActivity(new Intent(IntroAndLoginActivity.this, MainActivity.class));
                     } else {
                         finish();
                     }

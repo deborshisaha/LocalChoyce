@@ -11,7 +11,7 @@
 
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:id="@+id/rivProfilePicture"
+        android:id="@+id/rivImg"
         android:layout_alignParentLeft="true"
         android:scaleType="centerCrop"
 
@@ -29,6 +29,6 @@
         android:id="@+id/tvText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/rivProfilePicture"  />
+        android:layout_toRightOf="@+id/rivImg"  />
 
 </RelativeLayout>

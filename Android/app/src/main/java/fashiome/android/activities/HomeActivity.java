@@ -80,7 +80,8 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        getSupportActionBar().setIcon(R.drawable.ic_app_logo);
+        //getSupportActionBar().setIcon(R.drawable.ic_app_logo);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 /*
         mProfileLogo = (RoundedImageView) findViewById(R.id.ivProfileLogo);
         mProfileLogo.setOnClickListener(new View.OnClickListener() {
@@ -207,19 +208,21 @@ public class HomeActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.map_launcher) {
-            launchMap();
-            return true;
-        }
+        //if (id == R.id.map_launcher) {
+            //launchMap();
+        //    return true;
+        //}
 
         return super.onOptionsItemSelected(item);
     }
 
+/*
     public void launchMap() {
         Intent i = new Intent(HomeActivity.this,MapFullScreenActivity.class);
         i.putParcelableArrayListExtra("products", mProductsFragment.getProductsAdapter().getAll());
         startActivity(i);
     }
+*/
 
     public void getProductsWithSearchTerm(final String term){
 
@@ -285,5 +288,14 @@ public class HomeActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+    /* this method is overridden to prevent the UP/BACK button_hollow from creating a new activity
+instead of showing the old activity */
+    @Override
+    public Intent getSupportParentActivityIntent() {
+        finish();
+        return null;
+    }
+
 
 }

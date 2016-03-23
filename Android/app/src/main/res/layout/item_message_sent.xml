@@ -11,7 +11,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:scaleType="centerCrop"
-        android:id="@+id/rivProfilePicture"
+        android:id="@+id/rivImg"
         android:layout_alignParentRight="true"
 
         app:riv_corner_radius="24dp"
@@ -28,6 +28,6 @@
         android:id="@+id/tvText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/rivProfilePicture" />
+        android:layout_toLeftOf="@+id/rivImg" />
 
 </RelativeLayout>
