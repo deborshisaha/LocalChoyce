@@ -24,11 +24,22 @@
     <include layout="@layout/content_home_activity" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fab1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_plus" />
+
+    <!--com.sergiocasero.revealfab.RevealFAB
+        android:id="@+id/fab1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:fab_color="@color/colorAccent"
+        app:fab_icon="@drawable/ic_plus"
+        app:reveal_color="@color/colorAccent" /-->
+
 
 </android.support.design.widget.CoordinatorLayout>

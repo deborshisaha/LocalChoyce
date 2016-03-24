@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity
 
     final int FROM_HEADER_TO_LOGIN = 400;
 
+    final int FROM_DRAWER_MESSAGES_TO_LOGIN = 500;
+
+    final int FROM_DRAWER_PROFILE_TO_LOGIN = 600;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +68,38 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+/*
+        final RevealFAB revealFAB = (RevealFAB) findViewById(R.id.fab1);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        revealFAB.setOnClickListener(new RevealFAB.OnClickListener() {
+            @Override
+            public void onClick(RevealFAB button, View v) {
+                Log.i("info","main  fab clicked");
+                Intent intent = null;
+
+                if (ParseUser.getCurrentUser() == null) {
+                    intent = new Intent(MainActivity.this, IntroAndLoginActivity.class);
+                    intent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, true);
+                    //startActivityForResult(intent, FROM_FAB_TO_LOGIN);
+                } else {
+                    intent = new Intent(MainActivity.this, ProductFormActivity.class);
+                    //startActivityForResult(intent, FROM_FAB_TO_PRODUCT_FORM);
+                }
+                revealFAB.setIntent(intent);
+
+                button.startActivityWithAnimation();
+            }
+        });
+*/
+
+
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab1);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Log.i("info","main  fab clicked");
                 Intent intent = null;
 
                 if (ParseUser.getCurrentUser() == null) {
@@ -79,9 +109,12 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     intent = new Intent(MainActivity.this, ProductFormActivity.class);
                     startActivityForResult(intent, FROM_FAB_TO_PRODUCT_FORM);
+                    overridePendingTransition(R.anim.slide_up, R.anim.stay);
+
                 }
             }
         });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -207,13 +240,33 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_style) {
+
             // Handle the camera action
         } else if (id == R.id.nav_profile) {
-            Intent intent = new Intent(MainActivity.this, UserDetailsActivity.class);
-            intent.putExtra("objectId", ParseUser.getCurrentUser().getObjectId());
-            startActivity(intent);
+
+            if(ParseUser.getCurrentUser() != null) {
+                Intent intent = new Intent(MainActivity.this, UserDetailsActivity.class);
+                intent.putExtra("objectId", ParseUser.getCurrentUser().getObjectId());
+                startActivity(intent);
+            } else {
+
+                Intent intent = new Intent(MainActivity.this, IntroAndLoginActivity.class);
+                intent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, true);
+                startActivityForResult(intent, FROM_DRAWER_PROFILE_TO_LOGIN);
+            }
 
         } else if (id == R.id.nav_messages) {
+
+            if(ParseUser.getCurrentUser() != null) {
+                Intent intent = new Intent(MainActivity.this, ConversationActivity.class);
+                intent.putExtra("objectId", ParseUser.getCurrentUser().getObjectId());
+                startActivity(intent);
+            } else {
+
+                Intent intent = new Intent(MainActivity.this, IntroAndLoginActivity.class);
+                intent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, true);
+                startActivityForResult(intent, FROM_DRAWER_MESSAGES_TO_LOGIN);
+            }
 
         } else if (id == R.id.nav_settings) {
 
@@ -277,7 +330,7 @@ public class MainActivity extends AppCompatActivity
                 query.getInBackground(p.getObjectId(), new GetCallback<Product>() {
                     public void done(Product product, ParseException e) {
                         if (e == null) {
-                            Log.i("info"," Product found: "+product.getProductName());
+                            Log.i("info", " Product found: " + product.getProductName());
                             mProductsFragment.addNewProductToList(product);
                         } else {
                             e.printStackTrace();
@@ -287,6 +340,25 @@ public class MainActivity extends AppCompatActivity
             }
 
         }
+
+        if(requestCode == FROM_DRAWER_MESSAGES_TO_LOGIN) {
+            if (ParseUser.getCurrentUser() != null) {
+
+                Intent intent = new Intent(MainActivity.this, ConversationActivity.class);
+                intent.putExtra("objectId", ParseUser.getCurrentUser().getObjectId());
+                startActivity(intent);
+            }
+        }
+
+        if(requestCode == FROM_DRAWER_PROFILE_TO_LOGIN){
+            if (ParseUser.getCurrentUser() != null) {
+
+                Intent intent = new Intent(MainActivity.this, UserDetailsActivity.class);
+                intent.putExtra("objectId", ParseUser.getCurrentUser().getObjectId());
+                startActivity(intent);
+            }
+        }
+
     }
 
     public void getProductsWithSearchTerm(final String term){
@@ -312,8 +384,8 @@ public class MainActivity extends AppCompatActivity
                     for (Product p : products) {
                         Log.i("info", "Productname: " + p.getProductName());
                         Log.i("info", "username : " + String.valueOf(p.getProductPostedBy().getUsername()));
-                        Log.i("info", "Latitude : " + p.getAddress().getLatitude());
-                        Log.i("info", "Longitude : " + p.getAddress().getLongitude());
+                        //Log.i("info", "Latitude : " + p.getAddress().getLatitude());
+                        //Log.i("info", "Longitude : " + p.getAddress().getLongitude());
                     }
 
                     mProductsFragment.addNewProductsToList((ArrayList<Product>) products);

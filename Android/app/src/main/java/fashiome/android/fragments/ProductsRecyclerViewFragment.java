@@ -1,7 +1,9 @@
 package fashiome.android.fragments;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -117,10 +119,14 @@ public class ProductsRecyclerViewFragment extends Fragment {
 
                         Log.i("info", "url before: " + String.valueOf(product.getProductPostedBy().getProfilePictureURL()));
 
+
                         Intent intent = new Intent(getActivity(), ProductDetailsActivity.class);
                         intent.putExtra("product", product);
-
                         startActivityForResult(intent, 500);
+                        getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                        //getActivity().overridePendingTransition(R.anim.card_flip_left_in, R.anim.card_flip_left_out);
+
+
 
                     }
                 });
@@ -150,9 +156,9 @@ public class ProductsRecyclerViewFragment extends Fragment {
                     for(Product p: products) {
                         Log.i("info","CreatedAt: "+p.getCreatedAt().toString());
                         Log.i("info","CreatedAtmillis: "+p.getCreatedAt().getTime());
-                        Log.i("info","username : "+String.valueOf(p.getProductPostedBy().getUsername()));
-                        Log.i("info", "Latitude : " + p.getAddress().getLatitude());
-                        Log.i("info", "Longitude : " + p.getAddress().getLongitude());
+                        //Log.i("info","username : "+String.valueOf(p.getProductPostedBy().getUsername()));
+                        //Log.i("info", "Latitude : " + p.getAddress().getLatitude());
+                        //Log.i("info", "Longitude : " + p.getAddress().getLongitude());
 
                         String relativeTimeAgo = DateUtils.getRelativeTimeSpanString(p.getCreatedAt().getTime(),
                                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();

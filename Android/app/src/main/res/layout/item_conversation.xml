@@ -61,6 +61,7 @@
         android:layout_toRightOf="@+id/rivImg"/>
 
     <View style="@style/DividerHorizontal"
+        android:layout_alignParentBottom="true"
         android:id="@+id/vDivider" />
 
 </RelativeLayout>

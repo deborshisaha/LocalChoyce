@@ -1,14 +1,19 @@
 package fashiome.android.activities;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
@@ -68,7 +73,7 @@ import io.card.payment.CreditCard;
 
 public class ProductDetailsActivity extends AppCompatActivity implements ProductRentDetailsFragment.ProductRentDetailsDialogListener {
 
-    private static String TAG= "ProductDetailsActivity";
+    private static String TAG = "ProductDetailsActivity";
 
     private LinearLayout dotsLayout;
     private int dotsCount;
@@ -147,9 +152,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 //        mProductReviewRecyclerViewAdapter = new ProductReviewRecyclerViewAdapter();
 //        rvProductReview.setAdapter(mProductReviewRecyclerViewAdapter);
 
-        if (mProduct == null ) {
+        if (mProduct == null) {
             mProductIDString = getIntent().getExtras().getString(Product.PRODUCT_ID);
-        }  else {
+        } else {
             populateViewWithProduct(mProduct);
             return;
         }
@@ -171,7 +176,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         });
     }
 
-    private void populateViewWithProduct (final Product product) {
+    private void populateViewWithProduct(final Product product) {
         user = product.getProductPostedBy();
 
         if (user != null) {
@@ -214,23 +219,24 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
         mTimesLiked.setText(String.valueOf(new Random().nextInt(1000) + 10));
         mTimesRented.setText(String.valueOf(new Random().nextInt(100) + 10));
-
+        mRelativeTime.setText(String.valueOf(new Random().nextInt(18) + 4) + "h ago");
         int numberOfUserRatings = product.getProductPostedBy().getRating();
         int numberOfProductRatings = product.getProductRating();
-        Log.i("info"," user ratings "+String.valueOf(numberOfUserRatings));
+        Log.i("info", " user ratings " + String.valueOf(numberOfUserRatings));
         Log.i("info", " product ratings " + String.valueOf(numberOfProductRatings));
 
 
-        LinearLayout mLL1 = (LinearLayout)findViewById(R.id.llRatingBar1);
-        Utils.setRating(mLL1, product.getProductRating(), this);
+        LinearLayout mLL1 = (LinearLayout) findViewById(R.id.llRatingBar1);
+        Utils.setRating(mLL1, new Random().nextInt(3) + 3, this);
+        // Utils.setRating(mLL1, product.getProductRating(), this);
 
-        LinearLayout mLL2 = (LinearLayout)findViewById(R.id.llRatingBar2);
-        Utils.setRating(mLL2, product.getProductRating(), this);
+        LinearLayout mLL2 = (LinearLayout) findViewById(R.id.llRatingBar2);
+        Utils.setRating(mLL2, new Random().nextInt(3) + 3, this);
 
         setViewPagerItemsWithAdapter(product);
         setUiPageViewController();
 
-        if(ParseUser.getCurrentUser() != null) {
+        if (ParseUser.getCurrentUser() != null) {
             parseCallForIsLiked(product);
         }
 
@@ -238,9 +244,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     }
 
     private void setUiPageViewController() {
-        dotsLayout = (LinearLayout)findViewById(R.id.viewPagerCountDots);
+        dotsLayout = (LinearLayout) findViewById(R.id.viewPagerCountDots);
         dotsCount = productPagerAdapter.getCount();
-        if (dotsCount > 0 ) {
+        if (dotsCount > 0) {
             dots = new TextView[dotsCount];
 
             for (int i = 0; i < dotsCount; i++) {
@@ -307,7 +313,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
         MenuItem item = menu.findItem(R.id.menu_item_like);
 
-        if(isLiked){
+        if (isLiked) {
             item.setIcon(R.drawable.ic_favorite);
         }
 
@@ -319,11 +325,11 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
         int id = item.getItemId();
 
-        switch(id) {
+        switch (id) {
 
             case R.id.menu_item_like:
 
-                if(ParseUser.getCurrentUser() != null) {
+                if (ParseUser.getCurrentUser() != null) {
 
                     if (isLiked) {
                         parseCallForRemoveLike(mProduct);
@@ -344,7 +350,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         return super.onOptionsItemSelected(item);
     }
 
-    public void parseCallForAddLike(final Product product){
+    public void parseCallForAddLike(final Product product) {
 
         final ProgressDialog pd = new ProgressDialog(ProductDetailsActivity.this);
         pd.isIndeterminate();
@@ -379,7 +385,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         });
     }
 
-    public void parseCallForRemoveLike(Product product){
+    public void parseCallForRemoveLike(Product product) {
 
         final ProgressDialog pd = new ProgressDialog(ProductDetailsActivity.this);
         pd.isIndeterminate();
@@ -420,7 +426,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         });
     }
 
-    public void parseCallForIsLiked(Product product){
+    public void parseCallForIsLiked(Product product) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserProduct");
         query.whereEqualTo("userId", ParseUser.getCurrentUser());
         query.whereEqualTo("productId", product);
@@ -444,10 +450,10 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
     public void processPayment(View view) {
 
-        if(totalAmount <= 0) {
+        if (totalAmount <= 0) {
             showEditDialog(mProduct);
         } else {
-            if(ParseUser.getCurrentUser()!= null) {
+            if (ParseUser.getCurrentUser() != null) {
                 onScanPress(view);
             } else {
                 Intent intent = new Intent(ProductDetailsActivity.this, IntroAndLoginActivity.class);
@@ -468,9 +474,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
     @Override
     public void onSavingRentDetails(int amount) {
-        Log.i("info","callback received : total amount "+ String.valueOf(amount));
+        Log.i("info", "callback received : total amount " + String.valueOf(amount));
         totalAmount = amount;
-        String displayAmount = "Pay $"+String.valueOf(totalAmount);
+        String displayAmount = "Pay $" + String.valueOf(totalAmount);
         mRent.setText(displayAmount);
     }
 
@@ -521,8 +527,7 @@ instead of showing the old activity */
                 if (scanResult.postalCode != null) {
                     resultDisplayStr += "Postal Code: " + scanResult.postalCode + "\n";
                 }
-            }
-            else {
+            } else {
                 resultDisplayStr = "Scan was canceled.";
             }
 
@@ -542,7 +547,7 @@ instead of showing the old activity */
             getUserAndSaveProduct();
 
         }
-        if(requestCode == 300){
+        if (requestCode == 300) {
             if (ParseUser.getCurrentUser() != null) {
                 //Intent intent = new Intent(ProductDetailsActivity.this, ProductFormActivity.class);
                 //startActivityForResult(intent, 100);
@@ -553,7 +558,7 @@ instead of showing the old activity */
         // else handle other activity results
     }
 
-    public void saveBoughtProductDetailsToParse (final User user){
+    public void saveBoughtProductDetailsToParse(final User user) {
 
         ParseQuery<Product> query = ParseQuery.getQuery("Product");
         query.setLimit(20);
@@ -592,43 +597,43 @@ instead of showing the old activity */
 
     public void getProductLocationAddress(Product product) {
 
-        Geocoder geocoder= new Geocoder(this, Locale.ENGLISH);
+        Geocoder geocoder = new Geocoder(this, Locale.ENGLISH);
 
 
         //if(product.getAddress() != null) {
-            try {
+        try {
 
-                Log.i("info", "Latitude : " + product.getAddress().getLatitude());
-                Log.i("info", "Longitude : " + product.getAddress().getLongitude());
+            //Log.i("info", "Latitude : " + product.getAddress().getLatitude());
+            //Log.i("info", "Longitude : " + product.getAddress().getLongitude());
 
-                List<Address> addresses = geocoder.getFromLocation(product.getAddress().getLatitude(),
-                        product.getAddress().getLongitude(), 1);
+            List<Address> addresses = geocoder.getFromLocation(product.getAddress().getLatitude(),
+                    product.getAddress().getLongitude(), 1);
 
-                if (addresses != null && addresses.size() > 0) {
+            if (addresses != null && addresses.size() > 0) {
 
-                    Address fetchedAddress = addresses.get(0);
-                    StringBuilder strAddress = new StringBuilder();
+                Address fetchedAddress = addresses.get(0);
+                StringBuilder strAddress = new StringBuilder();
 
-                    for (int i = 0; i < fetchedAddress.getMaxAddressLineIndex(); i++) {
-                        strAddress.append(fetchedAddress.getAddressLine(i)).append("\n");
-                    }
+                for (int i = 0; i < fetchedAddress.getMaxAddressLineIndex(); i++) {
+                    strAddress.append(fetchedAddress.getAddressLine(i)).append("\n");
+                }
 
-                    Log.i("I am at: ", strAddress.toString());
-                    if (strAddress.length() > 0 && !strAddress.equals("")) {
-                        mAddress.setText(strAddress.toString());
-                    }
+                Log.i("I am at: ", strAddress.toString());
+                if (strAddress.length() > 0 && !strAddress.equals("")) {
+                    mAddress.setText(strAddress.toString());
+                }
 
-                } else
-                    Log.i("info", "No location found..!");
+            } else
+                Log.i("info", "No location found..!");
 
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Could not get address..!", Toast.LENGTH_LONG).show();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            //Toast.makeText(getApplicationContext(), "Could not get address..!", Toast.LENGTH_LONG).show();
+        }
         //}
     }
 
-    public void getUserAndSaveProduct(){
+    public void getUserAndSaveProduct() {
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("objectId", ParseUser.getCurrentUser().getObjectId());
@@ -685,7 +690,23 @@ instead of showing the old activity */
             intent = new Intent(ProductDetailsActivity.this, UserDetailsActivity.class);
             intent.putExtra("objectId", mProduct.getProductPostedBy().getObjectId());
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
     }
 
+    public void callSeller(View view) {
+        Log.i("info","calling phone");
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "4802088619"));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        startActivity(intent);
+    }
 }

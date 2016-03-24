@@ -125,5 +125,4 @@ dependencies {
     //View pager with PagerSlidingTabStrip
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
 
-
 }

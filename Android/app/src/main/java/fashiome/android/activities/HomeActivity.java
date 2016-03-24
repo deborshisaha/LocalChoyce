@@ -53,6 +53,7 @@ public class HomeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("info","main  fab clicked");
 
                 Intent intent = null;
 
