@@ -29,16 +29,8 @@
     </string-array>
 
     <string name="about_me_text">
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
+        "Independent fashion designer passionate about emerging markets in fashion industry. Looking for potential buyers in "
+        "designer clothing for both men and women. Check my profile page for more details\n\n"
     </string>
     <string name="title_activity_product_filter_settings">ProductFilterSettingsActivity</string>
     <string name="title_activity_user_details">UserDetailsActivity</string>
