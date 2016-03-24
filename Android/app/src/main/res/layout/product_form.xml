@@ -23,7 +23,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/rivProductPrimaryImage"
             android:layout_width="165dp"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:padding="4dp"
             android:scaleType="centerCrop"
             android:background="@drawable/bg_dotted_rectangle"
@@ -36,7 +36,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/rivProductSecondaryImage"
             android:layout_width="165dp"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:scaleType="centerCrop"
             android:background="@drawable/bg_dotted_rectangle"
             android:src="@drawable/upload_placeholder"
@@ -52,7 +52,7 @@
         android:id="@+id/productNameWrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="4dp"
         android:layout_below="@+id/productImagesHolder">
 

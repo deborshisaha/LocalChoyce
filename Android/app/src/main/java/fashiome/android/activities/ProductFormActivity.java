@@ -265,6 +265,7 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
                             Intent resultIntent = new Intent();
                             resultIntent.putExtra("product", product);
                             setResult(RESULT_OK, resultIntent);
+                            overridePendingTransition(R.anim.stay, R.anim.slide_down);
                             finish();
                         }
                     };
@@ -375,11 +376,11 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
             e.printStackTrace();
         }
         if (location != null) {
-            Toast.makeText(this, "GPS location was found! Lat:"+ location.getLatitude() +" Long:"+location.getLongitude(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "GPS location was found! Lat:"+ location.getLatitude() +" Long:"+location.getLongitude(), Toast.LENGTH_SHORT).show();
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             product.setAddress(new Address(latLng));
         } else {
-            Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }
         startLocationUpdates();
     }

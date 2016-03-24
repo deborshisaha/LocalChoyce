@@ -11,10 +11,10 @@
     <com.makeramen.roundedimageview.RoundedImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="300dp"
         android:scaleType="centerCrop"
         android:id="@+id/rivProductPrimaryImage"
-
+        android:transitionName="profile"
         app:riv_corner_radius="4dp"
         app:riv_mutate_background="false"
         android:layout_centerHorizontal="true"/>

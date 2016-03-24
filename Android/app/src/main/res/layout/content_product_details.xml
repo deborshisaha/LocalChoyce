@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layoutAnimation="@anim/layout_animation"
             android:background="@color/product_detail_gray_bg">
 
             <RelativeLayout
@@ -260,6 +261,7 @@
                     android:layout_height="32dp"
                     android:id="@+id/iBtnCall"
                     android:src="@drawable/ic_call"
+                    android:onClick="callSeller"
                     android:layout_centerHorizontal="true" />
 
                 <ImageView

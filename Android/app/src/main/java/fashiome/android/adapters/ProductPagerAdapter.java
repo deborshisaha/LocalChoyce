@@ -67,6 +67,7 @@ public class ProductPagerAdapter extends PagerAdapter {
             Log.i("info", "Loading image from glide " + URLString);
 
             final ProgressDialog pd = new ProgressDialog(mContext);
+            pd.setMessage("Your Panache just got affordable!");
             pd.isIndeterminate();
             pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             pd.show();

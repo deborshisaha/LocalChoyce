@@ -1,5 +1,6 @@
 package fashiome.android.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -61,6 +62,7 @@ public class UserBoughtItemsAdapter extends RecyclerView.Adapter<UserBoughtItems
                     Intent i = new Intent(context, ProductDetailsActivity.class);
                     i.putExtra("product", products.get(position));
                     context.startActivity(i);
+                    ((Activity)context).overridePendingTransition(R.anim.card_flip_left_in, R.anim.card_flip_left_out);
 
                     break;
 

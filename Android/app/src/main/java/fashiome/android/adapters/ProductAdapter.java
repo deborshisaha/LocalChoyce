@@ -1,7 +1,9 @@
 package fashiome.android.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -251,9 +253,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                         mContext.startActivity(intent);
                     } else {
                         Log.i("info", "user profile image clicked");
+
+
+
                         intent = new Intent(mContext, UserDetailsActivity.class);
                         intent.putExtra("objectId", mProducts.get(getLayoutPosition()).getProductPostedBy().getObjectId());
                         mContext.startActivity(intent);
+
+
+/*
+                        intent = new Intent(mContext, UserDetailsActivity.class);
+                        intent.putExtra("objectId", mProducts.get(getLayoutPosition()).getProductPostedBy().getObjectId());
+                        ActivityOptionsCompat options = ActivityOptionsCompat.
+                                makeSceneTransitionAnimation((Activity)mContext, rivProfilePicture, "profile");
+                        mContext.startActivity(intent, options.toBundle());
+*/
+
                     }
                     break;
 

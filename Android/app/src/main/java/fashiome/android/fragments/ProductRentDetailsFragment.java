@@ -2,8 +2,10 @@ package fashiome.android.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -27,7 +29,10 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.target.Target;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,6 +42,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.models.Product;
+import fashiome.android.utils.ImageURLGenerator;
+import fashiome.android.utils.Utils;
 
 public class ProductRentDetailsFragment extends DialogFragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener{
 
@@ -66,6 +73,7 @@ public class ProductRentDetailsFragment extends DialogFragment implements View.O
     @Bind(R.id.numDays) EditText mNumdays;
     @Bind(R.id.etQuantityNum) EditText mQuantity;
     @Bind(R.id.tvTotal) TextView mTotal;
+    @Bind(R.id.ivRentImage) ImageView mRentImage;
 
     @Override
     public void onClick(View v) {
@@ -119,16 +127,33 @@ public class ProductRentDetailsFragment extends DialogFragment implements View.O
         ButterKnife.unbind(this);
     }
 
+
     @Override
     public void onResume() {
         // Get existing layout params for the window
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
         // Assign window properties to fill the parent
+
+        //params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        //params.height = WindowManager.LayoutParams.MATCH_PARENT;
+
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.MATCH_PARENT;
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
         getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
-        // Call super onResume after sizing
+
+        //WindowManager.LayoutParams lp = myDialog.getWindow().getAttributes();
+        //lp.dimAmount = 0.7f        // Call super onResume after sizing
         super.onResume();
+    }
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow()
+                .getAttributes().windowAnimations = R.style.DialogAnimation;
+
     }
 
     @Override
@@ -164,6 +189,36 @@ public class ProductRentDetailsFragment extends DialogFragment implements View.O
 
         String title = product.getProductName() + " $"+ String.valueOf((int)product.getPrice()) + "/day";
         getDialog().setTitle(title);
+
+        String URLString = ImageURLGenerator.getInstance(getActivity()).URLForImageWithCloudinaryPublicId(product.getImageCloudinaryPublicId(0), Utils.getScreenWidthInDp(getActivity()));
+
+        Log.i("info", " rent retials product url" + URLString);
+
+        //Glide.with(getActivity()).load(URLString).into(mRentImage);
+
+        final ProgressDialog pd = new ProgressDialog(getContext());
+        pd.isIndeterminate();
+        pd.setMessage("Get ready to  show off your panache");
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.show();
+
+        Glide.with(getActivity())
+                .load(URLString)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        pd.dismiss();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        pd.dismiss();
+                        return false;
+                    }
+                })
+                .into(mRentImage);
+
 
         mTotal.setVisibility(View.INVISIBLE);
 
