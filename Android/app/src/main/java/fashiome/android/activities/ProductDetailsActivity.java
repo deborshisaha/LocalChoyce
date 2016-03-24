@@ -605,6 +605,8 @@ instead of showing the old activity */
 
             //Log.i("info", "Latitude : " + product.getAddress().getLatitude());
             //Log.i("info", "Longitude : " + product.getAddress().getLongitude());
+            //Log.i("info", "Longitude : " + product.getAddress().getObjectId());
+
 
             List<Address> addresses = geocoder.getFromLocation(product.getAddress().getLatitude(),
                     product.getAddress().getLongitude(), 1);
