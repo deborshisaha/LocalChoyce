@@ -51,14 +51,12 @@ public class ProductRentDetailsFragment extends DialogFragment implements View.O
     Calendar myCalendar = Calendar.getInstance();
 
     public Context context;
-
     public Product product;
 
     private int finalAmount = 0;
 
     SimpleDateFormat displayFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
     SimpleDateFormat requiredFormat = new SimpleDateFormat("yyyyMMdd", Locale.US);
-
 
     public interface ProductRentDetailsDialogListener {
         void onSavingRentDetails(int amount);

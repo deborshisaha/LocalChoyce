@@ -57,6 +57,7 @@ import java.util.Random;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.WriteReviewFragment;
 import fashiome.android.adapters.ProductPagerAdapter;
 import fashiome.android.adapters.ProductReviewRecyclerViewAdapter;
 import fashiome.android.fragments.ProductRentDetailsFragment;
@@ -461,6 +462,13 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
                 startActivityForResult(intent, 300);
             }
         }
+    }
+
+    private void showProductReviewDialog(Product product) {
+        FragmentManager fm = getSupportFragmentManager();
+        WriteReviewFragment writeReviewFragment = WriteReviewFragment.newInstance(product);
+        writeReviewFragment.setContext(this);
+        writeReviewFragment.show(fm, "fragment_write_review");
     }
 
     private void showEditDialog(Product product) {
