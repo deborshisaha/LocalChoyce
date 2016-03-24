@@ -278,7 +278,7 @@
                     android:layout_height="32dp"
                     android:id="@+id/ivSkype"
                     android:layout_marginLeft="64dp"
-                    android:src="@drawable/ic_skype"
+                    android:src="@drawable/ic_write_review"
                     android:layout_toRightOf="@+id/iBtnCall" />
 
             </RelativeLayout>
@@ -290,29 +290,16 @@
                 android:paddingBottom="16dp"
                 android:background="@color/white">
 
+
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Reviews"
-                    android:gravity="center"
-                    android:id="@+id/tvReviewHeader"
-                    android:textColor="@color/colorPrimaryText"
                     android:padding="16dp"
-                    style="@style/HeaderMedium" />
-
-                <!--<include layout="@layout/item_review" android:id="@+id/productReviewOne" />-->
-                <!--<include layout="@layout/item_review" android:id="@+id/productReviewTwo" />-->
-                <!--<include layout="@layout/item_review" android:id="@+id/productReviewThree" />-->
-
-                <TextView
-                    android:padding="4dp"
                     android:gravity="center"
                     android:id="@+id/tvViewMore"
                     android:layout_centerHorizontal="true"
-                    android:layout_width="120dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="VIEW MORE"
-                    android:background="@drawable/chat_button_background"
+                    android:text="Show reviews"
+                    android:background="@drawable/show_reviews_btn_bg"
                     android:textColor="@color/white"
                     style="@style/RegularLight"/>
 
