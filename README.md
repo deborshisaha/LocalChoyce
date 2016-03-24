@@ -5,9 +5,6 @@ Here's a walkthrough of implemented user stories:
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
-![demo](sprint2-1.gif)
-![demo](sprint2-2.gif)
-
 * [ ] Setup Parse for ModaRenta
 * [ ] Integrate Facebook login
 * [ ] Create models and relationships
