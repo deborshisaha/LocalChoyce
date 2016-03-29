@@ -31,6 +31,7 @@ import java.util.Random;
 import fashiome.android.R;
 import fashiome.android.fragments.IntroAndLoginFragment;
 import fashiome.android.models.User;
+import fashiome.android.v2.activities.PanacheHomeActivity;
 
 public class IntroAndLoginActivity extends AppIntro {
 
@@ -85,7 +86,7 @@ public class IntroAndLoginActivity extends AppIntro {
 
     @Override
     public void onSkipPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, PanacheHomeActivity.class);
         startActivity(intent);
         //finish();
     }

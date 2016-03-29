@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.parse.ParseUser;
 
+import fashiome.android.v2.activities.PanacheHomeActivity;
+
 /**
  * Created by dsaha on 3/18/16.
  */
@@ -21,7 +23,7 @@ public class EntryActivity extends AppCompatActivity {
             launchIntent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, false);
             startActivity(launchIntent);
         } else {
-            Intent launchIntent = new Intent(EntryActivity.this, MainActivity.class);
+            Intent launchIntent = new Intent(EntryActivity.this, PanacheHomeActivity.class);
             startActivity(launchIntent);
         }
 

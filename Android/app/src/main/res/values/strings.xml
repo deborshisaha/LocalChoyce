@@ -10,8 +10,8 @@
     <string name="action_share">Share</string>
     <string name="action_like">Like</string>
     <string name="product_ask_price">Price</string>
-    <string name="product_description">Product Description</string>
-    <string name="product_name">Product name</string>
+    <string name="product_description">Description</string>
+    <string name="product_name">Name</string>
     <string name="post">Post</string>
     <string name="title_activity_booking_details">Booking details</string>
     <string name="title_activity_login">LoginActivity</string>
@@ -57,4 +57,11 @@
     <string name="user_profile_my_products">My products</string>
     <string name="user_profile_my_reviews">Reviews</string>
 
+
+    <!--Version-->
+    <string name="product_price">Price</string>
+    <string name="cancel">Cancel</string>
+    <string name="product_name_hint">Make it short and sweet</string>
+    <string name="product_description_hint">About the product</string>
+    <string name="product_price_hint">Mention a price per day</string>
 </resources>
