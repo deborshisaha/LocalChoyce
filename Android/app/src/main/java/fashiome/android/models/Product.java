@@ -36,6 +36,7 @@ public class Product extends ParseObject implements Parcelable {
     private int productRating;
     private int numberOfReviews;
     private int numberOfViews;
+    private int numberOfRentals;
     private int numberOfFavorites;
     private double price;
 
@@ -118,6 +119,19 @@ public class Product extends ParseObject implements Parcelable {
     public void setNumberOfViews(int numberOfViews) {
         this.numberOfViews = numberOfViews;
         put("numberOfViews", numberOfViews);
+    }
+
+    public int getNumberOfRentals() {
+
+        if(this.numberOfRentals == 0){
+            this.numberOfRentals = getInt("numberOfRentals");
+        }
+        return this.numberOfRentals;
+    }
+
+    public void setNumberOfRentals(int numberOfRentals) {
+        this.numberOfRentals = numberOfRentals;
+        put("numberOfRentals", numberOfRentals);
     }
 
     public int getNumberOfFavorites() {
@@ -219,9 +233,9 @@ public class Product extends ParseObject implements Parcelable {
 
     public int getProductRating() {
 
-//        if (this.productRating == 0) {
+        if (this.productRating == 0) {
             this.productRating = getInt("productRating");
- //       }
+        }
         return this.productRating;
     }
 
@@ -287,6 +301,7 @@ public class Product extends ParseObject implements Parcelable {
         dest.writeInt(getNumberOfFavorites());
         dest.writeInt(getNumberOfViews());
         dest.writeInt(getNumberOfReviews());
+        dest.writeInt(getNumberOfRentals());
         dest.writeDouble(getPrice());
     }
 
@@ -306,6 +321,7 @@ public class Product extends ParseObject implements Parcelable {
         this.numberOfFavorites = in.readInt();
         this.numberOfViews = in.readInt();
         this.numberOfReviews = in.readInt();
+        this.numberOfRentals = in.readInt();
         this.price = in.readDouble();
     }
 

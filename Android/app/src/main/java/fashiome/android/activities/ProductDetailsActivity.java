@@ -74,7 +74,7 @@ import io.card.payment.CreditCard;
 
 public class ProductDetailsActivity extends AppCompatActivity implements ProductRentDetailsFragment.ProductRentDetailsDialogListener {
 
-    private static String TAG = "ProductDetailsActivity";
+    private static final String TAG = ProductDetailsActivity.class.getSimpleName();
 
     private LinearLayout dotsLayout;
     private int dotsCount;
@@ -148,6 +148,17 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         getSupportActionBar().setTitle("");
 
         mProduct = getIntent().getExtras().getParcelable("product");
+        Log.i(TAG, "Product Rating : " + mProduct.getProductRating());
+        Log.i(TAG, "Product favorties : " + mProduct.getNumberOfFavorites());
+        Log.i(TAG, "Product reviews : " + mProduct.getNumberOfReviews());
+        Log.i(TAG, "Product views : " + mProduct.getNumberOfViews());
+        Log.i(TAG, "Price : " + mProduct.getPrice());
+        Log.i(TAG, "User Rating : " + mProduct.getProductPostedBy().getRating());
+        Log.i(TAG, "Product Rentals : " + mProduct.getNumberOfRentals());
+        //String relativeTimeAgo = DateUtils.getRelativeTimeSpanString(mProduct.getCreatedAt().getTime(),
+        //        System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+        //Log.i(TAG, "Relative time : "+relativeTimeAgo);
+
 
 //        rvProductReview.setLayoutManager(new LinearLayoutManager(this));
 //        mProductReviewRecyclerViewAdapter = new ProductReviewRecyclerViewAdapter();
@@ -170,6 +181,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             @Override
             public void done(List<Product> objects, ParseException e) {
                 if (objects.size() == 1) {
+                    Log.i(TAG,"Got product with Id");
                     mProduct = objects.get(0);
                     populateViewWithProduct(mProduct);
                 }
@@ -218,8 +230,10 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             }
         });
 
-        mTimesLiked.setText(String.valueOf(new Random().nextInt(1000) + 10));
-        mTimesRented.setText(String.valueOf(new Random().nextInt(100) + 10));
+        //mTimesLiked.setText(String.valueOf(new Random().nextInt(1000) + 10));
+        mTimesLiked.setText(String.valueOf(product.getNumberOfFavorites()));
+        //mTimesRented.setText(String.valueOf(new Random().nextInt(100) + 10));
+        mTimesRented.setText(String.valueOf(product.getNumberOfRentals()));
         mRelativeTime.setText(String.valueOf(new Random().nextInt(18) + 4) + "h ago");
         int numberOfUserRatings = product.getProductPostedBy().getRating();
         int numberOfProductRatings = product.getProductRating();
@@ -228,11 +242,12 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
 
         LinearLayout mLL1 = (LinearLayout) findViewById(R.id.llRatingBar1);
-        Utils.setRating(mLL1, new Random().nextInt(3) + 3, this);
-        // Utils.setRating(mLL1, product.getProductRating(), this);
+        //Utils.setRating(mLL1, new Random().nextInt(3) + 3, this);
+        Utils.setRating(mLL1, numberOfUserRatings, this);
 
         LinearLayout mLL2 = (LinearLayout) findViewById(R.id.llRatingBar2);
-        Utils.setRating(mLL2, new Random().nextInt(3) + 3, this);
+        //Utils.setRating(mLL2, new Random().nextInt(3) + 3, this);
+        Utils.setRating(mLL2, numberOfProductRatings , this);
 
         setViewPagerItemsWithAdapter(product);
         setUiPageViewController();

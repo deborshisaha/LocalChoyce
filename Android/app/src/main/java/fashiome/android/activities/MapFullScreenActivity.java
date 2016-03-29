@@ -62,7 +62,10 @@ import fashiome.android.Manifest;
 import fashiome.android.R;
 import fashiome.android.adapters.CustomWindowAdapter;
 
+import fashiome.android.adapters.MapviewAdapter;
 import fashiome.android.adapters.ProductAdapter;
+import fashiome.android.adapters.UserFollowerListAdapter;
+import fashiome.android.fragments.ProductsRecyclerViewFragment;
 import fashiome.android.helpers.ItemClickSupport;
 import fashiome.android.models.Item;
 
@@ -91,6 +94,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
     private Marker mLocationMarker;
 
     ImageView mProfileLogo;
+    private static final String TAG = MapFullScreenActivity.class.getSimpleName();
 
 
     /*
@@ -105,27 +109,42 @@ public class MapFullScreenActivity extends AppCompatActivity implements
     TextView title;
     TextView desc;
     TextView price;
-
+    RecyclerView rvMap;
     Product mSelectedProduct;
+    LinearLayoutManager linearLayoutManager;
+    MapviewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_full_screen);
 
-
         mItems = getIntent().getParcelableArrayListExtra("products");
 
-         pic =(ImageView) findViewById(R.id.ivItemPhoto);
-         title = (TextView) findViewById(R.id.tvItemName);
-         desc = (TextView) findViewById(R.id.tvDesc);
-         price = (TextView) findViewById(R.id.tvPrice);
+        Log.i(TAG, "list of products" + mItems.size());
+
+        rvMap = (RecyclerView) findViewById(R.id.rvMap);
+
+        Log.i(TAG, "oncreateview");
+
+        // Set layout manager to position the items
+        linearLayoutManager =
+                new LinearLayoutManager(MapFullScreenActivity.this);
+
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+        rvMap.setLayoutManager(linearLayoutManager);
+
+        // Create adapter passing in the sample user data
+        adapter = new MapviewAdapter(MapFullScreenActivity.this);
+
+        rvMap.setAdapter(adapter);
+
 
         RelativeLayout footer = (RelativeLayout) findViewById(R.id.rlFooter);
         footer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 //...
                 //show dialog fragment here
@@ -134,9 +153,6 @@ public class MapFullScreenActivity extends AppCompatActivity implements
                 startActivity(i);
             }
         });
-
-
-
 
         System.out.println(mItems);
         System.out.print(mItems.size());
@@ -609,7 +625,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
                                 Toast.makeText(MapFullScreenActivity.this, "No Matching Results found !! try again !! :)", Toast.LENGTH_SHORT).show();
 
                         } else {
-                            Log.d("item", "Error: " + e.getMessage());
+                            Log.d(TAG, "Error: " + e.getMessage());
                         }
                     }
                 });

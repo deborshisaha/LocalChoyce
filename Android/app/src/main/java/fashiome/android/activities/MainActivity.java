@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
 
     RoundedImageView riv;
     TextView t1;
+    private static final String TAG = MainActivity.class.getSimpleName();
     TextView t2;
     Button fb;
     ProductsRecyclerViewFragment mProductsFragment;
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                Log.i("info","main  fab clicked");
+                Log.i(TAG,"main  fab clicked");
                 Intent intent = null;
 
                 if (ParseUser.getCurrentUser() == null) {
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                Log.i("info", "query " + query);
+                Log.i(TAG, "query " + query);
 
                 getProductsWithSearchTerm(query);
                 return true;
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                Log.i("info", "query " + newText);
+                Log.i(TAG, "query " + newText);
 
                 if ((newText.length() == 0) && (!isAllProducts)) {
                     //searchView.setQueryHint("Search ...");
@@ -226,11 +227,20 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        //if (id == R.id.action_settings) {
+        if (id == R.id.map_launcher) {
+            Log.i(TAG,"Map launcher clicked");
+            launchMap();
         //    return true;
-        //}
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void launchMap() {
+        Intent i = new Intent(MainActivity.this,MapFullScreenActivity.class);
+        i.putParcelableArrayListExtra("products", mProductsFragment.getProductsAdapter().getAll());
+        startActivity(i);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -299,10 +309,10 @@ public class MainActivity extends AppCompatActivity
             //get the user's profile logo
             User u = (User) ParseUser.getCurrentUser();
             String profileUrl = ParseUser.getCurrentUser().get("profilePictureUrl").toString();
-            Log.i("info", "url " + profileUrl);
-            Log.i("info", "url " + u.getProfilePictureURL());
+            Log.i(TAG, "url " + profileUrl);
+            Log.i(TAG, "url " + u.getProfilePictureURL());
             String URLString = ImageURLGenerator.getInstance(this).URLForFBProfilePicture(u.getFacebookId(), Utils.getScreenWidthInDp(this));
-            Log.i("info", "url " + URLString);
+            Log.i(TAG, "url " + URLString);
             Glide.with(MainActivity.this).load(URLString).into(riv);
             t1.setText(u.getUsername());
             t2.setText(u.getEmail());
@@ -322,7 +332,7 @@ public class MainActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
 
                 Product p = data.getParcelableExtra("product");
-                Log.i("info"," Pid"+p.getObjectId());
+                Log.i(TAG," Pid"+p.getObjectId());
                 ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
                 query.include("productPostedBy");
                 query.include("productBoughtBy");
@@ -330,7 +340,7 @@ public class MainActivity extends AppCompatActivity
                 query.getInBackground(p.getObjectId(), new GetCallback<Product>() {
                     public void done(Product product, ParseException e) {
                         if (e == null) {
-                            Log.i("info", " Product found: " + product.getProductName());
+                            Log.i(TAG, " Product found: " + product.getProductName());
                             mProductsFragment.addNewProductToList(product);
                         } else {
                             e.printStackTrace();
@@ -382,10 +392,10 @@ public class MainActivity extends AppCompatActivity
                     //lastSeen = products.get(0).getCreatedAt();
                     //Log.i("Last seen date: ", lastSeen.toString());
                     for (Product p : products) {
-                        Log.i("info", "Productname: " + p.getProductName());
-                        Log.i("info", "username : " + String.valueOf(p.getProductPostedBy().getUsername()));
-                        //Log.i("info", "Latitude : " + p.getAddress().getLatitude());
-                        //Log.i("info", "Longitude : " + p.getAddress().getLongitude());
+                        Log.i(TAG, "Productname: " + p.getProductName());
+                        Log.i(TAG, "username : " + String.valueOf(p.getProductPostedBy().getUsername()));
+                        Log.i(TAG, "Latitude : " + p.getAddress().getLatitude());
+                        Log.i(TAG, "Longitude : " + p.getAddress().getLongitude());
                     }
 
                     mProductsFragment.addNewProductsToList((ArrayList<Product>) products);
@@ -393,7 +403,7 @@ public class MainActivity extends AppCompatActivity
 
                 } else {
                     if (e == null) {
-                        Log.i("info", "no results found");
+                        Log.i(TAG, "no results found");
                         //searchView.setQueryHint("No results");
                         //showNoResultsDialog(term);
                     } else {
