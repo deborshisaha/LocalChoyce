@@ -63,5 +63,5 @@
     <string name="cancel">Cancel</string>
     <string name="product_name_hint">Make it short and sweet</string>
     <string name="product_description_hint">About the product</string>
-    <string name="product_price_hint">Mention a price per day</string>
+    <string name="product_price_hint">How much a day</string>
 </resources>

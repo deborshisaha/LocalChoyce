@@ -19,8 +19,7 @@ public class SellerFragment extends Fragment {
     //    @Bind(R.id.fabAddProduct)
     FloatingActionButton fabAddProduct;
 
-    public SellerFragment() {
-    }
+    public SellerFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
