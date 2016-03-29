@@ -90,7 +90,9 @@ public class User extends ParseUser implements Parcelable {
 
     public int getRating() {
 
-        this.rating = getInt("rating");
+        if (this.rating == 0) {
+            this.rating = getInt("rating");
+        }
         return this.rating;
     }
 

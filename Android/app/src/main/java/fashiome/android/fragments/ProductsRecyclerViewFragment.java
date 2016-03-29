@@ -28,6 +28,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.activities.MainActivity;
 import fashiome.android.activities.ProductDetailsActivity;
 import fashiome.android.adapters.ProductAdapter;
 import fashiome.android.animators.ProductResultsAnimator;
@@ -44,6 +45,8 @@ import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
  * A placeholder fragment containing a simple view.
  */
 public class ProductsRecyclerViewFragment extends Fragment {
+
+    private static final String TAG = ProductsRecyclerViewFragment.class.getSimpleName();
 
     /* View bindings */
     @Bind(R.id.rvProduct)
@@ -98,7 +101,7 @@ public class ProductsRecyclerViewFragment extends Fragment {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                Log.i("info", "Refresh to get new items for date" + new Date().toString());
+                Log.i(TAG, "Refresh to get new items for date" + new Date().toString());
                 getAllProductsFromParse(Constants.REFRESH_OPERATION, lastSeen);
 
             }
@@ -117,8 +120,10 @@ public class ProductsRecyclerViewFragment extends Fragment {
 
                         Product product = mProductsAdapter.getProductAtIndex(position);
 
-                        Log.i("info", "url before: " + String.valueOf(product.getProductPostedBy().getProfilePictureURL()));
-
+                        Log.i(TAG, "url before: " + String.valueOf(product.getProductPostedBy().getProfilePictureURL()));
+                        Log.i(TAG, "Product Rating : " + product.getProductRating());
+                        Log.i(TAG, "Price : " + product.getPrice());
+                        Log.i(TAG, "User Rating : " + product.getProductPostedBy().getRating());
 
                         Intent intent = new Intent(getActivity(), ProductDetailsActivity.class);
                         intent.putExtra("product", product);
@@ -152,18 +157,22 @@ public class ProductsRecyclerViewFragment extends Fragment {
                 if (e == null && products.size() > 0) {
                     Log.d("DEBUG", "Retrieved " + products.size() + " products");
                     lastSeen = products.get(0).getCreatedAt();
-                    Log.i("Last seen date: ",lastSeen.toString());
+                    Log.i(TAG,"Last seen date: "+lastSeen.toString());
                     for(Product p: products) {
-                        Log.i("info","CreatedAt: "+p.getCreatedAt().toString());
-                        Log.i("info","CreatedAtmillis: "+p.getCreatedAt().getTime());
-                        //Log.i("info","username : "+String.valueOf(p.getProductPostedBy().getUsername()));
-                        //Log.i("info", "Latitude : " + p.getAddress().getLatitude());
-                        //Log.i("info", "Longitude : " + p.getAddress().getLongitude());
+                        Log.i(TAG,"CreatedAt: "+p.getCreatedAt().toString());
+                        Log.i(TAG,"CreatedAtmillis: "+p.getCreatedAt().getTime());
+                        Log.i(TAG,"username : "+String.valueOf(p.getProductPostedBy().getUsername()));
+                        Log.i(TAG, "Latitude : " + p.getAddress().getLatitude());
+                        Log.i(TAG, "Longitude : " + p.getAddress().getLongitude());
+                        Log.i(TAG, "Product Rating : " + p.getProductRating());
+                        Log.i(TAG, "Product Rentals : " + p.getNumberOfRentals());
+                        Log.i(TAG, "Price : " + p.getPrice());
+                        Log.i(TAG, "User Rating : " + p.getProductPostedBy().getRating());
 
                         String relativeTimeAgo = DateUtils.getRelativeTimeSpanString(p.getCreatedAt().getTime(),
                                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
 
-                        Log.i("info","Relative time "+ relativeTimeAgo);
+                        Log.i(TAG,"Relative time "+ relativeTimeAgo);
 
                     }
                     mProductsAdapter.updateItems(operation, products);
@@ -176,7 +185,7 @@ public class ProductsRecyclerViewFragment extends Fragment {
 
                 } else {
                     if(e == null){
-                        Log.i("info","no results found");
+                        Log.i(TAG,"no results found");
                     } else {
                         e.printStackTrace();
                     }

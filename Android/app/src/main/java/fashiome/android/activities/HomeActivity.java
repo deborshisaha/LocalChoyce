@@ -41,6 +41,7 @@ public class HomeActivity extends AppCompatActivity {
     boolean isAllProducts = true;
     MenuItem searchItem;
     SearchView searchView;
+    private static final String TAG = HomeActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("info","main  fab clicked");
+                Log.i(TAG,"main  fab clicked");
 
                 Intent intent = null;
 
@@ -121,7 +122,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
 
                     Product p = data.getParcelableExtra("product");
-                    Log.i("info"," Pid"+p.getObjectId());
+                    Log.i(TAG," Pid"+p.getObjectId());
                     ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
                     query.include("productPostedBy");
                     query.include("productBoughtBy");
@@ -129,7 +130,7 @@ public class HomeActivity extends AppCompatActivity {
                     query.getInBackground(p.getObjectId(), new GetCallback<Product>() {
                         public void done(Product product, ParseException e) {
                             if (e == null) {
-                                Log.i("info"," Product found: "+product.getProductName());
+                                Log.i(TAG," Product found: "+product.getProductName());
                                 mProductsFragment.addNewProductToList(product);
                             } else {
                                 e.printStackTrace();
@@ -173,7 +174,7 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
 
-                    Log.i("info", "query " + query);
+                    Log.i(TAG, "query " + query);
 
                     getProductsWithSearchTerm(query);
                     return true;
@@ -183,7 +184,7 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public boolean onQueryTextChange(String newText) {
 
-                    Log.i("info", "query " + newText);
+                    Log.i(TAG, "query " + newText);
 
                     if((newText.length() == 0) && (!isAllProducts)) {
                         //searchView.setQueryHint("Search ...");
@@ -246,10 +247,10 @@ public class HomeActivity extends AppCompatActivity {
                     //lastSeen = products.get(0).getCreatedAt();
                     //Log.i("Last seen date: ", lastSeen.toString());
                     for (Product p : products) {
-                        Log.i("info", "Productname: " + p.getProductName());
-                        Log.i("info", "username : " + String.valueOf(p.getProductPostedBy().getUsername()));
-                        Log.i("info", "Latitude : " + p.getAddress().getLatitude());
-                        Log.i("info", "Longitude : " + p.getAddress().getLongitude());
+                        Log.i(TAG, "Productname: " + p.getProductName());
+                        Log.i(TAG, "username : " + String.valueOf(p.getProductPostedBy().getUsername()));
+                        Log.i(TAG, "Latitude : " + p.getAddress().getLatitude());
+                        Log.i(TAG, "Longitude : " + p.getAddress().getLongitude());
                     }
 
                     mProductsFragment.addNewProductsToList((ArrayList<Product>) products);
@@ -257,7 +258,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 } else {
                     if (e == null) {
-                        Log.i("info", "no results found");
+                        Log.i(TAG, "no results found");
                         //searchView.setQueryHint("No results");
                         //showNoResultsDialog(term);
                     } else {

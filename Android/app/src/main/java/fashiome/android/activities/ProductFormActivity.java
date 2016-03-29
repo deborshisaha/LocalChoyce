@@ -235,6 +235,7 @@ public class ProductFormActivity extends AppCompatActivity implements GoogleApiC
         product.setNumberOfFavorites(new Random().nextInt(500) + 100);
         product.setNumberOfReviews(new Random().nextInt(20) + 1);
         product.setNumberOfViews(new Random().nextInt(1000) + 100);
+        product.setNumberOfRentals(new Random().nextInt(500) + 100);
         product.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
