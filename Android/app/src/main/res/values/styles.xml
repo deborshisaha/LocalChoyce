@@ -39,68 +39,68 @@
 
     <style name="TinyLight">
         <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textSize">8sp</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/textColor</item>
     </style>
 
     <style name="TinyRegular">
         <item name="android:fontFamily">sans-serif-regular</item>
-        <item name="android:textSize">8sp</item>
+        <item name="android:textSize">10sp</item>
     </style>
 
     <style name="TinyMedium">
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">8sp</item>
+        <item name="android:textSize">10sp</item>
     </style>
 
     <style name="SmallLight">
         <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="SmallRegular">
         <item name="android:fontFamily">sans-serif-regular</item>
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="SmallMedium">
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="RegularLight">
         <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="RegularRegular">
         <item name="android:fontFamily">sans-serif-regular</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="RegularMedium">
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="RegularBold">
         <item name="android:fontFamily">sans-serif-bold</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="BigLight">
         <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="BigRegular">
         <item name="android:fontFamily">sans-serif-regular</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="BigMedium">
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="HeaderLight">

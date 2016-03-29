@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.astuetz.PagerSlidingTabStrip;
 
 import fashiome.android.R;
+import fashiome.android.v2.fragments.ConversationsFragment;
 import fashiome.android.v2.fragments.ProductListFragment;
 import fashiome.android.v2.fragments.SellerFragment;
 
@@ -31,6 +32,8 @@ public class PanacheTabsAdapter extends FragmentPagerAdapter implements PagerSli
 
         if (position == 1) {
             return new SellerFragment();
+        } else if (position == 2) {
+            return new ConversationsFragment();
         }
         return new ProductListFragment();
     }
