@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activities.ProductFormActivity"
+    tools:showIn="@layout/activity_product_form_v2">
+
+    <android.support.v4.widget.NestedScrollView
+        android:enabled="false"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:paddingTop="32dp"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView style="@style/RegularBold"
+                    android:id="@+id/tvProductName"
+                    android:paddingBottom="4dp"
+                    android:layout_centerVertical="true"
+                    android:layout_width="100dp"
+                    android:text="@string/product_name"
+                    android:textColor="@color/colorPrimaryText"
+                    android:layout_height="wrap_content" />
+
+                <EditText style="@style/RegularRegular"
+                    android:id="@+id/etProductName"
+                    android:hint="@string/product_name_hint"
+                    android:layout_toRightOf="@+id/tvProductName"
+                    android:background="@null"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginTop="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView style="@style/RegularBold"
+                    android:id="@+id/tvProductDescription"
+                    android:layout_centerVertical="true"
+                    android:layout_width="100dp"
+                    android:textColor="@color/colorPrimaryText"
+                    android:text="@string/product_description"
+                    android:layout_height="wrap_content" />
+
+                <EditText style="@style/RegularRegular"
+                    android:id="@+id/etProductDescription"
+                    android:hint="@string/product_description_hint"
+                    android:layout_toRightOf="@+id/tvProductDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:background="@null"
+                    android:editable="true"
+                    android:enabled="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="4dp"
+                android:layout_height="wrap_content">
+
+                <TextView style="@style/RegularBold"
+                    android:id="@+id/tvProductPrice"
+                    android:layout_centerVertical="true"
+                    android:layout_width="100dp"
+                    android:textColor="@color/colorPrimaryText"
+                    android:text="@string/product_price"
+                    android:layout_height="wrap_content" />
+
+                <EditText style="@style/RegularRegular"
+                    android:id="@+id/etProductPrice"
+                    android:hint="@string/product_price_hint"
+                    android:background="@null"
+                    android:layout_toRightOf="@+id/tvProductPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:editable="true"
+                    android:enabled="true"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+</RelativeLayout>
