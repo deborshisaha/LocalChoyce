@@ -1,4 +1,4 @@
-package fashiome.android.fragments;
+package fashiome.android.v2.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -100,5 +100,9 @@ public class SellerReviewFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void setUser(User user) {
+        this.mSeller = user;
     }
 }

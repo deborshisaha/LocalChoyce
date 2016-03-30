@@ -16,7 +16,7 @@ import com.parse.ParseException;
 import java.util.List;
 
 import fashiome.android.R;
-import fashiome.android.adapters.ProductReviewRecyclerViewAdapter;
+import fashiome.android.v2.adapters.ProductReviewRecyclerViewAdapter;
 import fashiome.android.models.Product;
 import fashiome.android.models.ProductReview;
 

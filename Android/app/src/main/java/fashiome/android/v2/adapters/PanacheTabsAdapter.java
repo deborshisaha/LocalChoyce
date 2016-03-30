@@ -5,11 +5,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.parse.ParseUser;
 
 import fashiome.android.R;
+import fashiome.android.models.User;
 import fashiome.android.v2.fragments.ConversationsFragment;
 import fashiome.android.v2.fragments.ProductListFragment;
 import fashiome.android.v2.fragments.SellerFragment;
+import fashiome.android.v2.fragments.UserProfileFragment;
 
 public class PanacheTabsAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
 
@@ -34,6 +37,8 @@ public class PanacheTabsAdapter extends FragmentPagerAdapter implements PagerSli
             return new SellerFragment();
         } else if (position == 2) {
             return new ConversationsFragment();
+        } else if (position == 3) {
+            return UserProfileFragment.newInstance((User)User.getCurrentUser());
         }
         return new ProductListFragment();
     }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView style="@style/RegularLight"
+            android:id="@+id/tvUserAboutMe"
+            android:text="@string/about_me_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <com.astuetz.PagerSlidingTabStrip style="@style/SmallLight"
+        android:id="@+id/pstsUserProfile"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:textColor = "@color/colorPrimary"
+        app:pstsUnderlineColor="@color/white"
+        app:pstsIndicatorColor="@color/colorPrimary"
+        app:pstsIndicatorHeight="4dp"
+        app:pstsDividerColor="@color/white"
+        app:pstsShouldExpand="true" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpUserProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f4f5f7" />
+
+</LinearLayout>

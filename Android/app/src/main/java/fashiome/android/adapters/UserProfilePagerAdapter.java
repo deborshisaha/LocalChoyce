@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.parse.ParseUser;
 
 import fashiome.android.R;
-import fashiome.android.fragments.SellerReviewFragment;
 import fashiome.android.fragments.UserBoughtItemsFragment;
 import fashiome.android.models.User;
 
@@ -41,9 +40,6 @@ public class UserProfilePagerAdapter extends FragmentPagerAdapter {
 
             case 0:
                 return UserBoughtItemsFragment.newInstance(user);
-
-            case 1:
-                return SellerReviewFragment.newInstance(user);
 
             default:
                 return null;
