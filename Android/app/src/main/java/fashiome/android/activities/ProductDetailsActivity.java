@@ -59,7 +59,6 @@ import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.WriteReviewFragment;
 import fashiome.android.adapters.ProductPagerAdapter;
-import fashiome.android.adapters.ProductReviewRecyclerViewAdapter;
 import fashiome.android.fragments.ProductRentDetailsFragment;
 import fashiome.android.managers.Push;
 import fashiome.android.models.Conversation;

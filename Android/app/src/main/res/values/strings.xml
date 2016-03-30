@@ -30,7 +30,7 @@
 
     <string name="about_me_text">
         "Independent fashion designer passionate about emerging markets in fashion industry. Looking for potential buyers in "
-        "designer clothing for both men and women. Check my profile page for more details\n\n"
+        "designer clothing for both men and women. Check my profile page for more details"
     </string>
     <string name="title_activity_product_filter_settings">ProductFilterSettingsActivity</string>
     <string name="title_activity_user_details">UserDetailsActivity</string>

@@ -134,13 +134,23 @@ public class User extends ParseUser implements Parcelable {
         put("username", username);
     }
 
+    public boolean isCurrentUser() {
+
+        User currentUser = (User) ParseUser.getCurrentUser();
+
+        if (currentUser != null) {
+            return currentUser.getObjectId().equals(this.getObjectId());
+        }
+
+        return false;
+    }
+
     private String firstName;
     private String lastName;
     private String profilePictureURL;
     private int rating;
     private String email;
     private String username;
-    //private String skypeId;
     private String phoneNumber;
 
     @Override

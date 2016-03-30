@@ -16,7 +16,6 @@ import fashiome.android.v2.activities.ProductFormActivity;
  */
 public class SellerFragment extends Fragment {
 
-    //    @Bind(R.id.fabAddProduct)
     FloatingActionButton fabAddProduct;
 
     public SellerFragment() {}
