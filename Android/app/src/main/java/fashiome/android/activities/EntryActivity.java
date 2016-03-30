@@ -25,8 +25,14 @@ public class EntryActivity extends AppCompatActivity {
         } else {
             Intent launchIntent = new Intent(EntryActivity.this, PanacheHomeActivity.class);
             startActivity(launchIntent);
+            finish();
         }
 
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
