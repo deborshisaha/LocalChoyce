@@ -10,6 +10,7 @@ import com.parse.ParseUser;
 import fashiome.android.R;
 import fashiome.android.models.User;
 import fashiome.android.v2.fragments.ConversationsFragment;
+import fashiome.android.v2.fragments.DiscoverProductFragment;
 import fashiome.android.v2.fragments.ProductListFragment;
 import fashiome.android.v2.fragments.SellerFragment;
 import fashiome.android.v2.fragments.UserProfileFragment;
@@ -40,7 +41,7 @@ public class PanacheTabsAdapter extends FragmentPagerAdapter implements PagerSli
         } else if (position == 3) {
             return UserProfileFragment.newInstance((User)User.getCurrentUser());
         }
-        return new ProductListFragment();
+        return new DiscoverProductFragment();
     }
 
     @Override
