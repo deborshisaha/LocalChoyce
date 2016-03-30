@@ -1,5 +1,7 @@
 package fashiome.android.fragments;
 
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,6 +24,8 @@ public class IntroAndLoginFragment extends Fragment {
     private static final String ARG_DESC = "description";
     private static final String ARG_BTN_TITLE = "buttonTitle";
     private View.OnClickListener mOnClickListener;
+
+    private ImageView ivOlNewIntroImageHolder;
 
     public static IntroAndLoginFragment newInstance(int layoutResId, int imageResourceId, String title, String description, String btnTitle) {
         IntroAndLoginFragment sampleSlide = new IntroAndLoginFragment();
@@ -67,7 +71,7 @@ public class IntroAndLoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(layoutResId, container, false);
 
-        ImageView ivOlNewIntroImageHolder = (ImageView) v.findViewById(R.id.ivOlNewIntroImageHolder);
+        ivOlNewIntroImageHolder = (ImageView) v.findViewById(R.id.ivOlNewIntroImageHolder);
         ivOlNewIntroImageHolder.setImageResource(imageResourceId);
 
         TextView tvTitle = (TextView) v.findViewById(R.id.tvTitle);
@@ -103,4 +107,29 @@ public class IntroAndLoginFragment extends Fragment {
         this.mOnClickListener = listener;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        removeBitmap();
+    }
+
+    private void removeBitmap() {
+        Drawable drawable = ivOlNewIntroImageHolder.getDrawable();
+
+        if(drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable)drawable;
+            bitmapDrawable.getBitmap().recycle();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        removeBitmap();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
 }

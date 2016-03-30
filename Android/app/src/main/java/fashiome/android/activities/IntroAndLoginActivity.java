@@ -38,6 +38,13 @@ public class IntroAndLoginActivity extends AppIntro {
     private boolean activityForLogin;
     private Button mFacebookButton;
     private User parseUser;
+
+    IntroAndLoginFragment introFifthFragment ,introFirstFragment, introSecondFragment, introThirdFragment, introForthFragment;
+//    = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro1, stringFromResourceId(R.string.introTitle1), stringFromResourceId(R.string.introDesc1), null);
+//    IntroAndLoginFragment introSecondFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro2, stringFromResourceId(R.string.introTitle2), stringFromResourceId(R.string.introDesc2), null);
+//    IntroAndLoginFragment introThirdFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro3, stringFromResourceId(R.string.introTitle3), stringFromResourceId(R.string.introDesc3), null);
+//    IntroAndLoginFragment introForthFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro4, stringFromResourceId(R.string.introTitle4), stringFromResourceId(R.string.introDesc4), null);
+
     private static final List<String> mPermissions = new ArrayList<String>() {{
         add("public_profile");
         add("email");
@@ -50,11 +57,11 @@ public class IntroAndLoginActivity extends AppIntro {
 
         activityForLogin = getIntent().getExtras().getBoolean(LAUNCH_FOR_LOGIN);
 
-        IntroAndLoginFragment introFifthFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro5, stringFromResourceId(R.string.introTitle5), stringFromResourceId(R.string.introDesc5), "Connect with Facebook");
-        IntroAndLoginFragment introFirstFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro1, stringFromResourceId(R.string.introTitle1), stringFromResourceId(R.string.introDesc1), null);
-        IntroAndLoginFragment introSecondFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro2, stringFromResourceId(R.string.introTitle2), stringFromResourceId(R.string.introDesc2), null);
-        IntroAndLoginFragment introThirdFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro3, stringFromResourceId(R.string.introTitle3), stringFromResourceId(R.string.introDesc3), null);
-        IntroAndLoginFragment introForthFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro4, stringFromResourceId(R.string.introTitle4), stringFromResourceId(R.string.introDesc4), null);
+        introFifthFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro5, stringFromResourceId(R.string.introTitle5), stringFromResourceId(R.string.introDesc5), "Connect with Facebook");
+        introFirstFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro1, stringFromResourceId(R.string.introTitle1), stringFromResourceId(R.string.introDesc1), null);
+        introSecondFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro2, stringFromResourceId(R.string.introTitle2), stringFromResourceId(R.string.introDesc2), null);
+        introThirdFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro3, stringFromResourceId(R.string.introTitle3), stringFromResourceId(R.string.introDesc3), null);
+        introForthFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro4, stringFromResourceId(R.string.introTitle4), stringFromResourceId(R.string.introDesc4), null);
 
         if (activityForLogin != true) {
             addSlide(introFirstFragment);
@@ -88,7 +95,7 @@ public class IntroAndLoginActivity extends AppIntro {
     public void onSkipPressed() {
         Intent intent = new Intent(this, PanacheHomeActivity.class);
         startActivity(intent);
-        //finish();
+        finish();
     }
 
     @Override
@@ -217,5 +224,17 @@ public class IntroAndLoginActivity extends AppIntro {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        introFifthFragment = null;
+        introFirstFragment = null;
+        introSecondFragment = null;
+        introThirdFragment = null;
+        introForthFragment = null;
+
+        super.onDestroy();
     }
 }
