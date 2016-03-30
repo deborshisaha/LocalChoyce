@@ -51,11 +51,15 @@ public class ProductListFragment extends Fragment {
 
         if (productAdapter == null) {
             productAdapter = new ProductAdapter(getActivity());
-            productRecyclerView.setAdapter(productAdapter);
         }
+
+        productRecyclerView.setAdapter(productAdapter);
 
         if (linearLayoutManager == null) {
             linearLayoutManager = new LinearLayoutManager(getActivity());
+        }
+
+        if (productRecyclerView.getLayoutManager() == null ) {
             productRecyclerView.setLayoutManager(linearLayoutManager);
         }
 
