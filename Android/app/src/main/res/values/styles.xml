@@ -37,6 +37,12 @@
         <item name="android:layout_gravity">bottom|end</item>
     </style>
 
+    <style name="RegularMedium.PanacheHomeToggleButton">
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+
+    </style>
+
     <style name="TinyLight">
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textSize">10sp</item>

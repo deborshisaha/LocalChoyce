@@ -51,14 +51,13 @@ public class ProductListFragment extends Fragment {
 
         if (productAdapter == null) {
             productAdapter = new ProductAdapter(getActivity());
+            productRecyclerView.setAdapter(productAdapter);
         }
 
         if (linearLayoutManager == null) {
             linearLayoutManager = new LinearLayoutManager(getActivity());
+            productRecyclerView.setLayoutManager(linearLayoutManager);
         }
-
-        productRecyclerView.setLayoutManager(linearLayoutManager);
-        productRecyclerView.setAdapter(productAdapter);
 
         if (productParseQuery != null) {
             productParseQuery.findInBackground(new FindCallback<Product>() {
