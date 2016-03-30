@@ -8,12 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseQuery;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.adapters.ProductAdapter;
+import fashiome.android.fragments.ProductsRecyclerViewFragment;
 import fashiome.android.models.Product;
+import fashiome.android.utils.Constants;
 import fashiome.android.v2.fragments.ProductListFragment;
 
 public class DiscoverProductFragment extends Fragment {
@@ -21,6 +28,7 @@ public class DiscoverProductFragment extends Fragment {
     private Fragment previouslyActiveFragment = null;
     private ProductMapFragment productMapFragment;
     private ProductListFragment productListFragment;
+    private ProductAdapter productAdapter;
 
     @Bind(R.id.btnList)
     Button btnList;
@@ -36,19 +44,22 @@ public class DiscoverProductFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
-        btnMap.setOnClickListener(new View.OnClickListener() {
+        /* Initialization */
+        if (productAdapter == null) {
+            productAdapter = new ProductAdapter(getActivity());
+        }
+
+        ParseQuery<Product> query = getParseQueryForProductList();
+        query.findInBackground(new FindCallback<Product>() {
             @Override
-            public void onClick(View v) {
-                insertProductMapFragment();
+            public void done(List<Product> products, ParseException e) {
+                productAdapter.updateItems(Constants.NEW_SEARCH_OPERATION, products);
+                productAdapter.notifyDataSetChanged();
             }
         });
 
-        btnList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                insertProductListFragment();
-            }
-        });
+        btnMap.setOnClickListener(onClickListenerForMapButton());
+        btnList.setOnClickListener(onClickListenerForListButton());
 
         return view;
     }
@@ -58,11 +69,29 @@ public class DiscoverProductFragment extends Fragment {
         insertProductListFragment();
     }
 
+    private View.OnClickListener onClickListenerForListButton (){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertProductListFragment();
+            }
+        };
+    }
+
+    private View.OnClickListener onClickListenerForMapButton (){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertProductMapFragment();
+            }
+        };
+    }
+
     private void insertProductListFragment() {
 
         if (productListFragment == null) {
             productListFragment = new ProductListFragment();
-            productListFragment.setProductParseQuery(getParseQueryForProductList());
+            productListFragment.setProductAdapter(productAdapter);
         }
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
