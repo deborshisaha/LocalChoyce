@@ -41,10 +41,6 @@ public class IntroAndLoginActivity extends AppIntro {
     private User parseUser;
 
     IntroAndLoginFragment introFifthFragment ,introFirstFragment, introSecondFragment, introThirdFragment, introForthFragment;
-//    = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro1, stringFromResourceId(R.string.introTitle1), stringFromResourceId(R.string.introDesc1), null);
-//    IntroAndLoginFragment introSecondFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro2, stringFromResourceId(R.string.introTitle2), stringFromResourceId(R.string.introDesc2), null);
-//    IntroAndLoginFragment introThirdFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro3, stringFromResourceId(R.string.introTitle3), stringFromResourceId(R.string.introDesc3), null);
-//    IntroAndLoginFragment introForthFragment = IntroAndLoginFragment.newInstance(R.layout.intro, R.drawable.intro4, stringFromResourceId(R.string.introTitle4), stringFromResourceId(R.string.introDesc4), null);
 
     private static final List<String> mPermissions = new ArrayList<String>() {{
         add("public_profile");
