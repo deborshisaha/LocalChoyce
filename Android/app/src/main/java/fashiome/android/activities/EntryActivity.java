@@ -23,7 +23,7 @@ public class EntryActivity extends AppCompatActivity {
             launchIntent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, false);
             startActivity(launchIntent);
         } else {
-            Intent launchIntent = new Intent(EntryActivity.this, MainActivity.class);
+            Intent launchIntent = new Intent(EntryActivity.this, PanacheHomeActivity.class);
             startActivity(launchIntent);
             finish();
         }
