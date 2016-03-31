@@ -9,19 +9,19 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
         android:scaleType="centerCrop"
         android:src="@drawable/banner"
-        android:id="@+id/imageView1"/>
+        android:id="@+id/ivBags"/>
 
     <TextView
         style="@style/RegularLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="For Her"
-        android:id="@+id/textView1"
+        android:id="@+id/tvBags"
         android:textColor="@color/white"
-        android:layout_above="@+id/imageView2"
+        android:layout_above="@+id/ivCoats"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="20dp"
@@ -33,11 +33,11 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
         android:src="@drawable/banner"
         android:scaleType="centerCrop"
-        android:layout_below="@+id/imageView1"
-        android:id="@+id/imageView2"/>
+        android:layout_below="@+id/ivBags"
+        android:id="@+id/ivCoats"/>
 
 
     <TextView
@@ -45,9 +45,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="For Him"
-        android:id="@+id/textView2"
+        android:id="@+id/tvCoats"
         android:textColor="@color/white"
-        android:layout_alignBottom="@+id/imageView2"
+        android:layout_alignBottom="@+id/ivCoats"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="20dp"

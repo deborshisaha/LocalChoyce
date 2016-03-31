@@ -93,7 +93,7 @@ public class IntroAndLoginActivity extends AppIntro {
 
     @Override
     public void onSkipPressed() {
-        Intent intent = new Intent(this, PanacheHomeActivity.class);
+        Intent intent = new Intent(this, OnboardingWizardActivity.class);
         startActivity(intent);
         finish();
     }

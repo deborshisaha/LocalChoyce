@@ -141,6 +141,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         rvMap.setAdapter(adapter);
 
 
+/*
         RelativeLayout footer = (RelativeLayout) findViewById(R.id.rlFooter);
         footer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,6 +154,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
                 startActivity(i);
             }
         });
+*/
 
         System.out.println(mItems);
         System.out.print(mItems.size());
@@ -218,28 +220,27 @@ public class MapFullScreenActivity extends AppCompatActivity implements
     }
 
     public void updateFooter(Product product){
+        Log.i(TAG," marker "+product.getProductName());
         mSelectedProduct = product;
-
-
         title.setText(product.getProductName());
         desc.setText(product.getProductDescription());
         price.setText(product.getPrice()+"");
-
-
     }
-    public void updateFooter(Marker marker){
+
+    public void updateMarker(Marker marker){
         Product product = (Product) mMarkers.get(marker.getId());
         updateFooter(product);
-
     }
 
     public void loadMarkersFromItems(ArrayList<Product> products){
+        Log.i(TAG,"load markers "+products.size());
         Product product=null;
         for(int i=0;i<products.size();i++) {
             product = products.get(i);
             BitmapDescriptor defaultMarker =
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
             if (product.getAddress() != null) {
+                Log.i(TAG,"added a marker ");
                 Marker marker = map.addMarker(new MarkerOptions()
                         .position(new LatLng(product.getAddress().getLatitude(), product.getAddress().getLongitude()))
                         .title(product.getProductName())
@@ -253,7 +254,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
             }
         }
         mSelectedProduct = product;
-        updateFooter(mSelectedProduct);
+        //updateFooter(mSelectedProduct);
     }
 
     protected void loadMap(GoogleMap googleMap) {
@@ -278,7 +279,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
                             BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
                     marker.setIcon(greenMarker);
                     moveToLocation(marker.getPosition(), true);
-                    updateFooter(marker);
+                    updateMarker(marker);
 
                     return true;
                 }
@@ -512,7 +513,7 @@ public class MapFullScreenActivity extends AppCompatActivity implements
         } else {
             Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }
-        startLocationUpdates();
+        //startLocationUpdates();
     }
 
     protected void startLocationUpdates() throws SecurityException {

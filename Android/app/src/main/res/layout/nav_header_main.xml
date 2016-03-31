@@ -30,17 +30,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rivImg"
         android:layout_centerHorizontal="true"
-        android:id="@+id/textView1"
+        android:id="@+id/tvBags"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Your name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvCoats"
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/tvBags"
         android:text="name@email.com"/>
 
     <Button style="@style/RegularLight.CustomButton"
@@ -51,7 +51,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="12sp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/textView2"
+            android:layout_below="@+id/tvCoats"
             android:id="@+id/btnAction"
             android:textColor="#ffffff"
             android:onClick="loginToFacebook"
