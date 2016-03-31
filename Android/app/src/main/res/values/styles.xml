@@ -104,6 +104,10 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="BigRegular.Italics">
+        <item name="android:textStyle">italic</item>
+    </style>
+
     <style name="BigMedium">
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textSize">20sp</item>

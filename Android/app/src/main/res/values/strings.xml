@@ -65,4 +65,5 @@
     <string name="product_description_hint">About the product</string>
     <string name="product_price_hint">How much a day</string>
     <string name="title_activity_onboarding_wizard">Onboarding Wizard</string>
+    <string name="lookingForText">For whom are you looking?</string>
 </resources>

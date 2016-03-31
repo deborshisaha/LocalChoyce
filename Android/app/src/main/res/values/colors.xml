@@ -11,5 +11,6 @@
     <color name="textColor">#525252</color>
 
     <color name="material_design_gray_background">#ECECEC</color>
+    <color name="blue">#4A90E2</color>
 
 </resources>
