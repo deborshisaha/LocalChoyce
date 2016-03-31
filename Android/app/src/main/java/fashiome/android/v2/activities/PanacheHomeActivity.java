@@ -1,6 +1,7 @@
 package fashiome.android.v2.activities;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -21,12 +22,16 @@ public class PanacheHomeActivity extends AppCompatActivity {
     @Bind(R.id.vpPanacheTabs)
     ViewPager vpPanacheTabs;
 
+    public static FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_v2);
 
         ButterKnife.bind(this);
+
+        fragmentManager = getSupportFragmentManager();
 
         tabStripPanacheTabs.setShouldExpand(true);
 

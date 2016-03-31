@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -21,6 +22,7 @@ import fashiome.android.R;
 import fashiome.android.activities.MapFullScreenActivity;
 import fashiome.android.activities.ProductDetailsActivity;
 import fashiome.android.models.Product;
+import fashiome.android.utils.Constants;
 import fashiome.android.utils.ImageURLGenerator;
 import fashiome.android.utils.Utils;
 
@@ -31,10 +33,40 @@ public class MapviewAdapter extends RecyclerView.Adapter<MapviewAdapter.ViewHold
 
     private static final String TAG = MapviewAdapter.class.getSimpleName();
 
-    public ArrayList<Product> products = new ArrayList<>();
+    public ArrayList<Product> mProducts = new ArrayList<>();
 
     public MapviewAdapter(Context context){
         this.context = context;
+    }
+
+    public void updateItems(int operation, List<Product> products) {
+
+        if (mProducts == null) {
+            mProducts = new ArrayList<Product>();
+        }
+
+        if (mProducts.size() > 0 && operation == Constants.NEW_SEARCH_OPERATION) {
+            Log.i("info","Clearing items for new search results");
+            mProducts.clear();
+            notifyDataSetChanged();
+        }
+
+        if (products != null && products.size() > 0) {
+            if(operation == Constants.NEW_SEARCH_OPERATION) {
+                int size = mProducts.size();
+                Log.i("info", "appending " + products.size() + " items to earlier " + mProducts.size());
+                mProducts.addAll(products);
+                Log.i("info", "new range 0 to " + mProducts.size());
+                notifyItemRangeInserted(size, products.size());
+            }
+            if(operation == Constants.REFRESH_OPERATION) {
+                Log.i("info", "prepending " + products.size() + " items to earlier " + mProducts.size());
+                mProducts.addAll(0, products);
+                Log.i("info", "new range 0 to " + mProducts.size());
+                notifyItemRangeInserted(0, products.size());
+
+            }
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -65,7 +97,7 @@ public class MapviewAdapter extends RecyclerView.Adapter<MapviewAdapter.ViewHold
                     //Log.i("info", "product image clicked ");
 
                     Intent i = new Intent(context, ProductDetailsActivity.class);
-                    i.putExtra("product", products.get(position));
+                    i.putExtra("product", mProducts.get(position));
                     context.startActivity(i);
                     //((Activity)context).overridePendingTransition(R.anim.card_flip_left_in, R.anim.card_flip_left_out);
 
@@ -99,7 +131,7 @@ public class MapviewAdapter extends RecyclerView.Adapter<MapviewAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         // Get the data model based on position
-        Product product = products.get(position);
+        Product product = mProducts.get(position);
 
         //holder.mAddUser.setVisibility(View.INVISIBLE);
 
@@ -124,18 +156,18 @@ public class MapviewAdapter extends RecyclerView.Adapter<MapviewAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return products.size();
+        return mProducts.size();
     }
 
     public void appendList (ArrayList<Product> u) {
-        products.addAll(u);
-        Log.i(TAG, "Number of products appended " + products.size());
+        mProducts.addAll(u);
+        Log.i(TAG, "Number of products appended " + mProducts.size());
     }
 
     public void addAtStartList (ArrayList<Product> u) {
 
-        products.addAll(0, u);
-        Log.i(TAG, "Number of products prepended " + products.size());
+        mProducts.addAll(0, u);
+        Log.i(TAG, "Number of products prepended " + mProducts.size());
     }
 
 }

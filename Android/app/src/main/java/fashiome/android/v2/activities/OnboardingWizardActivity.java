@@ -1,5 +1,6 @@
 package fashiome.android.v2.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -68,6 +69,9 @@ public class OnboardingWizardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // goto next screen
+                Intent launchIntent = new Intent(OnboardingWizardActivity.this, PanacheHomeActivity.class);
+                startActivity(launchIntent);
+                finish();
             }
         });
     }

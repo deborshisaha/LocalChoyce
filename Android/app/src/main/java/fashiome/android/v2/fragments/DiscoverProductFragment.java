@@ -17,6 +17,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.adapters.MapviewAdapter;
 import fashiome.android.adapters.ProductAdapter;
 import fashiome.android.fragments.ProductsRecyclerViewFragment;
 import fashiome.android.models.Product;
@@ -29,6 +30,7 @@ public class DiscoverProductFragment extends Fragment {
     private ProductMapFragment productMapFragment;
     private ProductListFragment productListFragment;
     private ProductAdapter productAdapter;
+    private MapviewAdapter mapviewAdapter;
 
     @Bind(R.id.btnList)
     Button btnList;
@@ -49,12 +51,18 @@ public class DiscoverProductFragment extends Fragment {
             productAdapter = new ProductAdapter(getActivity());
         }
 
+        if(mapviewAdapter == null){
+            mapviewAdapter = new MapviewAdapter(getActivity());
+        }
+
         ParseQuery<Product> query = getParseQueryForProductList();
         query.findInBackground(new FindCallback<Product>() {
             @Override
             public void done(List<Product> products, ParseException e) {
                 productAdapter.updateItems(Constants.NEW_SEARCH_OPERATION, products);
                 productAdapter.notifyDataSetChanged();
+                mapviewAdapter.updateItems(Constants.NEW_SEARCH_OPERATION, products);
+                mapviewAdapter.notifyDataSetChanged();
             }
         });
 
@@ -104,7 +112,11 @@ public class DiscoverProductFragment extends Fragment {
 
     private void insertProductMapFragment() {
 
-        if (productMapFragment == null) {productMapFragment = new ProductMapFragment();}
+        if (productMapFragment == null) {
+            productMapFragment = new ProductMapFragment();
+            //productMapFragment.setProductAdapter(productAdapter);
+            productMapFragment.setProductAdapter(mapviewAdapter);
+        }
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
