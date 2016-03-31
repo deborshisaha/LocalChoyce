@@ -74,7 +74,6 @@ public class DiscoverProductFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        insertProductMapFragment();
         insertProductListFragment();
     }
 
@@ -82,7 +81,9 @@ public class DiscoverProductFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                productListFragment.getView().setVisibility(View.VISIBLE);
+                //productListFragment.getView().setVisibility(View.VISIBLE);
+                insertProductListFragment();
+
             }
         };
     }
@@ -91,7 +92,9 @@ public class DiscoverProductFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                productListFragment.getView().setVisibility(View.GONE);
+                //productListFragment.getView().setVisibility(View.GONE);
+                insertProductMapFragment();
+
             }
         };
     }
@@ -104,10 +107,14 @@ public class DiscoverProductFragment extends Fragment {
         }
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.product_discover_fragment, productListFragment).commit();
 
+
+/*
         if (getChildFragmentManager().findFragmentById(R.id.product_discover_fragment) == null) {
             transaction.add(R.id.product_discover_fragment, productListFragment).commit();
         }
+*/
     }
 
     private void insertProductMapFragment() {
@@ -119,10 +126,14 @@ public class DiscoverProductFragment extends Fragment {
         }
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.product_discover_fragment, productMapFragment).commit();
 
+
+/*
         if (getChildFragmentManager().findFragmentById(R.id.product_discover_fragment) == null) {
             transaction.add(R.id.product_discover_fragment, productMapFragment).commit();
         }
+*/
     }
 
     private ParseQuery<Product> getParseQueryForProductList() {
