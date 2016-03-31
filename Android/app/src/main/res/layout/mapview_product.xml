@@ -25,11 +25,11 @@
         android:layout_alignEnd="@+id/tvPrice"
         android:gravity="center_vertical"
         android:textColor="@color/colorPrimary"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textStyle="bold"/>
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
 
     <TextView
+        style="@style/BigRegular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvPrice"
@@ -41,10 +41,125 @@
         android:textColor="@android:color/secondary_text_light_nodisable"/>
 
     <TextView android:id="@+id/tvDesc"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_below="@+id/tvItemName"
-              android:layout_toRightOf="@+id/ivItemPhoto"
-              android:layout_toEndOf="@+id/ivItemPhoto"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvItemName"
+        android:layout_toRightOf="@+id/ivItemPhoto"
+        android:layout_toEndOf="@+id/ivItemPhoto"
+        android:ellipsize="end"
+        android:maxLines="3"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/ivItemPhoto"
+        android:layout_toEndOf="@+id/ivItemPhoto"
+        android:layout_below="@+id/tvDesc"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="16dp" >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_female"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4dp"
+                android:id="@+id/ivGender"/>
+
+            <TextView style="@style/SmallRegular"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textColor="#000000"
+                      android:text="Female"
+                      android:layout_gravity="center"
+                      android:textAlignment="center"
+                      android:id="@+id/tvGender"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="32dp"
+            android:orientation="vertical">
+
+            <TextView style="@style/HeaderMedium"
+                      android:textSize="18sp"
+                      android:layout_width="wrap_content"
+                      android:layout_height="24dp"
+                      android:textColor="#000000"
+                      android:text="25"
+                      android:layout_gravity="center"
+                      android:textAlignment="center"
+                      android:layout_marginBottom="4dp"
+                      android:id="@+id/tvNumberOfTimesRented"/>
+
+            <TextView style="@style/SmallRegular"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textColor="#000000"
+                      android:text="Rented"
+                      android:layout_gravity="center"
+                      android:textAlignment="center"
+                      android:id="@+id/tvLiked"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="32dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_hot"
+                android:layout_marginBottom="4dp"
+                android:id="@+id/ivHot"/>
+
+            <TextView style="@style/SmallRegular"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textColor="#000000"
+                      android:text="Hot"
+                      android:layout_gravity="center"
+                      android:textAlignment="center"
+                      android:id="@+id/tvHot"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_favorite"
+                android:layout_marginBottom="4dp"
+                android:id="@+id/ivFavorited"/>
+
+            <TextView style="@style/SmallRegular"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textColor="#000000"
+                      android:text="2.5K"
+                      android:layout_gravity="center"
+                      android:textAlignment="center"
+                      android:id="@+id/tvNumberOfTimesFavorited"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>
