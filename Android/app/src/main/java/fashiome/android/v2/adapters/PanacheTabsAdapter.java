@@ -21,6 +21,8 @@ public class PanacheTabsAdapter extends FragmentPagerAdapter implements PagerSli
     private final int[] ICONS = { R.drawable.ic_home, R.drawable.ic_seller,
             R.drawable.ic_conversations, R.drawable.ic_profile_filled };
 
+    private final int[] GUEST_ICONS = { R.drawable.ic_home, R.drawable.ic_profile_filled };
+
     public PanacheTabsAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
     }
@@ -28,11 +30,25 @@ public class PanacheTabsAdapter extends FragmentPagerAdapter implements PagerSli
     ///////
     @Override
     public int getCount() {
-        return ICONS.length;
+        if (ParseUser.getCurrentUser() != null) {
+            return ICONS.length;
+        } else {
+            return GUEST_ICONS.length;
+        }
     }
 
     @Override
     public Fragment getItem(int position) {
+
+        if (ParseUser.getCurrentUser() != null) {
+            return getGuestUserFragment(position);
+        } else {
+            return getLoggedInUserFragment(position);
+        }
+
+    }
+
+    private Fragment getLoggedInUserFragment(int position) {
 
         if (position == 1) {
             return new SellerFragment();
@@ -44,8 +60,22 @@ public class PanacheTabsAdapter extends FragmentPagerAdapter implements PagerSli
         return new DiscoverProductFragment();
     }
 
+    private Fragment getGuestUserFragment(int position) {
+
+        if (position == 1) {
+            return new SellerFragment();
+        }
+
+        return new DiscoverProductFragment();
+    }
+
     @Override
     public int getPageIconResId(int position) {
-        return ICONS[position];
+
+        if (ParseUser.getCurrentUser() != null) {
+            return ICONS[position];
+        } else {
+            return GUEST_ICONS[position];
+        }
     }
 }

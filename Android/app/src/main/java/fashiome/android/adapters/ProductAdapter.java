@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -193,12 +194,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             String profileImageURLString = null;
 
             if (productImageURLString != null || productImageURLString.length() > 0) {
-/*                final ProgressDialog pd = new ProgressDialog(mContext);
-                pd.isIndeterminate();
-                pd.setMessage("Fetching your styles...");
-                pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                pd.show();
-*/
 
                 Glide.with(this.mContext)
                         .load(productImageURLString)
@@ -254,22 +249,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     } else {
                         Log.i("info", "user profile image clicked");
 
-
-
                         intent = new Intent(mContext, UserDetailsActivity.class);
                         intent.putExtra("objectId", mProducts.get(getLayoutPosition()).getProductPostedBy().getObjectId());
                         mContext.startActivity(intent);
-
-
-/*
-                        intent = new Intent(mContext, UserDetailsActivity.class);
-                        intent.putExtra("objectId", mProducts.get(getLayoutPosition()).getProductPostedBy().getObjectId());
-                        ActivityOptionsCompat options = ActivityOptionsCompat.
-                                makeSceneTransitionAnimation((Activity)mContext, rivProfilePicture, "profile");
-                        mContext.startActivity(intent, options.toBundle());
-*/
-
                     }
+
                     break;
 
                 default:
@@ -279,9 +263,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     }
 
+    @Override
+    public void onViewDetachedFromWindow(ProductViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onViewRecycled(ProductViewHolder holder) {
+        super.onViewRecycled(holder);
+    }
 }
-    /*
-    private List<Product> getDummyProducts () {
-*/
 
 
