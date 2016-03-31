@@ -159,8 +159,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
+                <action android:name="android.intent.action.MAIN"/>
+                <data android:scheme="panache" />
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
@@ -192,11 +196,6 @@
             android:name=".activities.IntroAndLoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
-            android:name=".activities.OnboardingWizardActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
 
 
         <!-- Version 2 -->
@@ -209,6 +208,11 @@
             android:name=".v2.activities.ProductFormActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".v2.activities.OnboardingWizardActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <!-- No Activities below this -->
 

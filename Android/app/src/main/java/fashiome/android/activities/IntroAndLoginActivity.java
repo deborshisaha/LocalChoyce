@@ -31,6 +31,7 @@ import java.util.Random;
 import fashiome.android.R;
 import fashiome.android.fragments.IntroAndLoginFragment;
 import fashiome.android.models.User;
+import fashiome.android.v2.activities.OnboardingWizardActivity;
 import fashiome.android.v2.activities.PanacheHomeActivity;
 
 public class IntroAndLoginActivity extends AppIntro {
