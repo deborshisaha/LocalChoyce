@@ -1,5 +1,6 @@
 package fashiome.android.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,6 +14,7 @@ import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.fragments.OnboardingCategorySelectionFragment;
 import fashiome.android.fragments.OnboardingGenderSelectionFragment;
+import fashiome.android.v2.activities.PanacheHomeActivity;
 
 public class OnboardingWizardActivity extends AppCompatActivity {
 
@@ -21,6 +23,7 @@ public class OnboardingWizardActivity extends AppCompatActivity {
 
     @Bind(R.id.next)
     TextView mNext;
+    int click = 0 ;
 
     FragmentManager fm = getSupportFragmentManager();
 
@@ -38,11 +41,19 @@ public class OnboardingWizardActivity extends AppCompatActivity {
         mNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("info","Clicked");
-                FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                OnboardingCategorySelectionFragment f2 = new OnboardingCategorySelectionFragment();
-                fragmentTransaction.replace(R.id.LinearLayout1, f2);
-                fragmentTransaction.commit();
+                Log.i("info", "Clicked");
+                if (click == 0) {
+                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                    OnboardingCategorySelectionFragment f2 = new OnboardingCategorySelectionFragment();
+                    fragmentTransaction.replace(R.id.LinearLayout1, f2);
+                    fragmentTransaction.commit();
+                    click++;
+                } else {
+                    Intent intent = new Intent(OnboardingWizardActivity.this, PanacheHomeActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                }
             }
         });
 

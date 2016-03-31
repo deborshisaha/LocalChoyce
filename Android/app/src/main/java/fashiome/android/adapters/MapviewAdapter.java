@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.activities.MapFullScreenActivity;
 import fashiome.android.activities.ProductDetailsActivity;
 import fashiome.android.models.Product;
 import fashiome.android.utils.ImageURLGenerator;
@@ -27,6 +28,8 @@ import fashiome.android.utils.Utils;
 public class MapviewAdapter extends RecyclerView.Adapter<MapviewAdapter.ViewHolder> {
 
     Context context;
+
+    private static final String TAG = MapviewAdapter.class.getSimpleName();
 
     public ArrayList<Product> products = new ArrayList<>();
 
@@ -112,7 +115,7 @@ public class MapviewAdapter extends RecyclerView.Adapter<MapviewAdapter.ViewHold
             String URLString = ImageURLGenerator.getInstance(context).URLForImageWithCloudinaryPublicId(product.getImageCloudinaryPublicId(0),
                     Utils.getScreenWidthInDp(context));
 
-            Log.i("info","photo url: "+URLString);
+            Log.i(TAG,"photo url: "+URLString);
 
             Glide.with(context).load(URLString).into(holder.pic);
         }
@@ -126,13 +129,13 @@ public class MapviewAdapter extends RecyclerView.Adapter<MapviewAdapter.ViewHold
 
     public void appendList (ArrayList<Product> u) {
         products.addAll(u);
-        Log.i("info", "Number of products appended " + products.size());
+        Log.i(TAG, "Number of products appended " + products.size());
     }
 
     public void addAtStartList (ArrayList<Product> u) {
 
         products.addAll(0, u);
-        Log.i("info", "Number of products prepended " + products.size());
+        Log.i(TAG, "Number of products prepended " + products.size());
     }
 
 }

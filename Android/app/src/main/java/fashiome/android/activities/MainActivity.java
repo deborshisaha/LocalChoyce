@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -300,8 +299,8 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if(requestCode == FROM_HEADER_TO_LOGIN) {
-            t1 = (TextView) findViewById(R.id.textView1);
-            t2 = (TextView) findViewById(R.id.textView2);
+            t1 = (TextView) findViewById(R.id.tvBags);
+            t2 = (TextView) findViewById(R.id.tvCoats);
             fb = (Button) findViewById(R.id.btnAction);
             riv = (RoundedImageView) findViewById(R.id.rivImg);
 
