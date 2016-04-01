@@ -24,7 +24,7 @@ public class ProductFormImageViewPagerAdapter extends PagerAdapter {
     public int getCount() {
 
         if (arrayOfBitmaps != null) {
-            arrayOfBitmaps.size();
+            return arrayOfBitmaps.size();
         }
 
         return 0;
@@ -51,6 +51,7 @@ public class ProductFormImageViewPagerAdapter extends PagerAdapter {
 
         final ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
         imageView.setImageBitmap(bmp);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         container.addView(itemView);
 
         return itemView;
@@ -66,7 +67,7 @@ public class ProductFormImageViewPagerAdapter extends PagerAdapter {
             arrayOfBitmaps = new ArrayList<Bitmap>();
         }
 
-        if (arrayOfBitmaps.size() < 2) {
+        if (arrayOfBitmaps.size() < 5) {
             arrayOfBitmaps.add(takenImage);
         }
     }

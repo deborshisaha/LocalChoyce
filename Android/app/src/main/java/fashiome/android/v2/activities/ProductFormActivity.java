@@ -2,26 +2,36 @@ package fashiome.android.v2.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.desmond.squarecamera.CameraActivity;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.utils.Utils;
 import fashiome.android.v2.adapters.ProductFormImageViewPagerAdapter;
 
 /**
@@ -44,8 +54,11 @@ public class ProductFormActivity extends AppCompatActivity {
     @Bind(R.id.viewPagerProductImageHolder)
     ViewPager viewPagerProductImageHolder;
 
+    private Handler delayHandler = null;
+    private Runnable runnable = null;
+    private static final int SELECT_FILE = 1;
     private static final int REQUEST_CAMERA = 0;
-    private List<Bitmap> arrayOfBitmaps = new ArrayList<Bitmap>();
+//    private List<Bitmap> arrayOfBitmaps = new ArrayList<Bitmap>();
     private ProductFormImageViewPagerAdapter productFormImageViewPagerAdapter;
 
     @Override
@@ -153,7 +166,7 @@ public class ProductFormActivity extends AppCompatActivity {
                             Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
-                    //startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+                    startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
                 }
             }
         });
@@ -183,7 +196,83 @@ public class ProductFormActivity extends AppCompatActivity {
 
                 break;
             }
+            case SELECT_FILE:{
+
+                String url = data.getData().toString();
+                Bitmap takenImage = null;
+                InputStream instream = null;
+                if (url.startsWith("content://com.google.android.apps.photos.content")){
+                    try {
+                        instream = getContentResolver().openInputStream(Uri.parse(url));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (instream != null) {
+                    Bitmap bmp = BitmapFactory.decodeStream(instream);
+                    takenImage = reduceBitmapSize(bmp, viewPagerProductImageHolder.getHeight());
+                }
+
+                if (productFormImageViewPagerAdapter != null) {
+                    productFormImageViewPagerAdapter.add(takenImage);
+                    productFormImageViewPagerAdapter.notifyDataSetChanged();
+                }
+                break;
+            }
         }
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        if (delayHandler == null) {
+            delayHandler = new Handler();
+        }
+
+        if (runnable == null) {
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    viewPagerProductImageHolder.setCurrentItem(productFormImageViewPagerAdapter.getCount(), true);
+                }
+            };
+        }
+
+        delayHandler.postDelayed(runnable, 1000);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        delayHandler.removeCallbacks(runnable);
+    }
+
+    private Bitmap reduceBitmapSize (Bitmap bitmap, int newHeight) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        float aspectRatio = ((float)width / height);
+        float newWidth = aspectRatio * newHeight;
+
+        if (newWidth < Utils.getScreenWidth(this)) {
+            newWidth = Utils.getScreenWidth(this);
+            newHeight = (int)((float)newWidth/aspectRatio);
+        }
+
+        float scaleHeight = ((float) newHeight) / height;
+        float scaleWidth = ((float) newWidth) / width;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height,
+                matrix, false);
+
+        return resizedBitmap;
+    }
 }
