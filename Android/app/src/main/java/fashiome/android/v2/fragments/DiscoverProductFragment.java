@@ -152,6 +152,7 @@ public class DiscoverProductFragment extends Fragment {
         parseQueryForProductList.setLimit(20);
         parseQueryForProductList.orderByDescending("createdAt");
         parseQueryForProductList.include("productPostedBy");
+        parseQueryForProductList.include("productBoughtBy");
         parseQueryForProductList.include("address");
 
         return parseQueryForProductList;

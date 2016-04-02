@@ -26,6 +26,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.activities.IntroAndLoginActivity;
+import fashiome.android.activities.ProductDetailsActivity;
 import fashiome.android.activities.UserDetailsActivity;
 import fashiome.android.utils.Constants;
 import fashiome.android.utils.Utils;
@@ -57,6 +58,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.mProducts = products;
         this.mContext = context;
     }
+    private static final String TAG = "ProductAdapter";
 
     @Override
     public void onBindViewHolder(ProductViewHolder productViewHolder, int position) {
@@ -181,6 +183,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             this.mContext = context;
             itemView.setOnClickListener(this);
             rivProfilePicture.setOnClickListener(this);
+            rivProductPrimaryImage.setOnClickListener(this);
             tvProductByUserName.setOnClickListener(this);
             tvProductTitle.setOnClickListener(this);
             tvProductDescription.setOnClickListener(this);
@@ -192,7 +195,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
             String productImageURLString = ImageURLGenerator.getInstance(this.mContext).URLForImageWithCloudinaryPublicId(product.getProductPrimaryImageCloudinaryPublicId(), Utils.getScreenWidthInDp(this.mContext));
             String profileImageURLString = null;
-
+            rivProductPrimaryImage.setImageResource(0);
             if (productImageURLString != null || productImageURLString.length() > 0) {
 
                 Glide.with(this.mContext)
@@ -217,6 +220,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvProductDescription.setText(product.getProductDescription());
             tvPrice.setText("$" + String.valueOf((int) product.getPrice()) + "/day");
 
+            rivProfilePicture.setImageResource(0);
             if (user != null) {
                 tvProductByUserName.setText(user.getUsername());
                 profileImageURLString = ImageURLGenerator.getInstance(this.mContext).URLForFBProfilePicture(user.getFacebookId(), Utils.getScreenWidthInDp(this.mContext));
@@ -234,7 +238,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         @Override
         public void onClick(View v) {
 
-            Log.i("info", "click detected");
+            Log.i(TAG, "click detected");
 
             switch (v.getId()) {
 
@@ -255,6 +259,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     }
 
                     break;
+                case R.id.rivProductPrimaryImage:
+                    intent = new Intent(mContext, ProductDetailsActivity.class);
+                    intent.putExtra("product", mProducts.get(getLayoutPosition()));
+                    mContext.startActivity(intent);
+                    ((Activity)mContext).overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 
                 default:
                     break;
