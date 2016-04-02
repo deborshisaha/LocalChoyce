@@ -37,7 +37,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
+                android:background="@drawable/black_to_transparent_square_edges"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/ivCloseUploadWindow"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:src="@drawable/squarecamera__cancel_drawable"/>
+
+            <RelativeLayout
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_gravity="bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp">
+
+                <TextView
+                    style="@style/BigMedium"
+                    android:id="@+id/tvNumberOfImagesUploaded"
+                    android:padding="8dp"
+                    android:background="@drawable/black_transparent"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="0/5"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:id="@+id/ivAddImage"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/black_transparent"
+                    android:layout_toRightOf="@+id/tvNumberOfImagesUploaded"
+                    android:src="@drawable/ic_add_image"/>
+
+            </RelativeLayout>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -46,13 +83,14 @@
     <include layout="@layout/content_product_form_v2" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabAddProductImage"
+        android:id="@+id/fabUploadProduct"
         android:elevation="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
-        android:src="@drawable/ic_add_image"
+        app:backgroundTint="#D3D3D3"
+        android:src="@drawable/ic_upload"
         app:layout_anchor="@id/appbar"
         app:layout_anchorGravity="bottom|right|end"/>
 

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import fashiome.android.R;
@@ -75,5 +76,13 @@ public class ProductFormImageViewPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((LinearLayout) object);
+    }
+
+    public List<Bitmap> getBitmaps() {
+        return arrayOfBitmaps;
+    }
+
+    public void removeAll() {
+        arrayOfBitmaps.removeAll(arrayOfBitmaps);
     }
 }

@@ -12,5 +12,6 @@
 
     <color name="material_design_gray_background">#ECECEC</color>
     <color name="blue">#4A90E2</color>
+    <color name="translucent_black">#55000000</color>
 
 </resources>

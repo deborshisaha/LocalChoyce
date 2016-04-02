@@ -125,4 +125,6 @@ dependencies {
     //View pager with PagerSlidingTabStrip
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
 
+    /* Progress HUD */
+    compile 'com.kaopiz:kprogresshud:1.0.5'
 }
