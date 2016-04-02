@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,10 +43,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.Manifest;
@@ -78,21 +77,19 @@ public class ProductMapFragment extends Fragment implements
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private FragmentActivity myContext;
     private ParseQuery<Product> productParseQuery;
-    private MapviewAdapter productAdapter;
+    //private MapviewAdapter productAdapter;
+    private BannerAdapter bannerAdapter;
 
-    @Bind(R.id.rvMap)
-    RecyclerView productRecyclerView;
+    @Bind(R.id.viewpager) ViewPager pager;
+    //@Bind(R.id.rvMap) RecyclerView productRecyclerView;
 
-    public void setProductParseQuery(ParseQuery<Product> productParseQuery) {
-        this.productParseQuery = productParseQuery;
-    }
-
-    public void setProductAdapter(MapviewAdapter productAdapter) {
-        this.productAdapter = productAdapter;
+    public void setProductAdapter(BannerAdapter bannerAdapter) {
+        //this.productAdapter = productAdapter;
+        this.bannerAdapter = bannerAdapter;
     }
 
     public ArrayList<LatLng> getAllLocations(){
-        ArrayList<Product> products = productAdapter.mProducts;
+        ArrayList<Product> products = bannerAdapter.mProducts;
         ArrayList<LatLng> points = new ArrayList<>();
         for(Product p: products){
             points.add(p.getAddress().getPoint());
@@ -100,13 +97,6 @@ public class ProductMapFragment extends Fragment implements
         return points;
     }
 
-    /*
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-    }
-*/
     @Override
     public void onAttach(Activity activity) {
         Log.i("info","onAttach called");
@@ -114,36 +104,22 @@ public class ProductMapFragment extends Fragment implements
         super.onAttach(activity);
     }
 
-
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_product_map, container, false);
-
         ButterKnife.bind(this, v);
 
-        if (productAdapter == null) {
-            productAdapter = new MapviewAdapter(getActivity());
+        if (bannerAdapter == null) {
+            bannerAdapter = new BannerAdapter(getActivity());
         }
 
-        if (productRecyclerView.getAdapter() == null) {
-            productRecyclerView.setAdapter(productAdapter);
+        if (pager.getAdapter() == null) {
+            pager.setAdapter(bannerAdapter);
         }
 
-        if (productRecyclerView.getLayoutManager() == null ) {
-            productRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        }
-
-/*
-        if (productParseQuery != null) {
-            productParseQuery.findInBackground(new FindCallback<Product>() {
-                @Override
-                public void done(List<Product> products, ParseException e) {
-                    Log.i("info","updating items");
-                    productAdapter.updateItems(Constants.REFRESH_OPERATION, products);
-                }
-            });
-        }
-*/
+        //if (productRecyclerView.getLayoutManager() == null ) {
+        //    productRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+       // }
 
         mapFragment = new SupportMapFragment() {
             @Override
@@ -169,41 +145,10 @@ public class ProductMapFragment extends Fragment implements
         return v;
     }
 
-/*    @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        //super.onCreate(savedInstanceState);
-        //setContentView(R.layout.fragment_product_map);
-
-        Log.i("info","onCreateView called");
-        View view = inflater.inflate(R.layout.fragment_product_map, container, false);
-
-
-        mapFragment = ((SupportMapFragment) PanacheHomeActivity.fragmentManager.findFragmentById(R.id.prodMap));
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap map) {
-                    loadMap(map);
-                    map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                    map.setInfoWindowAdapter(new CustomWindowAdapter(inflater));
-                }
-            });
-        } else {
-            Toast.makeText(myContext, "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
-        }
-
-        return view;
-
-    }*/
-
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
         //super.onViewCreated(view, savedInstanceState);
         Log.i("info", "onViewCreated called");
-
-
     }
 
     protected void loadMap(GoogleMap googleMap) {

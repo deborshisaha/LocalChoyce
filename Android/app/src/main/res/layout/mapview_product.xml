@@ -24,7 +24,7 @@
         android:layout_alignRight="@+id/tvPrice"
         android:layout_alignEnd="@+id/tvPrice"
         android:gravity="center_vertical"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorPrimaryText"
         android:textAppearance="?android:attr/textAppearanceSmall"/>
 
 

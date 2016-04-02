@@ -135,7 +135,7 @@ public class MapviewAdapter extends RecyclerView.Adapter<MapviewAdapter.ViewHold
 
         //holder.mAddUser.setVisibility(View.INVISIBLE);
 
-        holder.desc.setText(product.getProductDescription());
+        //holder.desc.setText(product.getProductDescription());
         holder.title.setText(product.getProductName());
         //holder.mScreenName.setText("@" + user.getScreenName());
 

@@ -119,8 +119,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
 
         if (mProducts.size() > 0 && operation == Constants.NEW_SEARCH_OPERATION) {
-            Log.i("info","Clearing items for new search results");
             mProducts.clear();
+            Log.i("info", "Clearing items for new search results "+mProducts.size());
             notifyDataSetChanged();
         }
 
