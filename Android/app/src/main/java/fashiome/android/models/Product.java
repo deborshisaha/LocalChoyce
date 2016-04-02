@@ -15,6 +15,7 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @ParseClassName("Product")
 public class Product extends ParseObject implements Parcelable {
@@ -258,6 +259,11 @@ public class Product extends ParseObject implements Parcelable {
      */
     public Product() {
         super();
+        this.setProductRating(new Random().nextInt(4) + 1);
+        this.setNumberOfFavorites(new Random().nextInt(500) + 100);
+        this.setNumberOfReviews(new Random().nextInt(20) + 1);
+        this.setNumberOfViews(new Random().nextInt(1000) + 100);
+        this.setNumberOfRentals(new Random().nextInt(500) + 100);
     }
 
     public void setPhotos(ArrayList<String> photoCloudinaryPublicIdList) {

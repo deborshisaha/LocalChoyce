@@ -12,15 +12,9 @@
     <!-- Permission to use camera - required -->
     <uses-permission android:name="android.permission.CAMERA"/>
     <!-- Camera features - recommended -->
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false"/>
-    <uses-feature
-        android:name="android.hardware.camera.autofocus"
-        android:required="false"/>
-    <uses-feature
-        android:name="android.hardware.camera.flash"
-        android:required="false"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <!-- internet -->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -37,6 +31,8 @@
         android:name="android.permission.ACCESS_COARSE_LOCATION"
         android:protectionLevel="dangerous"/>
 
+    <!-- Request permission to use a device camera -->
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -55,7 +51,6 @@
     <uses-permission android:name="fashiome.android.permission.MAPS_RECEIVE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -128,7 +123,6 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name="com.desmond.squarecamera.CameraActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.LoginActivity"
@@ -163,12 +157,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.BookingDetailsActivity"
             android:label="@string/title_activity_booking_details"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
         <activity
             android:name=".activities.ProductFilterSettingsActivity"
             android:label="@string/title_activity_product_filter_settings"
@@ -220,7 +216,7 @@
             android:value="@string/parse_client_key"/>
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBWmsGrhbcnPejDp0HfLdjliL8Tse9cprs"/>
+            android:value="AIzaSyAZX-rtpzX0XjEuP_eoCG1Hf-Xi2V0n_Js"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>

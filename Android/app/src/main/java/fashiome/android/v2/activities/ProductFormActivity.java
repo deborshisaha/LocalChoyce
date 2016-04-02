@@ -2,26 +2,54 @@ package fashiome.android.v2.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.desmond.squarecamera.CameraActivity;
+import com.kaopiz.kprogresshud.KProgressHUD;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.models.Product;
+import fashiome.android.models.User;
+import fashiome.android.utils.Utils;
 import fashiome.android.v2.adapters.ProductFormImageViewPagerAdapter;
 
 /**
@@ -29,8 +57,17 @@ import fashiome.android.v2.adapters.ProductFormImageViewPagerAdapter;
  */
 public class ProductFormActivity extends AppCompatActivity {
 
-    @Bind(R.id.fabAddProductImage)
-    FloatingActionButton fabAddProductImage;
+    @Bind(R.id.fabUploadProduct)
+    FloatingActionButton fabUploadProduct;
+
+    @Bind(R.id.ivCloseUploadWindow)
+    ImageView ivCloseUploadWindow;
+
+    @Bind(R.id.tvNumberOfImagesUploaded)
+    TextView tvNumberOfImagesUploaded;
+
+    @Bind(R.id.ivAddImage)
+    ImageView ivAddImage;
 
     @Bind(R.id.etProductName)
     EditText etProductName;
@@ -44,9 +81,12 @@ public class ProductFormActivity extends AppCompatActivity {
     @Bind(R.id.viewPagerProductImageHolder)
     ViewPager viewPagerProductImageHolder;
 
+    private Handler delayHandler = null;
+    private Runnable runnable = null;
+    private static final int SELECT_FILE = 1;
     private static final int REQUEST_CAMERA = 0;
-    private List<Bitmap> arrayOfBitmaps = new ArrayList<Bitmap>();
     private ProductFormImageViewPagerAdapter productFormImageViewPagerAdapter;
+    final private Product product = new Product();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +96,7 @@ public class ProductFormActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        fabAddProductImage.setOnClickListener(new View.OnClickListener() {
+        ivAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage(v);
@@ -67,62 +107,150 @@ public class ProductFormActivity extends AppCompatActivity {
 
         viewPagerProductImageHolder.setAdapter(productFormImageViewPagerAdapter);
 
-//        etProductName.addTextChangedListener(new TextWatcher() {
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start,
-//                                          int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start,
-//                                      int before, int count) {
-//                if (s.length() != 0)
-//                    Field2.setText("");
-//            }
-//        });
-//
-//        etProductDescription.addTextChangedListener(new TextWatcher() {
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start,
-//                                          int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start,
-//                                      int before, int count) {
-//                if (s.length() != 0)
-//                    Field1.setText("");
-//            }
-//        });
-//
-//        etProductPrice.addTextChangedListener(new TextWatcher() {
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start,
-//                                          int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start,
-//                                      int before, int count) {
-//                if (s.length() != 0)
-//                    Field1.setText("");
-//            }
-//        });
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (shouldEnableUploadButton()) {
+                    enableUpload();
+                } else {
+                    disableUpload();
+                }
+            }
+        };
+
+        etProductName.addTextChangedListener(textWatcher);
+        etProductPrice.addTextChangedListener(textWatcher);
+        etProductDescription.addTextChangedListener(textWatcher);
+        ivCloseUploadWindow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Intent resultIntent = new Intent();
+                overridePendingTransition(R.anim.stay, R.anim.slide_down);
+                finish();
+            }
+        });
+    }
+
+    private void enableUpload () {
+        fabUploadProduct.setBackgroundTintList(getResources().getColorStateList(R.color.colorPrimary));
+        fabUploadProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadProduct();
+            }
+        });
+    }
+
+    private void disableUpload () {
+        fabUploadProduct.setBackgroundTintList(getResources().getColorStateList(R.color.material_design_gray_background));
+        fabUploadProduct.setOnClickListener(null);
+    }
+
+    private boolean shouldEnableUploadButton() {
+
+        if (etProductName.getText().length() == 0 ||
+                etProductPrice.getText().length() == 0 ||
+                etProductDescription.getText().length() == 0 ||
+                productFormImageViewPagerAdapter.getCount() == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    private void uploadProduct() {
+
+        final Cloudinary cloudinaryObject = new Cloudinary(com.cloudinary.android.Utils.cloudinaryUrlFromContext(this));
+
+        product.setProductName(etProductName.getText().toString());
+        product.setProductDescription(etProductDescription.getText().toString());
+        product.setPrice(Double.parseDouble(etProductPrice.getText().toString()));
+        product.setCurrency("USD");
+        product.setProductPostedBy((User) User.getCurrentUser());
+        //product.setProductSize(size.getSelectedItem().toString());
+        //product.setGender(gender.getSelectedItem().toString());
+        product.setPhotos(getPhotoCloudinaryPublicIdList());
+
+        final KProgressHUD hud = KProgressHUD.create(ProductFormActivity.this).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setMaxProgress(101);
+        hud.setLabel("Saving your product");
+        hud.show();
+
+        // Remove Call back
+        delayHandler.removeCallbacks(runnable);
+        runnable = null;
+
+        product.saveInBackground(new SaveCallback() {
+
+            @Override
+            public void done(ParseException e) {
+
+                if (e == null) {
+
+                    hud.setLabel("Uploading photos (0/" + productFormImageViewPagerAdapter.getCount()+")").setMaxProgress(100).setStyle(KProgressHUD.Style.ANNULAR_DETERMINATE);
+
+                    AsyncTask<String, Integer, String> task = new AsyncTask<String, Integer, String>() {
+
+                        @Override
+                        protected void onProgressUpdate(Integer... values) {
+                            hud.setProgress(values[0]);
+
+                            if (values[1] != values[2]) {
+                                hud.setLabel("Uploading photos ("+values[1]+"/"+ values[2]+ ")");
+                            } else {
+                                hud.setLabel("Upload complete!!");
+                            }
+                        }
+
+                        @Override
+                        protected String doInBackground(String... params) {
+                            try {
+                                int i = 1;
+
+                                for (Bitmap bmp : productFormImageViewPagerAdapter.getBitmaps()) {
+                                    cloudinaryObject.uploader().upload(getInputStream(bmp), ObjectUtils.asMap("public_id", product.getObjectId() + getPhotoCloudinaryPublicIdList().get(i - 1)));
+                                    int percentage = (int)(((float)i/productFormImageViewPagerAdapter.getCount()) * 100);
+
+                                    Integer[] arr = {percentage, i, productFormImageViewPagerAdapter.getCount()};
+                                    publishProgress(arr);
+                                    i++;
+                                }
+
+                            } catch (IOException ioException) {
+                                ioException.printStackTrace();
+                            }
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(String s) {
+
+                            if (runnable == null) {
+                                runnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        hud.dismiss();
+                                        overridePendingTransition(R.anim.stay, R.anim.slide_down);
+                                        finish();
+                                    }
+                                };
+                            }
+
+                            delayHandler.postDelayed(runnable, 2000);
+                        }
+                    };
+
+                    task.execute();
+
+                } else {
+                    Log.d("DEBUG", "Cause: " + e.getCause());
+                }
+            }
+        });
     }
 
     private void launchCamera() {
@@ -153,7 +281,7 @@ public class ProductFormActivity extends AppCompatActivity {
                             Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
-                    //startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+                    startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
                 }
             }
         });
@@ -168,22 +296,132 @@ public class ProductFormActivity extends AppCompatActivity {
 
         if (resultCode != RESULT_OK) return;
 
-        Uri takenPhotoUri = null;
+        Bitmap takenImage = null;
 
         switch (requestCode) {
 
             case REQUEST_CAMERA: {
-                takenPhotoUri = data.getData();
-                Bitmap takenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
+                Uri takenPhotoUri = data.getData();
+                Bitmap bmp = BitmapFactory.decodeFile(takenPhotoUri.getPath());
 
-                if (productFormImageViewPagerAdapter != null) {
-                    productFormImageViewPagerAdapter.add(takenImage);
-                    productFormImageViewPagerAdapter.notifyDataSetChanged();
+                takenImage = reduceBitmapSize(bmp, viewPagerProductImageHolder.getHeight());
+
+                break;
+            }
+            case SELECT_FILE:{
+
+                String url = data.getData().toString();
+                InputStream instream = null;
+                if (url.startsWith("content://com.google.android.apps.photos.content")){
+                    try {
+                        instream = getContentResolver().openInputStream(Uri.parse(url));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (instream != null) {
+                    Bitmap bmp = BitmapFactory.decodeStream(instream);
+                    takenImage = reduceBitmapSize(bmp, viewPagerProductImageHolder.getHeight());
                 }
 
                 break;
             }
         }
+
+        if (productFormImageViewPagerAdapter != null && takenImage != null) {
+            productFormImageViewPagerAdapter.add(takenImage);
+            tvNumberOfImagesUploaded.setText(String.valueOf(productFormImageViewPagerAdapter.getCount())+"/5");
+            productFormImageViewPagerAdapter.notifyDataSetChanged();
+        }
+
+        if (shouldEnableUploadButton()) {
+            enableUpload();
+        } else {
+            disableUpload();
+        }
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        if (delayHandler == null) {
+            delayHandler = new Handler();
+        }
+
+        if (runnable == null) {
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    viewPagerProductImageHolder.setCurrentItem(productFormImageViewPagerAdapter.getCount(), true);
+                }
+            };
+        }
+
+        delayHandler.postDelayed(runnable, 1000);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        delayHandler.removeCallbacks(runnable);
+        runnable = null;
+        productFormImageViewPagerAdapter.removeAll();
+    }
+
+    private Bitmap reduceBitmapSize (Bitmap bitmap, int newHeight) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        float aspectRatio = ((float)width / height);
+        float newWidth = aspectRatio * newHeight;
+
+        if (newWidth < Utils.getScreenWidth(this)) {
+            newWidth = Utils.getScreenWidth(this);
+            newHeight = (int)((float)newWidth/aspectRatio);
+        }
+
+        float scaleHeight = ((float) newHeight) / height;
+        float scaleWidth = ((float) newWidth) / width;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height,
+                matrix, false);
+
+        return resizedBitmap;
+    }
+
+    private ArrayList<String> getPhotoCloudinaryPublicIdList() {
+
+        ArrayList<String> arrayList = new ArrayList<String>();
+
+        for (int i = 0; i < productFormImageViewPagerAdapter.getCount(); i++) {
+
+            if (i == 0) {
+                arrayList.add("_primary");
+                continue;
+            }
+
+            arrayList.add("_" + i);
+        }
+
+        return arrayList;
+    }
+
+    private ByteArrayInputStream getInputStream(Bitmap bitmap) {
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+        byte[] bitmapdata = bos.toByteArray();
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(bitmapdata);
+
+        return inputStream;
     }
 
 }

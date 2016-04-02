@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import fashiome.android.R;
@@ -24,7 +25,7 @@ public class ProductFormImageViewPagerAdapter extends PagerAdapter {
     public int getCount() {
 
         if (arrayOfBitmaps != null) {
-            arrayOfBitmaps.size();
+            return arrayOfBitmaps.size();
         }
 
         return 0;
@@ -51,6 +52,7 @@ public class ProductFormImageViewPagerAdapter extends PagerAdapter {
 
         final ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
         imageView.setImageBitmap(bmp);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         container.addView(itemView);
 
         return itemView;
@@ -66,7 +68,7 @@ public class ProductFormImageViewPagerAdapter extends PagerAdapter {
             arrayOfBitmaps = new ArrayList<Bitmap>();
         }
 
-        if (arrayOfBitmaps.size() < 2) {
+        if (arrayOfBitmaps.size() < 5) {
             arrayOfBitmaps.add(takenImage);
         }
     }
@@ -74,5 +76,13 @@ public class ProductFormImageViewPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((LinearLayout) object);
+    }
+
+    public List<Bitmap> getBitmaps() {
+        return arrayOfBitmaps;
+    }
+
+    public void removeAll() {
+        arrayOfBitmaps.removeAll(arrayOfBitmaps);
     }
 }
