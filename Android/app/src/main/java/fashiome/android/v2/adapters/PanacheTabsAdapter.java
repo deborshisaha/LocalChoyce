@@ -41,9 +41,9 @@ public class PanacheTabsAdapter extends FragmentPagerAdapter implements PagerSli
     public Fragment getItem(int position) {
 
         if (ParseUser.getCurrentUser() != null) {
-            return getGuestUserFragment(position);
-        } else {
             return getLoggedInUserFragment(position);
+        } else {
+            return getGuestUserFragment(position);
         }
 
     }
