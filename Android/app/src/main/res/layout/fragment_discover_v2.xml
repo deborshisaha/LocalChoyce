@@ -7,7 +7,7 @@
         android:id="@+id/fragmentToggleContainer"
         android:layout_alignParentTop="true"
         android:weightSum="10"
-        android:elevation="4dp"
+        android:elevation="8dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="48dp">
@@ -16,6 +16,8 @@
             android:id="@+id/btnList"
             style="@style/RegularMedium.PanacheHomeToggleButton"
             android:text="List"
+            android:drawableLeft="@drawable/ic_tablist"
+            android:paddingLeft="24dp"
             android:layout_width="0dp"
             android:layout_weight="5"
             android:layout_height="wrap_content" />
@@ -23,7 +25,9 @@
         <Button
             android:id="@+id/btnMap"
             style="@style/RegularMedium.PanacheHomeToggleButton"
+            android:drawableLeft="@drawable/ic_tabmap"
             android:text="Map"
+            android:paddingLeft="24dp"
             android:layout_width="0dp"
             android:layout_weight="5"
             android:layout_height="wrap_content" />

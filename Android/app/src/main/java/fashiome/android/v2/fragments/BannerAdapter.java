@@ -1,7 +1,9 @@
 package fashiome.android.v2.fragments;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +28,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import fashiome.android.R;
+import fashiome.android.activities.ProductDetailsActivity;
 import fashiome.android.models.Product;
 import fashiome.android.utils.ImageURLGenerator;
 import fashiome.android.utils.Utils;
@@ -88,7 +91,7 @@ public class BannerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
 
-        Product p = mProducts.get(position);
+        final Product p = mProducts.get(position);
         Log.i(TAG, "productname: " + p.getProductName());
         p.getPhotos().size();
 
@@ -98,6 +101,16 @@ public class BannerAdapter extends PagerAdapter {
         TextView desc = (TextView) itemView.findViewById(R.id.tvDesc);
         TextView price = (TextView) itemView.findViewById(R.id.tvPrice);
         ImageView imageView = (ImageView) itemView.findViewById(R.id.ivItemPhoto);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ProductDetailsActivity.class);
+                intent.putExtra("product", p);
+                mContext.startActivity(intent);
+                ((Activity)mContext).overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
+            }
+        });
 
         title.setText(p.getProductName());
         desc.setText(p.getProductDescription());
