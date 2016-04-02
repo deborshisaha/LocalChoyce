@@ -259,11 +259,6 @@ public class Product extends ParseObject implements Parcelable {
      */
     public Product() {
         super();
-        this.setProductRating(new Random().nextInt(4) + 1);
-        this.setNumberOfFavorites(new Random().nextInt(500) + 100);
-        this.setNumberOfReviews(new Random().nextInt(20) + 1);
-        this.setNumberOfViews(new Random().nextInt(1000) + 100);
-        this.setNumberOfRentals(new Random().nextInt(500) + 100);
     }
 
     public void setPhotos(ArrayList<String> photoCloudinaryPublicIdList) {
@@ -343,7 +338,7 @@ public class Product extends ParseObject implements Parcelable {
 
     public String getImageCloudinaryPublicId(int position) {
 
-        if (this.photos.size() < position) {
+        if (getPhotos().size() < position) {
             return null;
         }
 

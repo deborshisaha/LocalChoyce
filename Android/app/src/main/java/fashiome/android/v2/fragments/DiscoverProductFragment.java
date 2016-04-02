@@ -3,6 +3,7 @@ package fashiome.android.v2.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -30,7 +32,9 @@ public class DiscoverProductFragment extends Fragment {
     private ProductMapFragment productMapFragment;
     private ProductListFragment productListFragment;
     private ProductAdapter productAdapter;
-    private MapviewAdapter mapviewAdapter;
+    //private MapviewAdapter mapviewAdapter;
+    private BannerAdapter bannerAdapter;
+    private static final String TAG = "DiscoverProductFragment";
 
     @Bind(R.id.btnList)
     Button btnList;
@@ -47,22 +51,29 @@ public class DiscoverProductFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         /* Initialization */
-        if (productAdapter == null) {
+        if(productAdapter == null) {
             productAdapter = new ProductAdapter(getActivity());
         }
 
-        if(mapviewAdapter == null){
-            mapviewAdapter = new MapviewAdapter(getActivity());
+        if(bannerAdapter == null){
+            bannerAdapter = new BannerAdapter(getActivity());
         }
+        //if(mapviewAdapter == null){
+        //    mapviewAdapter = new MapviewAdapter(getActivity());
+       // }
 
         ParseQuery<Product> query = getParseQueryForProductList();
         query.findInBackground(new FindCallback<Product>() {
             @Override
             public void done(List<Product> products, ParseException e) {
+                Log.i(TAG, "Parse query got products "+products.size());
                 productAdapter.updateItems(Constants.NEW_SEARCH_OPERATION, products);
                 productAdapter.notifyDataSetChanged();
-                mapviewAdapter.updateItems(Constants.NEW_SEARCH_OPERATION, products);
-                mapviewAdapter.notifyDataSetChanged();
+                //mapviewAdapter.updateItems(Constants.NEW_SEARCH_OPERATION, products);
+                //mapviewAdapter.notifyDataSetChanged();
+                //getChildFragmentManager().findFragmentById()
+                bannerAdapter.addAll(products);
+                bannerAdapter.notifyDataSetChanged();
             }
         });
 
@@ -122,12 +133,11 @@ public class DiscoverProductFragment extends Fragment {
         if (productMapFragment == null) {
             productMapFragment = new ProductMapFragment();
             //productMapFragment.setProductAdapter(productAdapter);
-            productMapFragment.setProductAdapter(mapviewAdapter);
+            productMapFragment.setProductAdapter(bannerAdapter);
         }
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.product_discover_fragment, productMapFragment).commit();
-
 
 /*
         if (getChildFragmentManager().findFragmentById(R.id.product_discover_fragment) == null) {

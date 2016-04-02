@@ -86,7 +86,7 @@ public class ProductFormActivity extends AppCompatActivity {
     private static final int SELECT_FILE = 1;
     private static final int REQUEST_CAMERA = 0;
     private ProductFormImageViewPagerAdapter productFormImageViewPagerAdapter;
-    final private Product product = new Product();
+    private Product product = new Product();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +95,8 @@ public class ProductFormActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_form_v2);
 
         ButterKnife.bind(this);
+
+        populateProductDefaults();
 
         ivAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,6 +137,14 @@ public class ProductFormActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void populateProductDefaults() {
+        product.setProductRating(new Random().nextInt(4) + 1);
+        product.setNumberOfFavorites(new Random().nextInt(500) + 100);
+        product.setNumberOfReviews(new Random().nextInt(20) + 1);
+        product.setNumberOfViews(new Random().nextInt(1000) + 100);
+        product.setNumberOfRentals(new Random().nextInt(500) + 100);
     }
 
     private void enableUpload () {

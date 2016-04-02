@@ -56,7 +56,7 @@
     <string name="user_profile_seller_reviews">Seller reviews</string>
     <string name="user_profile_my_products">My products</string>
     <string name="user_profile_my_reviews">Reviews</string>
-
+    <string name="facebook_app_name">Panache</string>
 
     <!--Version-->
     <string name="product_price">Price</string>
@@ -66,4 +66,21 @@
     <string name="product_price_hint">How much a day</string>
     <string name="title_activity_onboarding_wizard">Onboarding Wizard</string>
     <string name="lookingForText">For whom are you looking?</string>
+
+
+    <string name="cancelled">Cancelled</string>
+    <string name="permission_not_granted">Unable to perform selected action because permissions were not granted.</string>
+    <string name="ok">OK</string>
+    <string name="hello_user">Hello %1$s!</string>
+    <string name="success">Success</string>
+    <string name="successfully_posted_post">Post ID: %1$s</string>
+    <string name="error">Error</string>
+    <string name="status_update">Updating status for %1$s at %2$s</string>
+    <string name="photo_post">Photo Post</string>
+    <string name="you_picked">You picked:</string>
+    <string name="no_friends_selected">&lt;No friends selected&gt;</string>
+    <string name="no_place_selected">&lt;No place selected&gt;</string>
+    <string name="pick_seattle_place">Pick a Seattle Place</string>
+    <string name="exception">Exception: %1$s</string>
+
 </resources>

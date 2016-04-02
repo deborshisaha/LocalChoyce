@@ -59,7 +59,8 @@ public class ProductPagerAdapter extends PagerAdapter {
 
         final ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
 
-        String URLString = ImageURLGenerator.getInstance(this.mContext).URLForImageWithCloudinaryPublicId(mProduct.getImageCloudinaryPublicId(position), Utils.getScreenWidthInDp(this.mContext));
+        String URLString = ImageURLGenerator.getInstance(this.mContext)
+                .URLForImageWithCloudinaryPublicId(mProduct.getImageCloudinaryPublicId(position), Utils.getScreenWidthInDp(this.mContext));
 
         Log.d("DEBUG", URLString);
 
