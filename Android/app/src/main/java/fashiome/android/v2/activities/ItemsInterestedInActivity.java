@@ -96,6 +96,7 @@ public class ItemsInterestedInActivity extends AppCompatActivity {
     @OnClick(R.id.btnSkip)
     public void onSkip() {
         Intent launchIntent = new Intent(ItemsInterestedInActivity.this, PanacheHomeActivity.class);
+        launchIntent.putExtra(SearchCriteria.KEY, searchCriteria);
         startActivity(launchIntent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();
@@ -104,6 +105,12 @@ public class ItemsInterestedInActivity extends AppCompatActivity {
     @OnClick(R.id.btnNext)
     public void onNext() {
         animateDismiss();
+
+        Intent launchIntent = new Intent(ItemsInterestedInActivity.this, PanacheHomeActivity.class);
+        launchIntent.putExtra(SearchCriteria.KEY, searchCriteria);
+        startActivity(launchIntent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        finish();
     }
 
     private void animateDismiss() {

@@ -13,7 +13,9 @@ import com.astuetz.PagerSlidingTabStrip;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.v2.adapters.ItemsInterestedInAdapter;
 import fashiome.android.v2.adapters.PanacheTabsAdapter;
+import fashiome.android.v2.classes.SearchCriteria;
 
 public class PanacheHomeActivity extends AppCompatActivity {
 
@@ -24,6 +26,7 @@ public class PanacheHomeActivity extends AppCompatActivity {
     ViewPager vpPanacheTabs;
 
     public static FragmentManager fragmentManager;
+    private SearchCriteria searchCriteria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +39,10 @@ public class PanacheHomeActivity extends AppCompatActivity {
 
         tabStripPanacheTabs.setShouldExpand(true);
 
+        searchCriteria = (SearchCriteria) getIntent().getExtras().getParcelable(SearchCriteria.KEY);
+
         // Setting adapter of Panache tabs
-        vpPanacheTabs.setAdapter(new PanacheTabsAdapter(getSupportFragmentManager()));
+        vpPanacheTabs.setAdapter(new PanacheTabsAdapter(getSupportFragmentManager(), searchCriteria));
 
         // Setting View pager
         tabStripPanacheTabs.setViewPager(vpPanacheTabs);

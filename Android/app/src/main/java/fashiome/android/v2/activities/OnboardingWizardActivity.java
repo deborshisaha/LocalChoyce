@@ -101,16 +101,16 @@ public class OnboardingWizardActivity extends AppCompatActivity {
                 };
 
                 if (searchCriteria.getGender() == SearchCriteria.Gender.GENDER_F) {
-                    cvFemale.animate().alpha(0).setDuration(500).setStartDelay(200).setListener(animatorListenerAdapter);
-                }  else {
                     cvMale.animate().alpha(0).setDuration(500).setStartDelay(200).setListener(animatorListenerAdapter);
+                }  else {
+                    cvFemale.animate().alpha(0).setDuration(500).setStartDelay(200).setListener(animatorListenerAdapter);
                 }
             }
         });
     }
 
     private void selectHer() {
-        searchCriteria.setGender(SearchCriteria.Gender.GENDER_M);
+        searchCriteria.setGender(SearchCriteria.Gender.GENDER_F);
         ivBannerImageOfHer.setImageDrawable(getDrawable(R.drawable.her));
         ivSelectedHerIndicator.setVisibility(View.VISIBLE);
     }
@@ -121,7 +121,7 @@ public class OnboardingWizardActivity extends AppCompatActivity {
     }
 
     private void selectHim() {
-        searchCriteria.setGender(SearchCriteria.Gender.GENDER_F);
+        searchCriteria.setGender(SearchCriteria.Gender.GENDER_M);
         ivBannerImageOfHim.setImageDrawable(getDrawable(R.drawable.him));
         ivSelectedHimIndicator.setVisibility(View.VISIBLE);
     }

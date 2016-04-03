@@ -144,18 +144,38 @@ public class DiscoverProductFragment extends Fragment {
 
     private ParseQuery<Product> getParseQueryForProductList() {
 
-        ParseQuery<Product>  parseQueryForProductList = ParseQuery.getQuery(Product.class);
-        parseQueryForProductList.setLimit(20);
-        parseQueryForProductList.orderByDescending("createdAt");
-        parseQueryForProductList.include("productPostedBy");
-        parseQueryForProductList.include("productBoughtBy");
-        parseQueryForProductList.include("address");
+        ParseQuery<Product>  mainQuery = null;
+
+        ParseQuery<Product>  genderQuery = ParseQuery.getQuery(Product.class);
 
         if (this.sc != null) {
+
             ArrayList<String> valuesList = new ArrayList<String>(this.sc.getSearchCriteriaItems().values());
-            //parseQueryForProductList.whereContainedIn("productDescription", this.sc.getSearchCriteriaItems() );
+
+            List<ParseQuery<Product>> queries = new ArrayList<ParseQuery<Product>>();
+
+            for (String term:valuesList) {
+                queries.add(getParseQueryForTermInName(term, this.sc.getGenderString()));
+            }
+
+            mainQuery = ParseQuery.or(queries);
+
+        } else {
+            mainQuery = genderQuery;
         }
 
-        return parseQueryForProductList;
+        mainQuery.orderByDescending("createdAt");
+        mainQuery.include("productPostedBy");
+        mainQuery.include("productBoughtBy");
+        mainQuery.include("address");
+
+        return mainQuery;
+    }
+
+    public ParseQuery<Product> getParseQueryForTermInName (String term, String gender) {
+        ParseQuery<Product>  q = ParseQuery.getQuery(Product.class);
+        q.whereContains("productName", term);
+        q.whereContains("gender", gender);
+        return q;
     }
 }

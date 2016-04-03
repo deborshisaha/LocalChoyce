@@ -41,7 +41,7 @@ public class ItemsInterestedInAdapter extends RecyclerView.Adapter<RecyclerView.
     private static final int[] her_blur_photos = {R.drawable.blur_personalization_bag, R.drawable.blur_personalization_shoes, R.drawable.blur_personalization_coat, R.drawable.blur_personalization_wrist_watch};
     private static final int[] her_sharp_photos = {R.drawable.personalization_shoes, R.drawable.personalization_shoes, R.drawable.personalization_coat, R.drawable.personalization_wrist_watch};
 
-    private static String[] herCategories = {"BagHer","ShoeHer","CoatHer","WatchHer"};
+    private static String[] herCategories = {"Bag","Dress","Shoe","Watch"};
     private static String[] hisCategories = {"Bag","Shoe","Coat","Watch"};
 
     private boolean lockedAnimations = false;
