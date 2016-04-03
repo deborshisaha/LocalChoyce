@@ -1,5 +1,9 @@
 package fashiome.android.v2.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -23,9 +27,15 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AnimationUtils;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cloudinary.Cloudinary;
@@ -61,6 +71,9 @@ import fashiome.android.v2.fragments.ProductFacebookPostFragment;
  */
 public class ProductFormActivity extends AppCompatActivity implements ProductFacebookPostFragment.ProductFacebookPostDialogListener {
 
+    @Bind(R.id.llProductUploadContent)
+    LinearLayout llProductUploadContent;
+
     @Bind(R.id.fabUploadProduct)
     FloatingActionButton fabUploadProduct;
 
@@ -69,9 +82,6 @@ public class ProductFormActivity extends AppCompatActivity implements ProductFac
 
     @Bind(R.id.tvNumberOfImagesUploaded)
     TextView tvNumberOfImagesUploaded;
-
-    @Bind(R.id.ivAddImage)
-    ImageView ivAddImage;
 
     @Bind(R.id.etProductName)
     EditText etProductName;
@@ -85,6 +95,9 @@ public class ProductFormActivity extends AppCompatActivity implements ProductFac
     @Bind(R.id.viewPagerProductImageHolder)
     ViewPager viewPagerProductImageHolder;
 
+    @Bind(R.id.llAddImage)
+    LinearLayout llAddImage;
+
     private Handler delayHandler = null;
     private Runnable runnable = null;
     private static final int SELECT_FILE = 1;
@@ -92,6 +105,7 @@ public class ProductFormActivity extends AppCompatActivity implements ProductFac
     private ProductFormImageViewPagerAdapter productFormImageViewPagerAdapter;
     private Product product = new Product();
     Bitmap facebookBitmap;
+    private ObjectAnimator beats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +117,7 @@ public class ProductFormActivity extends AppCompatActivity implements ProductFac
 
         populateProductDefaults();
 
-        ivAddImage.setOnClickListener(new View.OnClickListener() {
+        llAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage(v);
@@ -138,10 +152,34 @@ public class ProductFormActivity extends AppCompatActivity implements ProductFac
             @Override
             public void onClick(View v) {
                 // Intent resultIntent = new Intent();
-                overridePendingTransition(R.anim.stay, R.anim.slide_down);
+                // overridePendingTransition(R.anim.fade_in_fast, R.anim.fade_out_fast);
+                overridePendingTransition(0, 0);
                 finish();
             }
         });
+
+        setUpAnimations();
+
+    }
+
+    private void setUpAnimations() {
+        setUpUploadButtonAnimation();
+
+        llProductUploadContent.setTranslationY(500);
+        llProductUploadContent.animate().translationY(0).setDuration(300).setInterpolator(new DecelerateInterpolator()).setStartDelay(100).start();
+
+        llAddImage.startAnimation(AnimationUtils.loadAnimation(this, R.anim.pulse));
+    }
+
+    private void setUpUploadButtonAnimation() {
+
+        if (beats == null) {
+            beats = ObjectAnimator.ofFloat(fabUploadProduct, "translationY", -10f, 0f);
+        }
+
+        beats.setDuration(500);
+        beats.setInterpolator(new BounceInterpolator());
+        beats.setRepeatCount(ValueAnimator.INFINITE);
     }
 
     private void populateProductDefaults() {
@@ -160,11 +198,15 @@ public class ProductFormActivity extends AppCompatActivity implements ProductFac
                 uploadProduct();
             }
         });
+
+        if (beats != null) {beats.start();}
     }
 
     private void disableUpload () {
         fabUploadProduct.setBackgroundTintList(getResources().getColorStateList(R.color.material_design_gray_background));
         fabUploadProduct.setOnClickListener(null);
+
+        if (beats != null) {beats.pause();}
     }
 
     private boolean shouldEnableUploadButton() {
@@ -179,6 +221,8 @@ public class ProductFormActivity extends AppCompatActivity implements ProductFac
     }
 
     private void uploadProduct() {
+
+        if (beats != null) {beats.pause();}
 
         final Cloudinary cloudinaryObject = new Cloudinary(com.cloudinary.android.Utils.cloudinaryUrlFromContext(this));
 
@@ -256,13 +300,14 @@ public class ProductFormActivity extends AppCompatActivity implements ProductFac
                                 };
                             }
 
-                            delayHandler.postDelayed(runnable, 2000);
+                            delayHandler.postDelayed(runnable, 500);
                         }
                     };
 
                     task.execute();
 
                 } else {
+                    if (beats != null) {beats.resume();}
                     Log.d("DEBUG", "Cause: " + e.getCause());
                 }
             }
@@ -346,7 +391,14 @@ public class ProductFormActivity extends AppCompatActivity implements ProductFac
         }
 
         if (productFormImageViewPagerAdapter != null && takenImage != null) {
+
             productFormImageViewPagerAdapter.add(takenImage);
+
+            if (productFormImageViewPagerAdapter.getCount() == 5) {
+                llAddImage.clearAnimation();
+                llAddImage.setEnabled(false);
+            }
+
             tvNumberOfImagesUploaded.setText(String.valueOf(productFormImageViewPagerAdapter.getCount())+"/5");
             productFormImageViewPagerAdapter.notifyDataSetChanged();
         }
