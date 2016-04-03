@@ -21,9 +21,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.models.Product;
+import fashiome.android.v2.classes.SearchCriteria;
 
 public class DiscoverProductFragment extends Fragment {
 
+    private SearchCriteria sc;
     private ProductMapFragment productMapFragment;
     private ProductListFragment productListFragment;
     private static final String TAG = "DiscoverProductFragment";
@@ -34,6 +36,13 @@ public class DiscoverProductFragment extends Fragment {
 
     @Bind(R.id.btnMap)
     Button btnMap;
+
+    public DiscoverProductFragment(SearchCriteria sc) {
+        super();
+        this.sc = sc;
+    }
+
+    public DiscoverProductFragment(){}
 
     KProgressHUD hud = null;
 
@@ -58,6 +67,7 @@ public class DiscoverProductFragment extends Fragment {
         query.findInBackground(new FindCallback<Product>() {
             @Override
             public void done(List<Product> products, ParseException e) {
+
                 hud.dismiss();
                 Log.i(TAG, "Parse query got products " + products.size());
                 currentProducts.addAll(products);
@@ -68,7 +78,6 @@ public class DiscoverProductFragment extends Fragment {
                 if(productMapFragment != null && currentProducts.size() > 0){
                     productMapFragment.newData(currentProducts);
                 }
-
             }
         });
 
@@ -137,13 +146,38 @@ public class DiscoverProductFragment extends Fragment {
 
     private ParseQuery<Product> getParseQueryForProductList() {
 
-        ParseQuery<Product>  parseQueryForProductList = ParseQuery.getQuery(Product.class);
-        parseQueryForProductList.setLimit(20);
-        parseQueryForProductList.orderByDescending("createdAt");
-        parseQueryForProductList.include("productPostedBy");
-        parseQueryForProductList.include("productBoughtBy");
-        parseQueryForProductList.include("address");
+        ParseQuery<Product>  mainQuery = null;
 
-        return parseQueryForProductList;
+        ParseQuery<Product>  genderQuery = ParseQuery.getQuery(Product.class);
+
+        if (this.sc != null) {
+
+            ArrayList<String> valuesList = new ArrayList<String>(this.sc.getSearchCriteriaItems().values());
+
+            List<ParseQuery<Product>> queries = new ArrayList<ParseQuery<Product>>();
+
+            for (String term:valuesList) {
+                queries.add(getParseQueryForTermInName(term, this.sc.getGenderString()));
+            }
+
+            mainQuery = ParseQuery.or(queries);
+
+        } else {
+            mainQuery = genderQuery;
+        }
+
+        mainQuery.orderByDescending("createdAt");
+        mainQuery.include("productPostedBy");
+        mainQuery.include("productBoughtBy");
+        mainQuery.include("address");
+
+        return mainQuery;
+    }
+
+    public ParseQuery<Product> getParseQueryForTermInName (String term, String gender) {
+        ParseQuery<Product>  q = ParseQuery.getQuery(Product.class);
+        q.whereContains("productName", term);
+        q.whereContains("gender", gender);
+        return q;
     }
 }

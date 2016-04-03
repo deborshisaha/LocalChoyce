@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/rlGenderPicker"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:alpha="0"
     android:background="@color/material_design_gray_background"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -128,21 +130,3 @@
         android:textColor="@color/colorSecondaryText"
         android:text="NEXT" />
 </RelativeLayout>
-
-<!--<ScrollView-->
-    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content">-->
-    <!--<RelativeLayout-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="match_parent" >-->
-        <!--<LinearLayout-->
-            <!--android:id="@+id/LinearLayout1"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:orientation="vertical">-->
-
-            <!-- -->
-        <!--</LinearLayout>-->
-    <!--</RelativeLayout>-->
-<!--</ScrollView>-->
