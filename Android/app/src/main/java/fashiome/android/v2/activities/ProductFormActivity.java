@@ -133,7 +133,8 @@ public class ProductFormActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Intent resultIntent = new Intent();
-                overridePendingTransition(R.anim.stay, R.anim.slide_down);
+                // overridePendingTransition(R.anim.fade_in_fast, R.anim.fade_out_fast);
+                overridePendingTransition(0, 0);
                 finish();
             }
         });
