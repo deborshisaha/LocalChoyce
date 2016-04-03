@@ -48,33 +48,33 @@
                 android:padding="@dimen/activity_horizontal_margin"
                 android:src="@drawable/squarecamera__cancel_drawable"/>
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/llAddImage"
+                android:orientation="vertical"
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 android:layout_gravity="bottom"
-                android:layout_width="wrap_content"
-                android:layout_height="44dp">
+                android:layout_width="66dp"
+                android:background="@drawable/black_transparent"
+                android:layout_height="66dp">
 
                 <TextView
-                    style="@style/BigMedium"
+                    style="@style/SmallLight"
                     android:id="@+id/tvNumberOfImagesUploaded"
-                    android:padding="8dp"
-                    android:background="@drawable/black_transparent"
+                    android:padding="4dp"
                     android:textColor="@color/white"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:text="0/5"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="8dp"
+                    android:layout_height="wrap_content"
                     android:id="@+id/ivAddImage"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:background="@drawable/black_transparent"
-                    android:layout_toRightOf="@+id/tvNumberOfImagesUploaded"
-                    android:src="@drawable/ic_add_image"/>
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_camera"/>
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
