@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -19,23 +20,16 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
-import fashiome.android.adapters.MapviewAdapter;
-import fashiome.android.adapters.ProductAdapter;
-import fashiome.android.fragments.ProductsRecyclerViewFragment;
 import fashiome.android.models.Product;
-import fashiome.android.utils.Constants;
 import fashiome.android.v2.classes.SearchCriteria;
-import fashiome.android.v2.fragments.ProductListFragment;
 
 public class DiscoverProductFragment extends Fragment {
 
     private SearchCriteria sc;
-    private Fragment previouslyActiveFragment = null;
     private ProductMapFragment productMapFragment;
     private ProductListFragment productListFragment;
-    private ProductAdapter productAdapter;
-    private BannerAdapter bannerAdapter;
     private static final String TAG = "DiscoverProductFragment";
+    private List<Product> currentProducts = new ArrayList<>();
 
     @Bind(R.id.btnList)
     Button btnList;
@@ -50,6 +44,8 @@ public class DiscoverProductFragment extends Fragment {
 
     public DiscoverProductFragment(){}
 
+    KProgressHUD hud = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,23 +55,29 @@ public class DiscoverProductFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         /* Initialization */
-        if(productAdapter == null) {
-            productAdapter = new ProductAdapter(getActivity());
-        }
 
-        if(bannerAdapter == null){
-            bannerAdapter = new BannerAdapter(getActivity());
-        }
+        insertProductMapFragment();
+        insertProductListFragment();
+
+        hud = KProgressHUD.create(getActivity()).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setMaxProgress(101);
+        hud.setLabel("Fetching your styles");
+        hud.show();
 
         ParseQuery<Product> query = getParseQueryForProductList();
         query.findInBackground(new FindCallback<Product>() {
             @Override
             public void done(List<Product> products, ParseException e) {
-                Log.i(TAG, "Parse query got products "+products.size());
-                productAdapter.updateItems(Constants.NEW_SEARCH_OPERATION, products);
-                productAdapter.notifyDataSetChanged();
-                bannerAdapter.addAll(products);
-                bannerAdapter.notifyDataSetChanged();
+
+                hud.dismiss();
+                Log.i(TAG, "Parse query got products " + products.size());
+                currentProducts.addAll(products);
+                if(productListFragment != null && currentProducts.size() > 0){
+                    productListFragment.newData(currentProducts);
+                }
+
+                if(productMapFragment != null && currentProducts.size() > 0){
+                    productMapFragment.newData(currentProducts);
+                }
             }
         });
 
@@ -85,18 +87,11 @@ public class DiscoverProductFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        insertProductListFragment();
-    }
-
     private View.OnClickListener onClickListenerForListButton (){
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //productListFragment.getView().setVisibility(View.VISIBLE);
                 insertProductListFragment();
-
             }
         };
     }
@@ -105,41 +100,48 @@ public class DiscoverProductFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //productListFragment.getView().setVisibility(View.GONE);
                 insertProductMapFragment();
-
             }
         };
     }
 
     private void insertProductListFragment() {
 
-        if (productListFragment == null) {
-            productListFragment = new ProductListFragment();
-            productListFragment.setProductAdapter(productAdapter);
+        Fragment f = getChildFragmentManager().findFragmentById(R.id.product_discover_fragment);
+
+        if(f != null && f instanceof ProductListFragment) {
+            return;
+        } else {
+            if (productListFragment == null) {
+                productListFragment = new ProductListFragment();
+                if (currentProducts.size() > 0) {
+                    productListFragment.newData(currentProducts);
+                }
+            }
+
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            transaction.replace(R.id.product_discover_fragment, productListFragment).commit();
         }
-
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.product_discover_fragment, productListFragment).commit();
-
     }
 
     private void insertProductMapFragment() {
 
-        if (productMapFragment == null) {
-            productMapFragment = new ProductMapFragment();
-            //productMapFragment.setProductAdapter(productAdapter);
-            productMapFragment.setProductAdapter(bannerAdapter);
-        }
+        Fragment f = getChildFragmentManager().findFragmentById(R.id.product_discover_fragment);
 
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.product_discover_fragment, productMapFragment).commit();
+        if(f != null && f instanceof ProductMapFragment) {
+            return;
+        } else {
 
-/*
-        if (getChildFragmentManager().findFragmentById(R.id.product_discover_fragment) == null) {
-            transaction.add(R.id.product_discover_fragment, productMapFragment).commit();
+            if (productMapFragment == null) {
+                productMapFragment = new ProductMapFragment();
+                if (currentProducts.size() > 0) {
+                    productMapFragment.newData(currentProducts);
+                }
+            }
+
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            transaction.replace(R.id.product_discover_fragment, productMapFragment).commit();
         }
-*/
     }
 
     private ParseQuery<Product> getParseQueryForProductList() {
