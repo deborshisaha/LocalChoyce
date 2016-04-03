@@ -1,5 +1,7 @@
 package fashiome.android.adapters;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -36,6 +39,9 @@ import fashiome.android.utils.ImageURLGenerator;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
+    private boolean animationsLocked = false;
+    private int lastAnimatedPosition = -1;
+    private boolean delayEnterAnimation = true;
 
     /**
      * Private member variables
@@ -64,6 +70,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(ProductViewHolder productViewHolder, int position) {
         Product product = mProducts.get(position);
         productViewHolder.configure(product);
+        runEnterAnimation(productViewHolder.itemView, position);
     }
 
     @Override
@@ -90,6 +97,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
 
         return 0;
+    }
+
+    private void runEnterAnimation(View view, int position) {
+        if (animationsLocked) return;
+
+        if (position > lastAnimatedPosition) {
+            lastAnimatedPosition = position;
+            view.setTranslationY(600);
+            view.setAlpha(0.f);
+            view.animate()
+                    .translationY(0).alpha(1.f)
+                    .setStartDelay(delayEnterAnimation ? 20 * (position) : 0)
+                    .setInterpolator(new DecelerateInterpolator(2.f))
+                    .setDuration(500)
+                    .start();
+        }
     }
 
     public Product getProductAtIndex(int index) {
