@@ -40,7 +40,9 @@ public class PanacheHomeActivity extends AppCompatActivity {
 
         tabStripPanacheTabs.setShouldExpand(true);
 
-        searchCriteria = (SearchCriteria) getIntent().getExtras().getParcelable(SearchCriteria.KEY);
+        if (getIntent().getExtras() != null) {
+            searchCriteria = (SearchCriteria) getIntent().getExtras().getParcelable(SearchCriteria.KEY);
+        }
 
         // Setting adapter of Panache tabs
         vpPanacheTabs.setAdapter(new PanacheTabsAdapter(getSupportFragmentManager(), searchCriteria));
