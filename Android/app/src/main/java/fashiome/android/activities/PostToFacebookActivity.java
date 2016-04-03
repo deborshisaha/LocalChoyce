@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -27,6 +28,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.ProfilePictureView;
 import com.facebook.share.ShareApi;
 import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareContent;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
@@ -34,6 +36,7 @@ import com.facebook.share.widget.ShareDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import fashiome.android.R;
 
@@ -270,7 +273,7 @@ public class PostToFacebookActivity extends FragmentActivity {
     }
 
     private void onClickPostStatusUpdate() {
-        performPublish(PendingAction.POST_STATUS_UPDATE, canPresentShareDialog);
+        performPublish(PendingAction.POST_STATUS_UPDATE, true);
     }
 
     private void postStatusUpdate() {
@@ -296,12 +299,17 @@ public class PostToFacebookActivity extends FragmentActivity {
 
     private void postPhoto() {
         Bitmap image = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_post);
-        SharePhoto sharePhoto = new SharePhoto.Builder().setBitmap(image).build();
+        SharePhoto sharePhoto = new SharePhoto.Builder()
+                .setBitmap(image)
+                .setCaption("This is a test")
+                .build();
         ArrayList<SharePhoto> photos = new ArrayList<>();
         photos.add(sharePhoto);
-
         SharePhotoContent sharePhotoContent =
-                new SharePhotoContent.Builder().setPhotos(photos).build();
+                new SharePhotoContent.Builder()
+                        .setPhotos(photos)
+                        .build();
+
         if (canPresentShareDialogWithPhotos) {
             shareDialog.show(sharePhotoContent);
         } else if (hasPublishPermission()) {

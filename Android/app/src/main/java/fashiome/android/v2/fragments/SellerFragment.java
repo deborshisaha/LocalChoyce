@@ -13,7 +13,11 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
+import com.parse.ParseUser;
+
 import fashiome.android.R;
+import fashiome.android.activities.IntroAndLoginActivity;
+import fashiome.android.activities.MainActivity;
 import fashiome.android.v2.activities.ProductFormActivity;
 
 /**
@@ -23,6 +27,7 @@ public class SellerFragment extends Fragment {
 
     FloatingActionButton fabAddProduct;
 
+    final int FROM_FAB_TO_LOGIN = 300;
     private boolean fabInExplodedState = false;
 
     public SellerFragment() {}
@@ -45,7 +50,6 @@ public class SellerFragment extends Fragment {
         fabAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 fabAddProduct.animate().scaleX(100).scaleY(100).setInterpolator(new AccelerateInterpolator()).setDuration(200).setStartDelay(300).setListener(new AnimatorListenerAdapter() {
 
                     @Override
@@ -55,10 +59,14 @@ public class SellerFragment extends Fragment {
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        Intent intent = new Intent(getActivity(), ProductFormActivity.class);
-                        startActivity(intent);
-                        getActivity().overridePendingTransition(R.anim.fade_in_fast, R.anim.fade_out_fast);
-                        fabInExplodedState = true;
+                        Intent intent;
+                        if (ParseUser.getCurrentUser() == null) {
+                            intent = new Intent(getActivity(), IntroAndLoginActivity.class);
+                            intent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, true);
+                            startActivityForResult(intent, FROM_FAB_TO_LOGIN);
+                        } else {
+                            startNewProductActivity();
+                        }
                     }
 
                 }).start();
@@ -69,6 +77,22 @@ public class SellerFragment extends Fragment {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == FROM_FAB_TO_LOGIN){
+            if (ParseUser.getCurrentUser() != null) {
+                startNewProductActivity();
+            }
+        }
+
+    }
+
+    public void startNewProductActivity() {
+        Intent intent = new Intent(getActivity(), fashiome.android.v2.activities.ProductFormActivity.class);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.fade_in_fast, R.anim.fade_out_fast);
+        fabInExplodedState = true;
+    }
+    
     public void onResume() {
         super.onResume();
 
