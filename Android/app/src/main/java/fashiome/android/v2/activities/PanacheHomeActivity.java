@@ -42,13 +42,13 @@ public class PanacheHomeActivity extends AppCompatActivity {
         // Setting View pager
         tabStripPanacheTabs.setViewPager(vpPanacheTabs);
 
+        tabStripPanacheTabs.setTranslationY(-tabStripPanacheTabs.getHeight());
+        tabStripPanacheTabs.animate().translationY(0).setDuration(1500).setStartDelay(1000);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

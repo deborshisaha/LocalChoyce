@@ -24,15 +24,16 @@ import fashiome.android.adapters.ProductAdapter;
 import fashiome.android.fragments.ProductsRecyclerViewFragment;
 import fashiome.android.models.Product;
 import fashiome.android.utils.Constants;
+import fashiome.android.v2.classes.SearchCriteria;
 import fashiome.android.v2.fragments.ProductListFragment;
 
 public class DiscoverProductFragment extends Fragment {
 
+    private SearchCriteria sc;
     private Fragment previouslyActiveFragment = null;
     private ProductMapFragment productMapFragment;
     private ProductListFragment productListFragment;
     private ProductAdapter productAdapter;
-    //private MapviewAdapter mapviewAdapter;
     private BannerAdapter bannerAdapter;
     private static final String TAG = "DiscoverProductFragment";
 
@@ -41,6 +42,13 @@ public class DiscoverProductFragment extends Fragment {
 
     @Bind(R.id.btnMap)
     Button btnMap;
+
+    public DiscoverProductFragment(SearchCriteria sc) {
+        super();
+        this.sc = sc;
+    }
+
+    public DiscoverProductFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,9 +66,6 @@ public class DiscoverProductFragment extends Fragment {
         if(bannerAdapter == null){
             bannerAdapter = new BannerAdapter(getActivity());
         }
-        //if(mapviewAdapter == null){
-        //    mapviewAdapter = new MapviewAdapter(getActivity());
-       // }
 
         ParseQuery<Product> query = getParseQueryForProductList();
         query.findInBackground(new FindCallback<Product>() {
@@ -69,9 +74,6 @@ public class DiscoverProductFragment extends Fragment {
                 Log.i(TAG, "Parse query got products "+products.size());
                 productAdapter.updateItems(Constants.NEW_SEARCH_OPERATION, products);
                 productAdapter.notifyDataSetChanged();
-                //mapviewAdapter.updateItems(Constants.NEW_SEARCH_OPERATION, products);
-                //mapviewAdapter.notifyDataSetChanged();
-                //getChildFragmentManager().findFragmentById()
                 bannerAdapter.addAll(products);
                 bannerAdapter.notifyDataSetChanged();
             }
@@ -120,12 +122,6 @@ public class DiscoverProductFragment extends Fragment {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.product_discover_fragment, productListFragment).commit();
 
-
-/*
-        if (getChildFragmentManager().findFragmentById(R.id.product_discover_fragment) == null) {
-            transaction.add(R.id.product_discover_fragment, productListFragment).commit();
-        }
-*/
     }
 
     private void insertProductMapFragment() {
@@ -154,6 +150,11 @@ public class DiscoverProductFragment extends Fragment {
         parseQueryForProductList.include("productPostedBy");
         parseQueryForProductList.include("productBoughtBy");
         parseQueryForProductList.include("address");
+
+        if (this.sc != null) {
+            ArrayList<String> valuesList = new ArrayList<String>(this.sc.getSearchCriteriaItems().values());
+            //parseQueryForProductList.whereContainedIn("productDescription", this.sc.getSearchCriteriaItems() );
+        }
 
         return parseQueryForProductList;
     }

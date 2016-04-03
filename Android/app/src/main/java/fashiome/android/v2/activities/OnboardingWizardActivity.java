@@ -1,11 +1,15 @@
 package fashiome.android.v2.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -29,6 +33,18 @@ public class OnboardingWizardActivity extends AppCompatActivity {
 
     @Bind(R.id.ivBannerImageOfHim)
     ImageView ivBannerImageOfHim;
+
+    @Bind(R.id.cvFemale)
+    CardView cvFemale;
+
+    @Bind(R.id.cvMale)
+    CardView cvMale;
+
+    @Bind(R.id.tvLookingFor)
+    TextView tvLookingFor;
+
+    @Bind(R.id.rlGenderPicker)
+    RelativeLayout rlGenderPicker;
 
     int click = 0 ;
 
@@ -61,6 +77,8 @@ public class OnboardingWizardActivity extends AppCompatActivity {
                 enableNext();
             }
         });
+
+        rlGenderPicker.animate().alpha(1).setDuration(600).setStartDelay(300);
     }
 
     private void enableNext() {
@@ -69,9 +87,24 @@ public class OnboardingWizardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // goto next screen
-                Intent launchIntent = new Intent(OnboardingWizardActivity.this, PanacheHomeActivity.class);
-                startActivity(launchIntent);
-                finish();
+                AnimatorListenerAdapter animatorListenerAdapter = new AnimatorListenerAdapter() {
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        Intent launchIntent = new Intent(OnboardingWizardActivity.this, ItemsInterestedInActivity.class);
+                        launchIntent.putExtra(SearchCriteria.KEY, searchCriteria);
+                        startActivity(launchIntent);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        finish();
+                    }
+
+                };
+
+                if (searchCriteria.getGender() == SearchCriteria.Gender.GENDER_F) {
+                    cvFemale.animate().alpha(0).setDuration(500).setStartDelay(200).setListener(animatorListenerAdapter);
+                }  else {
+                    cvMale.animate().alpha(0).setDuration(500).setStartDelay(200).setListener(animatorListenerAdapter);
+                }
             }
         });
     }

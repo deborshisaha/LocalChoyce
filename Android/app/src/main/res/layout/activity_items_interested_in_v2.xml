@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/rlGenderPicker"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/material_design_gray_background"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView style="@style/BigMedium"
+        android:textColor="@color/colorPrimaryText"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvItemsInterestedIn"
+        android:text="@string/whatAreYouLookingFor"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvItemsInterestedIn"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/tvItemsInterestedIn"
+        android:layout_width="match_parent"
+        android:layout_height="420dp"/>
+
+    <TextView style="@style/BigRegular.Italics"
+        android:id="@+id/btnNext"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rvItemsInterestedIn"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/colorSecondaryText"
+        android:text="NEXT" />
+
+    <TextView style="@style/BigRegular.Italics"
+        android:id="@+id/btnSkip"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rvItemsInterestedIn"
+        android:layout_alignParentLeft="true"
+        android:textColor="@color/blue"
+        android:text="SKIP" />
+
+</RelativeLayout>
+    <!--android:layout_toLeftOf="@+id/next"-->
