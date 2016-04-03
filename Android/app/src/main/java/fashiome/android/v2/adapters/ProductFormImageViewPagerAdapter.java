@@ -63,14 +63,17 @@ public class ProductFormImageViewPagerAdapter extends PagerAdapter {
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void add(Bitmap takenImage) {
+    public boolean add(Bitmap takenImage) {
         if (arrayOfBitmaps == null) {
             arrayOfBitmaps = new ArrayList<Bitmap>();
         }
 
         if (arrayOfBitmaps.size() < 5) {
             arrayOfBitmaps.add(takenImage);
+            return true;
         }
+
+        return false;
     }
 
     @Override
