@@ -77,16 +77,9 @@ public class ProductMapFragment extends Fragment implements
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private FragmentActivity myContext;
     private ParseQuery<Product> productParseQuery;
-    //private MapviewAdapter productAdapter;
     private BannerAdapter bannerAdapter;
 
     @Bind(R.id.viewpager) ViewPager pager;
-    //@Bind(R.id.rvMap) RecyclerView productRecyclerView;
-
-    public void setProductAdapter(BannerAdapter bannerAdapter) {
-        //this.productAdapter = productAdapter;
-        this.bannerAdapter = bannerAdapter;
-    }
 
     public ArrayList<LatLng> getAllLocations(){
         ArrayList<Product> products = bannerAdapter.mProducts;
@@ -117,10 +110,6 @@ public class ProductMapFragment extends Fragment implements
             pager.setAdapter(bannerAdapter);
         }
 
-        //if (productRecyclerView.getLayoutManager() == null ) {
-        //    productRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-       // }
-
         mapFragment = new SupportMapFragment() {
             @Override
             public void onActivityCreated(Bundle savedInstanceState) {
@@ -149,6 +138,11 @@ public class ProductMapFragment extends Fragment implements
     public void onViewCreated(View view, final Bundle savedInstanceState) {
         //super.onViewCreated(view, savedInstanceState);
         Log.i("info", "onViewCreated called");
+    }
+
+    public void newData(List<Product> products){
+        bannerAdapter.addAll(products);
+        bannerAdapter.notifyDataSetChanged();
     }
 
     protected void loadMap(GoogleMap googleMap) {

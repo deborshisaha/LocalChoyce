@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rl1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFAFAFA"
+        android:elevation="2dp">
+
+        <ImageView
+            android:id="@+id/ivCongrats"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_purchase_complete"/>
+
+        <TextView
+            style="@style/BigRegular"
+            android:id="@+id/tvMessage"
+            android:layout_below="@+id/ivCongrats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:text="Congratulations! Share on Facebook " />
+
+        <ImageView
+            android:id="@+id/ivPostImage"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/tvMessage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/etPostText"
+            android:layout_below="@+id/ivPostImage"
+            android:layout_marginTop="24dp"
+            android:maxLines="4"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/llButtons"
+            android:weightSum="10"
+            android:elevation="8dp"
+            android:orientation="horizontal"
+            android:layout_below="@+id/etPostText"
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
+
+            <Button
+                android:id="@+id/btnCancel"
+                style="@style/RegularMedium.PanacheHomeToggleButton"
+                android:text="Cancel"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnPost"
+                style="@style/RegularMedium.PanacheHomeToggleButton"
+                android:text="Share"
+                android:textColor="#ffffff"
+                android:background="@drawable/submit_state_button"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

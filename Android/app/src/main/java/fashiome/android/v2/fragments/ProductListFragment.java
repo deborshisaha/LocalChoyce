@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -27,14 +28,12 @@ public class ProductListFragment extends Fragment {
     @Bind(R.id.rcvProductRecyclerView)
     RecyclerView productRecyclerView;
 
+    KProgressHUD hud = null;
+
     public ProductListFragment() {}
 
     public void setProductParseQuery(ParseQuery<Product> productParseQuery) {
         this.productParseQuery = productParseQuery;
-    }
-
-    public void setProductAdapter(ProductAdapter productAdapter) {
-        this.productAdapter = productAdapter;
     }
 
     private ParseQuery<Product> productParseQuery;
@@ -69,6 +68,11 @@ public class ProductListFragment extends Fragment {
             });
         }
         return view;
+    }
+
+    public void newData(List<Product> products){
+        productAdapter.updateItems(Constants.NEW_SEARCH_OPERATION, products);
+        productAdapter.notifyDataSetChanged();
     }
 
     @Override

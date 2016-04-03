@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -47,15 +48,18 @@ import java.util.Random;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.activities.ProductDetailsActivity;
+import fashiome.android.fragments.ProductRentDetailsFragment;
 import fashiome.android.models.Product;
 import fashiome.android.models.User;
 import fashiome.android.utils.Utils;
 import fashiome.android.v2.adapters.ProductFormImageViewPagerAdapter;
+import fashiome.android.v2.fragments.ProductFacebookPostFragment;
 
 /**
  * Created by dsaha on 3/29/16.
  */
-public class ProductFormActivity extends AppCompatActivity {
+public class ProductFormActivity extends AppCompatActivity implements ProductFacebookPostFragment.ProductFacebookPostDialogListener {
 
     @Bind(R.id.fabUploadProduct)
     FloatingActionButton fabUploadProduct;
@@ -87,6 +91,7 @@ public class ProductFormActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA = 0;
     private ProductFormImageViewPagerAdapter productFormImageViewPagerAdapter;
     private Product product = new Product();
+    Bitmap facebookBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,7 +225,7 @@ public class ProductFormActivity extends AppCompatActivity {
                         protected String doInBackground(String... params) {
                             try {
                                 int i = 1;
-
+                                facebookBitmap = productFormImageViewPagerAdapter.getBitmaps().get(0);
                                 for (Bitmap bmp : productFormImageViewPagerAdapter.getBitmaps()) {
                                     cloudinaryObject.uploader().upload(getInputStream(bmp), ObjectUtils.asMap("public_id", product.getObjectId() + getPhotoCloudinaryPublicIdList().get(i - 1)));
                                     int percentage = (int)(((float)i/productFormImageViewPagerAdapter.getCount()) * 100);
@@ -245,7 +250,8 @@ public class ProductFormActivity extends AppCompatActivity {
                                     public void run() {
                                         hud.dismiss();
                                         overridePendingTransition(R.anim.stay, R.anim.slide_down);
-                                        finish();
+                                        showPostToFacebookDialog(product);
+                                        //finish();
                                     }
                                 };
                             }
@@ -434,4 +440,41 @@ public class ProductFormActivity extends AppCompatActivity {
         return inputStream;
     }
 
+    private void showPostToFacebookDialog(Product product) {
+        FragmentManager fm = getSupportFragmentManager();
+        Log.i("info", "Price before: " + product.getPrice());
+        ProductFacebookPostFragment productFacebookPostFragment = ProductFacebookPostFragment.newInstance(product);
+        productFacebookPostFragment.context = this;
+        productFacebookPostFragment.facebookBitmap = facebookBitmap;
+        productFacebookPostFragment.listener = this;
+        productFacebookPostFragment.show(fm, "fragment_facebook_post_details");
+    }
+
+    public void showPostSuccessfulDialog() {
+
+        String message = "Congratulations!";
+
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(ProductFormActivity.this);
+
+        alertDialogBuilder
+                .setTitle(message)
+                .setCancelable(true)
+                .setIcon(R.drawable.ic_purchase_complete)
+                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        finish();
+                    }
+                });
+
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void onPostFinished() {
+        Log.i("info", "finished the post");
+        finish();
+    }
 }

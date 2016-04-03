@@ -8,7 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.parse.ParseUser;
+
 import fashiome.android.R;
+import fashiome.android.activities.IntroAndLoginActivity;
+import fashiome.android.activities.MainActivity;
 import fashiome.android.v2.activities.ProductFormActivity;
 
 /**
@@ -17,6 +21,8 @@ import fashiome.android.v2.activities.ProductFormActivity;
 public class SellerFragment extends Fragment {
 
     FloatingActionButton fabAddProduct;
+
+    final int FROM_FAB_TO_LOGIN = 300;
 
     public SellerFragment() {}
 
@@ -38,12 +44,35 @@ public class SellerFragment extends Fragment {
         fabAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent( getActivity(), ProductFormActivity.class );
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.slide_up, R.anim.stay);
+                Intent intent;
+                if (ParseUser.getCurrentUser() == null) {
+                    intent = new Intent(getActivity(), IntroAndLoginActivity.class);
+                    intent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, true);
+                    startActivityForResult(intent, FROM_FAB_TO_LOGIN);
+                } else {
+                    startNewProductActivity();
+                }
+
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == FROM_FAB_TO_LOGIN){
+            if (ParseUser.getCurrentUser() != null) {
+                startNewProductActivity();
+            }
+        }
+
+    }
+
+    public void startNewProductActivity(){
+        Intent intent = new Intent( getActivity(), fashiome.android.v2.activities.ProductFormActivity.class );
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_up, R.anim.stay);
+
     }
 }
