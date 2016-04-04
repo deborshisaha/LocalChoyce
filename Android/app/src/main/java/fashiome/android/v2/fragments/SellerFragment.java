@@ -92,7 +92,7 @@ public class SellerFragment extends Fragment {
         getActivity().overridePendingTransition(R.anim.fade_in_fast, R.anim.fade_out_fast);
         fabInExplodedState = true;
     }
-    
+
     public void onResume() {
         super.onResume();
 

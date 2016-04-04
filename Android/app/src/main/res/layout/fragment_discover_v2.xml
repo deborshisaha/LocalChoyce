@@ -21,6 +21,9 @@
             android:layout_weight="5"
             android:layout_height="wrap_content" />
 
+        <View style="@style/DividerVertical"
+              android:layout_marginTop="4dp" />
+
         <Button
             android:id="@+id/btnMap"
             style="@style/RegularMedium.PanacheHomeToggleButton"

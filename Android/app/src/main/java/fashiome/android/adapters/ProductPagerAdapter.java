@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.Target;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 
 import fashiome.android.R;
@@ -67,24 +68,22 @@ public class ProductPagerAdapter extends PagerAdapter {
         if (URLString != null || URLString.length() > 0) {
             Log.i("info", "Loading image from glide " + URLString);
 
-            final ProgressDialog pd = new ProgressDialog(mContext);
-            pd.setMessage("Your Panache just got affordable!");
-            pd.isIndeterminate();
-            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            pd.show();
+            final KProgressHUD hud = KProgressHUD.create(mContext).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setMaxProgress(101);
+            hud.setLabel("Loading details");
+            hud.show();
 
             Glide.with(this.mContext)
                     .load(URLString)
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            pd.dismiss();
+                            hud.dismiss();
                             return false;
                         }
 
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            pd.dismiss();
+                            hud.dismiss();
                             return false;
                         }
                     })

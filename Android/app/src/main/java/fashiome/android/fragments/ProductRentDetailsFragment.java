@@ -47,12 +47,14 @@ public class ProductRentDetailsFragment extends DialogFragment implements View.O
     public Product product;
 
     private int finalAmount = 0;
+    private int quantity = 0;
+    private int numberOfDays = 0;
 
     SimpleDateFormat displayFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
     SimpleDateFormat requiredFormat = new SimpleDateFormat("yyyyMMdd", Locale.US);
 
     public interface ProductRentDetailsDialogListener {
-        void onSavingRentDetails(int amount);
+        void onSavingRentDetails(int amount, int quantity, int numberOfDays);
     }
 
     public ProductRentDetailsDialogListener listener;
@@ -89,7 +91,7 @@ public class ProductRentDetailsFragment extends DialogFragment implements View.O
     }
 
     private void saveRentDetails() {
-        listener.onSavingRentDetails(finalAmount);
+        listener.onSavingRentDetails(finalAmount, quantity, numberOfDays);
         dismiss();
     }
 
@@ -242,7 +244,7 @@ public class ProductRentDetailsFragment extends DialogFragment implements View.O
 
     public void calculateFinalAmount(){
 
-        int quantity, numDays, productPrice;
+        int productPrice;
 
         if(mQuantity.getText().length() > 0 && !mQuantity.getText().equals("")) {
             quantity = Integer.parseInt(mQuantity.getText().toString());
@@ -250,14 +252,14 @@ public class ProductRentDetailsFragment extends DialogFragment implements View.O
 
         if(mNumdays.getText().length() > 0 && !mNumdays.getText().equals("")) {
 
-            numDays = Integer.parseInt(mNumdays.getText().toString());
-        } else numDays = 0;
+            numberOfDays = Integer.parseInt(mNumdays.getText().toString());
+        } else numberOfDays = 0;
 
 
         if(mQuantity.getText().length() > 0 && !mQuantity.getText().equals("")) {
             Log.i("info","Product price "+String.valueOf(product.getPrice()));
             productPrice = (int) product.getPrice();
-            finalAmount = quantity * numDays * productPrice;
+            finalAmount = quantity * numberOfDays * productPrice;
         } else finalAmount = 0;
 
         String displayAmount = "Total $"+String.valueOf(finalAmount);
