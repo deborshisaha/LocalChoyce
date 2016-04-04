@@ -24,13 +24,15 @@ public class PanacheTabsAdapter extends FragmentPagerAdapter implements PagerSli
     private SearchCriteria sc;
 
     private final int[] ICONS = { R.drawable.ic_home, R.drawable.ic_seller,
-            R.drawable.ic_conversations, R.drawable.ic_profile_filled };
+            R.drawable.ic_conversations, R.drawable.more };
 
     private final int[] GUEST_ICONS = { R.drawable.ic_home, R.drawable.more };
+    private LogOutCallback logOutCallback = null;
 
-    public PanacheTabsAdapter(FragmentManager fragmentManager, SearchCriteria searchCriteria) {
+    public PanacheTabsAdapter(FragmentManager fragmentManager, SearchCriteria searchCriteria, LogOutCallback logOutCallback) {
         super(fragmentManager);
         this.sc = searchCriteria;
+        this.logOutCallback = logOutCallback;
     }
 
     ///////
@@ -61,12 +63,7 @@ public class PanacheTabsAdapter extends FragmentPagerAdapter implements PagerSli
         } else if (position == 2) {
             return new ConversationsFragment();
         } else if (position == 3) {
-            return new MoreFragment(new LogOutCallback() {
-                @Override
-                public void done(ParseException e) {
-                    notifyDataSetChanged();
-                }
-            });
+            return new MoreFragment(this.logOutCallback);
         }
         return new DiscoverProductFragment(this.sc);
     }

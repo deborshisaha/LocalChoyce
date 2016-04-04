@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.parse.LogOutCallback;
+import com.parse.ParseException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,6 +30,7 @@ public class PanacheHomeActivity extends AppCompatActivity {
 
     public static FragmentManager fragmentManager;
     private SearchCriteria searchCriteria;
+    private PanacheTabsAdapter panacheTabsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +47,18 @@ public class PanacheHomeActivity extends AppCompatActivity {
             searchCriteria = (SearchCriteria) getIntent().getExtras().getParcelable(SearchCriteria.KEY);
         }
 
+        panacheTabsAdapter = new PanacheTabsAdapter(getSupportFragmentManager(), searchCriteria, new LogOutCallback() {
+            @Override
+            public void done(ParseException e) {
+
+                panacheTabsAdapter.notifyDataSetChanged();
+                vpPanacheTabs.setCurrentItem(0, true);
+                tabStripPanacheTabs.notifyDataSetChanged();
+            }
+        });
+
         // Setting adapter of Panache tabs
-        vpPanacheTabs.setAdapter(new PanacheTabsAdapter(getSupportFragmentManager(), searchCriteria));
+        vpPanacheTabs.setAdapter(panacheTabsAdapter);
 
         // Setting View pager
         tabStripPanacheTabs.setViewPager(vpPanacheTabs);
