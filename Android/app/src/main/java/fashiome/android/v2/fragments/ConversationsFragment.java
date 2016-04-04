@@ -17,7 +17,7 @@ import com.parse.ParseException;
 import java.util.List;
 
 import fashiome.android.R;
-import fashiome.android.activities.ChatRoomActivity;
+import fashiome.android.v2.activities.ChatRoomActivity;
 import fashiome.android.adapters.ConversationRecyclerViewAdapter;
 import fashiome.android.helpers.ItemClickSupport;
 import fashiome.android.models.Conversation;

@@ -19,7 +19,7 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 import fashiome.android.R;
-import fashiome.android.activities.ProductDetailsActivity;
+import fashiome.android.v2.activities.ProductDetailsActivity;
 import fashiome.android.activities.UserDetailsActivity;
 import fashiome.android.activities.UserProfileActivity;
 import fashiome.android.managers.Push;

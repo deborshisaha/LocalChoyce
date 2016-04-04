@@ -18,7 +18,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fashiome.android.R;
-import fashiome.android.activities.ChatRoomActivity;
 import fashiome.android.helpers.ItemClickSupport;
 import fashiome.android.models.Conversation;
 import fashiome.android.v2.adapters.ItemsInterestedInAdapter;

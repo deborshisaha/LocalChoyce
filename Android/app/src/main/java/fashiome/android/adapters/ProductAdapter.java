@@ -28,9 +28,9 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
-import fashiome.android.activities.IntroAndLoginActivity;
-import fashiome.android.activities.ProductDetailsActivity;
-import fashiome.android.activities.UserDetailsActivity;
+import fashiome.android.v2.activities.IntroAndLoginActivity;
+import fashiome.android.v2.activities.ProductDetailsActivity;
+import fashiome.android.v2.activities.UserProfileActivity;
 import fashiome.android.utils.Constants;
 import fashiome.android.utils.Utils;
 import fashiome.android.models.Product;
@@ -276,8 +276,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     } else {
                         Log.i("info", "user profile image clicked");
 
-                        intent = new Intent(mContext, UserDetailsActivity.class);
-                        intent.putExtra("objectId", mProducts.get(getLayoutPosition()).getProductPostedBy().getObjectId());
+                        intent = new Intent(mContext, UserProfileActivity.class);
+                        intent.putExtra(User.USER_KEY, mProducts.get(getLayoutPosition()).getProductPostedBy());
                         mContext.startActivity(intent);
                     }
 

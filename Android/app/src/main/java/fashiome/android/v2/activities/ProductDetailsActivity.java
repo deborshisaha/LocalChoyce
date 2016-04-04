@@ -1,10 +1,7 @@
-package fashiome.android.activities;
+package fashiome.android.v2.activities;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,17 +16,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -69,7 +62,7 @@ import fashiome.android.models.ProductReview;
 import fashiome.android.models.User;
 import fashiome.android.utils.ImageURLGenerator;
 import fashiome.android.utils.Utils;
-import fashiome.android.v2.activities.CheckoutActivity;
+import fashiome.android.v2.activities.IntroAndLoginActivity;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
@@ -159,14 +152,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         Log.i(TAG, "Price : " + mProduct.getPrice());
         Log.i(TAG, "User Rating : " + mProduct.getProductPostedBy().getRating());
         Log.i(TAG, "Product Rentals : " + mProduct.getNumberOfRentals());
-        //String relativeTimeAgo = DateUtils.getRelativeTimeSpanString(mProduct.getCreatedAt().getTime(),
-        //        System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
-        //Log.i(TAG, "Relative time : "+relativeTimeAgo);
-
-
-//        rvProductReview.setLayoutManager(new LinearLayoutManager(this));
-//        mProductReviewRecyclerViewAdapter = new ProductReviewRecyclerViewAdapter();
-//        rvProductReview.setAdapter(mProductReviewRecyclerViewAdapter);
 
         if (mProduct == null) {
             mProductIDString = getIntent().getExtras().getString(Product.PRODUCT_ID);
@@ -727,8 +712,8 @@ instead of showing the old activity */
             intent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, true);
             startActivity(intent);
         } else {
-            intent = new Intent(ProductDetailsActivity.this, UserDetailsActivity.class);
-            intent.putExtra("objectId", mProduct.getProductPostedBy().getObjectId());
+            intent = new Intent(ProductDetailsActivity.this, UserProfileActivity.class);
+            intent.putExtra(User.USER_KEY, mProduct.getProductPostedBy());
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }

@@ -1,4 +1,4 @@
-package fashiome.android.activities;
+package fashiome.android.v2.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;

@@ -28,7 +28,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import fashiome.android.R;
-import fashiome.android.activities.ProductDetailsActivity;
+import fashiome.android.v2.activities.ProductDetailsActivity;
 import fashiome.android.models.Product;
 import fashiome.android.utils.ImageURLGenerator;
 import fashiome.android.utils.Utils;
