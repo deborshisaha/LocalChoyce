@@ -176,9 +176,13 @@ public class ProductFacebookPostFragment extends DialogFragment implements View.
 
         Log.i(TAG,"Bitmap URL "+URLString);
 
+        mPostImage.setImageBitmap(facebookBitmap);
+
+/*
         Glide.with(getActivity())
                 .load(URLString)
                 .into(mPostImage);
+*/
 
         Log.i("info", " " + product.getNumberOfFavorites() + product.getNumberOfReviews() + product.getProductName() + product.getObjectId() + product.getPrice());
 

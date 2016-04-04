@@ -2,6 +2,7 @@
     <string name="parse_app_id">r2O85jyiF0QzqTVVbkbncJ8hyEsNY7AWj9oiWzlF</string>
     <string name="parse_client_key">wCopnOI0zadwK9cXkcRxy7Z9gaiWjS1DEr68FjuU</string>
     <string name="facebook_app_id">205815676442035</string>
+    <string name="uber_client_id">gkNOpDmqwTWB6I7OilAhGNqwGx9mKIuk</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="app_name">Panache</string>
@@ -83,5 +84,6 @@
     <string name="pick_seattle_place">Pick a Seattle Place</string>
     <string name="exception">Exception: %1$s</string>
     <string name="whatAreYouLookingFor">What are you looking for</string>
+    <string name="title_activity_checkout">Checkout Activity</string>
 
 </resources>

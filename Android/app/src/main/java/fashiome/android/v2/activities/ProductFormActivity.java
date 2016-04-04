@@ -1,16 +1,21 @@
 package fashiome.android.v2.activities;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +23,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.view.ViewPager;
@@ -41,6 +47,7 @@ import android.widget.TextView;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.desmond.squarecamera.CameraActivity;
+import com.google.android.gms.maps.model.LatLng;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -60,6 +67,7 @@ import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.activities.ProductDetailsActivity;
 import fashiome.android.fragments.ProductRentDetailsFragment;
+import fashiome.android.models.Address;
 import fashiome.android.models.Product;
 import fashiome.android.models.User;
 import fashiome.android.utils.Utils;
@@ -106,6 +114,31 @@ public class ProductFormActivity extends AppCompatActivity implements ProductFac
     private Product product = new Product();
     Bitmap facebookBitmap;
     private ObjectAnimator beats;
+    LocationManager mLocationManager;
+    Location currentLocation;
+
+    private final LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(final Location location) {
+            //your code here
+            currentLocation = location;
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +147,20 @@ public class ProductFormActivity extends AppCompatActivity implements ProductFac
         setContentView(R.layout.activity_product_form_v2);
 
         ButterKnife.bind(this);
+
+        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000L, 300.0f, mLocationListener);
 
         populateProductDefaults();
 
@@ -233,6 +280,8 @@ public class ProductFormActivity extends AppCompatActivity implements ProductFac
         product.setProductPostedBy((User) User.getCurrentUser());
         //product.setProductSize(size.getSelectedItem().toString());
         //product.setGender(gender.getSelectedItem().toString());
+        LatLng point = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+        product.setAddress(new Address(point));
         product.setPhotos(getPhotoCloudinaryPublicIdList());
 
         final KProgressHUD hud = KProgressHUD.create(ProductFormActivity.this).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setMaxProgress(101);

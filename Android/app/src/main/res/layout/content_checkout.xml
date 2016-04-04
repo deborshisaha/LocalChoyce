@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="fashiome.android.v2.activities.CheckoutActivity"
+    tools:showIn="@layout/activity_checkout"
+    android:background="#f0f0f0">
+
+    <LinearLayout
+        android:id="@+id/llContainer1"
+        android:layout_alignParentTop="true"
+        android:weightSum="10"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:src="@drawable/ic_purchase_complete"/>
+
+        <TextView
+            style="@style/BigRegular"
+            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:id="@+id/tvMesg"
+            android:text="Congratulations"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llContainer2"
+        android:layout_below="@+id/llContainer1"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView style="@style/RegularRegular"
+                  android:id="@+id/tvProductTitle"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:textSize="22sp"
+                  android:text="Test"
+                  android:textAlignment="center"
+                  android:layout_marginLeft="8dp"
+                  android:layout_marginRight="8dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llContainer3"
+        android:layout_below="@+id/llContainer2"
+        android:weightSum="15"
+        android:layoutAnimation="@anim/layout_animation"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_weight="5"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/BigRegular"
+                android:textSize="32sp"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:id="@+id/tvAmount"
+                android:text="$150"/>
+
+            <TextView
+                style="@style/RegularMedium"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:id="@+id/tvPaid"
+                android:text="Paid"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_weight="5"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/BigRegular"
+                android:textSize="32sp"
+                android:textAlignment="center"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvDays"
+                android:text="5"/>
+
+            <TextView
+                style="@style/RegularMedium"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:id="@+id/tvDaysMsg"
+                android:text="Days"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_weight="5"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/BigRegular"
+                android:textSize="32sp"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvQty"
+                android:textAlignment="center"
+                android:text="3"/>
+
+            <TextView
+                style="@style/RegularMedium"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvQtyMsg"
+                android:textAlignment="center"
+                android:text="Quantity"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llContainer4"
+        android:layout_below="@+id/llContainer3"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:layoutAnimation="@anim/layout_animation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cvUber"
+            android:layout_marginTop="10dp"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="2dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                xmlns:uber="http://schemas.android.com/apk/res-auto"
+                android:padding="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/BigRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvTitle"
+                android:textAlignment="center"
+                android:text="Take me there"/>
+
+            <View style="@style/DividerHorizontal"
+                  android:layout_marginTop="4dp"
+                  android:layout_below="@+id/tvTitle"
+                  android:id="@+id/vDivider1" />
+
+             <LinearLayout
+                    android:id="@+id/llContainer5"
+                    android:weightSum="20"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/vDivider1"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_weight="5"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/RegularMedium"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvTime"
+                        android:text="7 mins"/>
+
+                    <com.uber.sdk.android.rides.RequestButton
+                        android:layout_marginTop="16dp"
+                        android:id="@+id/uber_button_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        uber:client_id="@string/uber_client_id"
+                        uber:style="black"/>
+
+                </LinearLayout>
+
+                 <LinearLayout
+                     android:layout_width="wrap_content"
+                     android:layout_weight="5"
+                     android:orientation="vertical"
+                     android:gravity="center"
+                     android:layout_height="wrap_content">
+
+                     <TextView
+                         style="@style/RegularMedium"
+                         android:layout_marginTop="10dp"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:id="@+id/tvDriveTime"
+                         android:text="4 mins"/>
+
+                     <ImageView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="16dp"
+                         android:src="@drawable/ic_drive"/>
+
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:layout_width="wrap_content"
+                     android:layout_weight="5"
+                     android:orientation="vertical"
+                     android:gravity="center"
+                     android:layout_height="wrap_content">
+
+                     <TextView
+                         style="@style/RegularMedium"
+                         android:layout_marginTop="10dp"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:id="@+id/tvPublicTime"
+                         android:text="25 mins"/>
+
+                     <ImageView
+                         android:layout_width="wrap_content"
+                         android:layout_marginTop="16dp"
+                         android:layout_height="wrap_content"
+                         android:src="@drawable/ic_public"/>
+
+                 </LinearLayout>
+                 <LinearLayout
+                     android:layout_width="wrap_content"
+                     android:layout_weight="5"
+                     android:orientation="vertical"
+                     android:gravity="center"
+                     android:layout_height="wrap_content">
+
+                     <TextView
+                         style="@style/RegularMedium"
+                         android:layout_marginTop="10dp"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:id="@+id/tvWalkTime"
+                         android:text="48 mins"/>
+
+                     <ImageView
+                         android:layout_marginTop="16dp"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:src="@drawable/ic_walk"/>
+
+                 </LinearLayout>
+
+             </LinearLayout>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</RelativeLayout>

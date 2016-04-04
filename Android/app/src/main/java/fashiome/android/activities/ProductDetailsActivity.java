@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
@@ -37,6 +38,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cloudinary.utils.StringUtils;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
@@ -67,6 +69,7 @@ import fashiome.android.models.ProductReview;
 import fashiome.android.models.User;
 import fashiome.android.utils.ImageURLGenerator;
 import fashiome.android.utils.Utils;
+import fashiome.android.v2.activities.CheckoutActivity;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
@@ -84,15 +87,17 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
     private boolean isLiked = false;
     private int totalAmount = 0;
+    private int quantity = 0;
+    private int numberOfDays = 0;
     private int MY_SCAN_REQUEST_CODE = 100; // arbitrary int
     private String URLString = null;
     private User user = null;
     private String mProductIDString = null;
     private Product mProduct = null;
-    //private ProductReviewRecyclerViewAdapter mProductReviewRecyclerViewAdapter = null;
+    private List<Address> addresses = null;
 
     User currentUser;
-    ProgressDialog pd;
+    KProgressHUD hud;
 
     @Bind(R.id.tvProductTitle)
     TextView mProductTitle;
@@ -180,7 +185,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             @Override
             public void done(List<Product> objects, ParseException e) {
                 if (objects.size() == 1) {
-                    Log.i(TAG,"Got product with Id");
+                    Log.i(TAG, "Got product with Id");
                     mProduct = objects.get(0);
                     populateViewWithProduct(mProduct);
                 }
@@ -255,7 +260,37 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             parseCallForIsLiked(product);
         }
 
-        getProductLocationAddress(product);
+        AsyncTask<String, Void, String> task = new AsyncTask<String, Void, String>() {
+
+            @Override
+            protected String doInBackground(String... params) {
+                getProductLocationAddress(product);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                if (addresses != null && addresses.size() > 0) {
+
+                    Address fetchedAddress = addresses.get(0);
+                    StringBuilder strAddress = new StringBuilder();
+
+                    for (int i = 0; i < fetchedAddress.getMaxAddressLineIndex(); i++) {
+                        strAddress.append(fetchedAddress.getAddressLine(i)).append("\n");
+                    }
+
+                    Log.i("I am at: ", strAddress.toString());
+                    if (strAddress.length() > 0 && !strAddress.equals("")) {
+                        mAddress.setText(strAddress.toString());
+                    }
+
+                } else
+                    Log.i("info", "No location found..!");
+
+            }
+        };
+        task.execute();
     }
 
     private void setUiPageViewController() {
@@ -367,10 +402,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
     public void parseCallForAddLike(final Product product) {
 
-        final ProgressDialog pd = new ProgressDialog(ProductDetailsActivity.this);
-        pd.isIndeterminate();
-        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pd.show();
+        final KProgressHUD hud = KProgressHUD.create(ProductDetailsActivity.this).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setMaxProgress(101);
+        hud.show();
 
         ParseObject addLike = new ParseObject("UserProduct");
         addLike.put("userId", ParseUser.getCurrentUser());
@@ -379,7 +412,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             @Override
             public void done(ParseException e) {
 
-                pd.dismiss();
+                hud.dismiss();
 
                 if (e == null) {
                     Log.i("info", "Liked successfully");
@@ -402,10 +435,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
     public void parseCallForRemoveLike(Product product) {
 
-        final ProgressDialog pd = new ProgressDialog(ProductDetailsActivity.this);
-        pd.isIndeterminate();
-        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pd.show();
+        final KProgressHUD hud = KProgressHUD.create(ProductDetailsActivity.this).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setMaxProgress(101);
+        hud.show();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserProduct");
         query.whereEqualTo("userId", ParseUser.getCurrentUser());
@@ -422,7 +453,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
                             del.deleteInBackground(new DeleteCallback() {
                                 @Override
                                 public void done(ParseException e) {
-                                    pd.dismiss();
+                                    hud.dismiss();
                                     if (e == null) {
                                         Log.i("info", "Removed like successfully");
                                         isLiked = false;
@@ -495,9 +526,11 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     }
 
     @Override
-    public void onSavingRentDetails(int amount) {
+    public void onSavingRentDetails(int amount, int quantity, int numberOfDays) {
         Log.i("info", "callback received : total amount " + String.valueOf(amount));
-        totalAmount = amount;
+        this.totalAmount = amount;
+        this.quantity = quantity;
+        this.numberOfDays = numberOfDays;
         String displayAmount = "Pay $" + String.valueOf(totalAmount);
         mRent.setText(displayAmount);
     }
@@ -560,11 +593,9 @@ instead of showing the old activity */
             // TODO - 1 this is currently not working. I want to send back the rented product back to the HomeActivity or
             // map activity but its a fragment ProductsRecyclerViewFragment
             // add the bought item to the order table
-            pd = new ProgressDialog(ProductDetailsActivity.this);
-            pd.setMessage("Completing your purchase ...");
-            pd.isIndeterminate();
-            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            pd.show();
+            hud = KProgressHUD.create(ProductDetailsActivity.this).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setMaxProgress(101);
+            hud.setLabel("Completing your purchase");
+            hud.show();
 
             getUserAndSaveProduct();
 
@@ -597,8 +628,7 @@ instead of showing the old activity */
                         @Override
                         public void done(ParseException e) {
                             Log.i("info", "Successfully updated the bought item");
-                            pd.setMessage("Purchase done!");
-                            pd.dismiss();
+                            hud.dismiss();
 
                             try {
                                 Push.userRentedProduct(product);
@@ -606,9 +636,14 @@ instead of showing the old activity */
                                 e1.printStackTrace();
                             }
 
-                            showPurchaseCompleteDialog();
-
-                            //finish();
+                            //showPurchaseCompleteDialog();
+                            Intent i = new Intent(ProductDetailsActivity.this, CheckoutActivity.class);
+                            i.putExtra("product",product);
+                            i.putExtra("finalAmount", totalAmount);
+                            i.putExtra("quantity", quantity);
+                            i.putExtra("numberOfDays", numberOfDays);
+                            startActivity(i);
+                            finish();
                         }
 
                     });
@@ -621,7 +656,6 @@ instead of showing the old activity */
 
         Geocoder geocoder = new Geocoder(this, Locale.ENGLISH);
 
-
         //if(product.getAddress() != null) {
         try {
 
@@ -629,26 +663,8 @@ instead of showing the old activity */
             //Log.i("info", "Longitude : " + product.getAddress().getLongitude());
             //Log.i("info", "Longitude : " + product.getAddress().getObjectId());
 
-
-            List<Address> addresses = geocoder.getFromLocation(product.getAddress().getLatitude(),
+            addresses = geocoder.getFromLocation(product.getAddress().getLatitude(),
                     product.getAddress().getLongitude(), 1);
-
-            if (addresses != null && addresses.size() > 0) {
-
-                Address fetchedAddress = addresses.get(0);
-                StringBuilder strAddress = new StringBuilder();
-
-                for (int i = 0; i < fetchedAddress.getMaxAddressLineIndex(); i++) {
-                    strAddress.append(fetchedAddress.getAddressLine(i)).append("\n");
-                }
-
-                Log.i("I am at: ", strAddress.toString());
-                if (strAddress.length() > 0 && !strAddress.equals("")) {
-                    mAddress.setText(strAddress.toString());
-                }
-
-            } else
-                Log.i("info", "No location found..!");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -672,7 +688,7 @@ instead of showing the old activity */
                 } else {
                     currentUser = null;
                     Toast.makeText(ProductDetailsActivity.this, "Sorry couldn't complete the purchase", Toast.LENGTH_LONG).show();
-                    pd.dismiss();
+                    hud.dismiss();
                     finish();
                     // Something went wrong.
                 }
