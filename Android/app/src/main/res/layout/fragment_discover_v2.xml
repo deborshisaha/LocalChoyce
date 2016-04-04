@@ -16,7 +16,6 @@
             android:id="@+id/btnList"
             style="@style/RegularMedium.PanacheHomeToggleButton"
             android:text="List"
-            android:drawableLeft="@drawable/ic_tablist"
             android:paddingLeft="64dp"
             android:layout_width="0dp"
             android:layout_weight="5"
@@ -25,7 +24,6 @@
         <Button
             android:id="@+id/btnMap"
             style="@style/RegularMedium.PanacheHomeToggleButton"
-            android:drawableLeft="@drawable/ic_tabmap"
             android:text="Map"
             android:paddingLeft="64dp"
             android:layout_width="0dp"

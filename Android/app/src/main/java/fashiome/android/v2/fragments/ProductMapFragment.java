@@ -56,6 +56,7 @@ import fashiome.android.models.Address;
 import fashiome.android.models.Product;
 import fashiome.android.utils.Constants;
 import fashiome.android.v2.activities.PanacheHomeActivity;
+import fashiome.android.v2.adapters.BannerAdapter;
 import permissions.dispatcher.NeedsPermission;
 
 /**

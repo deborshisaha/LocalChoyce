@@ -1,4 +1,4 @@
-package fashiome.android.v2.fragments;
+package fashiome.android.v2.adapters;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
