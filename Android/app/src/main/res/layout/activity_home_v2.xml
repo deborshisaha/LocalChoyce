@@ -16,7 +16,7 @@
         <com.astuetz.PagerSlidingTabStrip
             android:id="@+id/tabStripPanacheTabs"
             android:layout_width="match_parent"
-            android:layout_height="48dip"
+            android:layout_height="48dp"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:pstsIndicatorHeight="4dp"
@@ -27,6 +27,18 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_home_v2" />
+    <include layout="@layout/content_home_v2" android:id="@+id/discover_fragment_content"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/searchFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:elevation="8dp"
+        app:layout_anchorGravity="bottom|right|end"
+        app:layout_anchor="@id/discover_fragment_content"
+        android:src="@drawable/ic_search" />
 
 </android.support.design.widget.CoordinatorLayout>

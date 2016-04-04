@@ -3,6 +3,7 @@ package fashiome.android.v2.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.View;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.parse.LogOutCallback;
@@ -28,11 +29,15 @@ public class PanacheTabsAdapter extends FragmentPagerAdapter implements PagerSli
 
     private final int[] GUEST_ICONS = { R.drawable.ic_home, R.drawable.more };
     private LogOutCallback logOutCallback = null;
+    private DiscoverProductFragment.OnSearchDeactivationListener onSearchDeactivationListener = null;
 
-    public PanacheTabsAdapter(FragmentManager fragmentManager, SearchCriteria searchCriteria, LogOutCallback logOutCallback) {
+    private DiscoverProductFragment discoverProductFragment;
+
+    public PanacheTabsAdapter(FragmentManager fragmentManager, SearchCriteria searchCriteria, LogOutCallback logOutCallback, DiscoverProductFragment.OnSearchDeactivationListener sdl) {
         super(fragmentManager);
         this.sc = searchCriteria;
         this.logOutCallback = logOutCallback;
+        this.onSearchDeactivationListener = sdl;
     }
 
     ///////
@@ -65,7 +70,12 @@ public class PanacheTabsAdapter extends FragmentPagerAdapter implements PagerSli
         } else if (position == 3) {
             return new MoreFragment(this.logOutCallback);
         }
-        return new DiscoverProductFragment(this.sc);
+
+        if (discoverProductFragment == null) {
+            discoverProductFragment = new DiscoverProductFragment(this.sc, this.onSearchDeactivationListener);
+        }
+
+        return discoverProductFragment;
     }
 
     private Fragment getGuestUserFragment(int position) {
@@ -74,7 +84,11 @@ public class PanacheTabsAdapter extends FragmentPagerAdapter implements PagerSli
             return new MoreFragment(null);
         }
 
-        return new DiscoverProductFragment(this.sc);
+        if (discoverProductFragment == null) {
+            discoverProductFragment = new DiscoverProductFragment(this.sc, this.onSearchDeactivationListener);
+        }
+
+        return discoverProductFragment;
     }
 
     @Override
@@ -84,6 +98,12 @@ public class PanacheTabsAdapter extends FragmentPagerAdapter implements PagerSli
             return ICONS[position];
         } else {
             return GUEST_ICONS[position];
+        }
+    }
+
+    public void notifyOfSearchActivation() {
+        if (discoverProductFragment != null) {
+            discoverProductFragment.activateSearch();
         }
     }
 }
