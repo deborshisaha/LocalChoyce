@@ -57,6 +57,7 @@
 
             <Button
                 android:id="@+id/btnCancel"
+                android:background="@drawable/sign_in_state_button"
                 style="@style/RegularMedium.PanacheHomeToggleButton"
                 android:text="Cancel"
                 android:layout_width="0dp"

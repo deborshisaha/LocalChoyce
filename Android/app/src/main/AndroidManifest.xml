@@ -9,9 +9,6 @@
         android:protectionLevel="signature"/>
     <!-- Permission to vibrate - recommended, allows vibration feedback on scan -->
     <uses-permission android:name="android.permission.VIBRATE"/>
-    <!-- Permission to use camera - required -->
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <!-- Camera features - recommended -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -32,14 +29,11 @@
         android:protectionLevel="dangerous"/>
 
     <!-- Request permission to use a device camera -->
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="fashiome.android.permission.MAPS_RECEIVE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -75,17 +69,18 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationName"
+            android:value="@string/facebook_app_name"/>
 
-        <meta-data android:name="com.facebook.sdk.ApplicationName"
-                   android:value="@string/facebook_app_name" />
-
-        <provider android:authorities="com.facebook.app.FacebookContentProvider205815676442035"
-                  android:name="com.facebook.FacebookContentProvider"
-                  android:exported="true"/>
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider205815676442035"
+            android:exported="true"/>
 
         <receiver android:name="listeners.PanacheAppFacebookBroadcastReceiver">
             <intent-filter>
-                <action android:name="com.facebook.platform.AppCallResultBroadcast" />
+                <action android:name="com.facebook.platform.AppCallResultBroadcast"/>
             </intent-filter>
         </receiver>
 
@@ -116,12 +111,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-
-        <activity android:name=".activities.PostToFacebookActivity"
-                  android:label="@string/app_name"
-                  android:windowSoftInputMode="adjustResize">
+        <activity
+            android:name=".activities.PostToFacebookActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize">
         </activity>
-
         <activity
             android:name=".activities.PaymentActivity"
             android:screenOrientation="portrait"/>
@@ -176,14 +170,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.BookingDetailsActivity"
             android:label="@string/title_activity_booking_details"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
         <activity
             android:name=".activities.ProductFilterSettingsActivity"
             android:label="@string/title_activity_product_filter_settings"
@@ -206,7 +198,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-
         <!-- Version 2 -->
 
         <activity
@@ -222,7 +213,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
         <activity
             android:name=".v2.activities.ItemsInterestedInActivity"
             android:screenOrientation="portrait"
@@ -230,6 +220,11 @@
         </activity>
         <activity
             android:name=".v2.activities.UserProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".v2.activities.CheckoutActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

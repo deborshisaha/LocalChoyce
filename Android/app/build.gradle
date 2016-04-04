@@ -127,4 +127,6 @@ dependencies {
 
     /* Progress HUD */
     compile 'com.kaopiz:kprogresshud:1.0.5'
+
+    compile 'com.uber.sdk:rides-android:0.1.0'
 }
