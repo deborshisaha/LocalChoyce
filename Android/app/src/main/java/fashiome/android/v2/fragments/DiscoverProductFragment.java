@@ -1,5 +1,7 @@
 package fashiome.android.v2.fragments;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -7,12 +9,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +31,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.models.Product;
+import fashiome.android.utils.Utils;
 import fashiome.android.v2.classes.SearchCriteria;
 
 public class DiscoverProductFragment extends Fragment {
@@ -30,6 +41,7 @@ public class DiscoverProductFragment extends Fragment {
     private ProductListFragment productListFragment;
     private static final String TAG = "DiscoverProductFragment";
     private List<Product> currentProducts = new ArrayList<>();
+    private OnSearchDeactivationListener onSearchDeactivationListener = null;
 
     @Bind(R.id.btnList)
     Button btnList;
@@ -37,9 +49,25 @@ public class DiscoverProductFragment extends Fragment {
     @Bind(R.id.btnMap)
     Button btnMap;
 
-    public DiscoverProductFragment(SearchCriteria sc) {
+    @Bind(R.id.fragmentToggleContainer)
+    LinearLayout llFragmentToggleContainer;
+
+    @Bind(R.id.searchBoxContainer)
+    RelativeLayout rlSearchBoxContainer;
+
+    @Bind(R.id.product_discover_fragment)
+    FrameLayout flListAndMapContainer;
+
+    @Bind(R.id.tvCancel)
+    TextView tvCancel;
+
+    @Bind(R.id.etSearch)
+    EditText etSearch;
+
+    public DiscoverProductFragment(SearchCriteria sc, OnSearchDeactivationListener onSearchDeactivationListener) {
         super();
         this.sc = sc;
+        this.onSearchDeactivationListener = onSearchDeactivationListener;
     }
 
     public DiscoverProductFragment(){}
@@ -179,5 +207,62 @@ public class DiscoverProductFragment extends Fragment {
         q.whereContains("productName", term);
         q.whereContains("gender", gender);
         return q;
+    }
+
+    public void activateSearch() {
+
+        llFragmentToggleContainer.animate().alpha(0).setDuration(200).translationYBy(-Utils.dpToPx(48)).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(50).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+
+                rlSearchBoxContainer.setFocusable(false);
+                rlSearchBoxContainer.setFocusableInTouchMode(false);
+
+                flListAndMapContainer.animate().alpha(0).setDuration(200).setInterpolator(new AccelerateDecelerateInterpolator());
+                rlSearchBoxContainer.animate().alpha(1).setDuration(200).translationYBy(-Utils.dpToPx(48)).setInterpolator(new AccelerateDecelerateInterpolator());
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+
+                tvCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        etSearch.clearFocus();
+                        deActivateSearch();
+                    }
+                });
+            }
+        });
+
+    }
+
+    private void deActivateSearch() {
+
+        llFragmentToggleContainer.animate().alpha(1).setDuration(200).translationYBy(Utils.dpToPx(48)).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(50).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                rlSearchBoxContainer.animate().alpha(0).setDuration(200).translationYBy(Utils.dpToPx(48)).setInterpolator(new AccelerateDecelerateInterpolator());
+                flListAndMapContainer.animate().alpha(1).setDuration(200).setInterpolator(new AccelerateDecelerateInterpolator());
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                tvCancel.setOnClickListener(null);
+                if (onSearchDeactivationListener!= null) {
+                    flListAndMapContainer.animate().alpha(1).setDuration(200).setInterpolator(new AccelerateDecelerateInterpolator());
+                    onSearchDeactivationListener.onSearchDeactivation();
+                }
+            }
+        });
+
+    }
+
+    public static interface OnSearchDeactivationListener {
+        public void onSearchDeactivation();
     }
 }
