@@ -101,7 +101,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="RENT IT NOW!"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:onClick="processPayment"/>
 
 </android.support.design.widget.CoordinatorLayout>

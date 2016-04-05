@@ -45,6 +45,7 @@ import com.parse.SaveCallback;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -63,6 +64,7 @@ import fashiome.android.models.User;
 import fashiome.android.utils.ImageURLGenerator;
 import fashiome.android.utils.Utils;
 import fashiome.android.v2.activities.IntroAndLoginActivity;
+import fashiome.android.v2.adapters.SuggestedItemAdapter;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
@@ -88,6 +90,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     private String mProductIDString = null;
     private Product mProduct = null;
     private List<Address> addresses = null;
+    private SuggestedItemAdapter mSuggestedItemAdapter;
 
     User currentUser;
     KProgressHUD hud;
@@ -125,6 +128,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     @Bind(R.id.tvViewMore)
     TextView mViewMore;
 
+    @Bind(R.id.vpSuggestedItems)
+    ViewPager vpSuggestedItems;
 
     @Override
     protected void onResume() {
@@ -157,25 +162,56 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             mProductIDString = getIntent().getExtras().getString(Product.PRODUCT_ID);
         } else {
             populateViewWithProduct(mProduct);
-            return;
         }
+        Product product1 = new Product();
+        product1.setProductName("Testing view pager 1");
+        product1.setProductDescription("Testing view pager for the first time");
+        product1.setProductPostedBy((User) ParseUser.getCurrentUser());
 
-        if (StringUtils.isEmpty(mProductIDString)) {
-            return;
-        }
+        Product product2 = new Product();
+        product2.setProductName("Testing view pager 2");
+        product2.setProductDescription("Testing view pager for the first time");
+        product2.setProductPostedBy((User) ParseUser.getCurrentUser());
 
-        Log.d(TAG, "mProductIDString: " + mProductIDString);
+        ArrayList<Product> products = new ArrayList<Product>();
+        products.add(product1);
+        products.add(product2);
 
-        Product.fetchProductWithId(mProductIDString, new FindCallback<Product>() {
-            @Override
-            public void done(List<Product> objects, ParseException e) {
-                if (objects.size() == 1) {
-                    Log.i(TAG, "Got product with Id");
-                    mProduct = objects.get(0);
-                    populateViewWithProduct(mProduct);
-                }
-            }
-        });
+        mSuggestedItemAdapter  = new SuggestedItemAdapter(this, products);
+        vpSuggestedItems.setAdapter(mSuggestedItemAdapter);
+        mSuggestedItemAdapter.notifyDataSetChanged();
+
+        return;
+
+//        if (StringUtils.isEmpty(mProductIDString)) {
+//            return;
+//        }
+//
+//        Log.d(TAG, "mProductIDString: " + mProductIDString);
+//
+//        Product.fetchProductWithId(mProductIDString, new FindCallback<Product>() {
+//            @Override
+//            public void done(List<Product> objects, ParseException e) {
+//                if (objects.size() == 1) {
+//                    Log.i(TAG, "Got product with Id");
+//                    mProduct = objects.get(0);
+//                    populateViewWithProduct(mProduct);
+//                }
+//            }
+//        });
+
+
+//        Product product = new Product();
+//        product.setProductName("Testing view pager");
+//        product.setProductDescription("Testing view pager for the first time");
+//        product.setProductPostedBy((User)ParseUser.getCurrentUser());
+//
+//        ArrayList<Product> products = new ArrayList<Product>();
+//        products.add(product);
+//
+//        mSuggestedItemAdapter  = new SuggestedItemAdapter(this, products);
+//        vpSuggestedItems.setAdapter(mSuggestedItemAdapter);
+//        mSuggestedItemAdapter.notifyDataSetChanged();
     }
 
     private void populateViewWithProduct(final Product product) {
@@ -239,6 +275,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         Utils.setRating(mLL2, numberOfProductRatings , this);
 
         setViewPagerItemsWithAdapter(product);
+
         setUiPageViewController();
 
         if (ParseUser.getCurrentUser() != null) {
@@ -641,21 +678,13 @@ instead of showing the old activity */
 
         Geocoder geocoder = new Geocoder(this, Locale.ENGLISH);
 
-        //if(product.getAddress() != null) {
         try {
-
-            //Log.i("info", "Latitude : " + product.getAddress().getLatitude());
-            //Log.i("info", "Longitude : " + product.getAddress().getLongitude());
-            //Log.i("info", "Longitude : " + product.getAddress().getObjectId());
-
             addresses = geocoder.getFromLocation(product.getAddress().getLatitude(),
                     product.getAddress().getLongitude(), 1);
 
         } catch (IOException e) {
             e.printStackTrace();
-            //Toast.makeText(getApplicationContext(), "Could not get address..!", Toast.LENGTH_LONG).show();
         }
-        //}
     }
 
     public void getUserAndSaveProduct() {
@@ -666,7 +695,6 @@ instead of showing the old activity */
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
                     Log.i("info", " user found");
-                    //ParseUser u = objects.get(0);
                     currentUser = (User) objects.get(0);
                     saveBoughtProductDetailsToParse(currentUser);
                     // The query was successful.

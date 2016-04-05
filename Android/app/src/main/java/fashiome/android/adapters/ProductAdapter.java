@@ -186,7 +186,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         @Bind(R.id.tvProductTitle)
         TextView tvProductTitle;
 
-        @Bind(R.id.rivImg)
+        @Bind(R.id.rivProfilePicture)
         RoundedImageView rivProfilePicture;
 
         @Bind(R.id.tvProductByUserName)
@@ -253,9 +253,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 }
 
             }
-
-            //Log.d("DEBUG", "Latitude : "+product.getAddress().getLatitude());
-            //Log.d("DEBUG", "Longitude : "+product.getAddress().getLongitude());
         }
 
         @Override

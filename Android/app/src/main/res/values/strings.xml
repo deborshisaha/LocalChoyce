@@ -85,5 +85,6 @@
     <string name="exception">Exception: %1$s</string>
     <string name="whatAreYouLookingFor">What are you looking for</string>
     <string name="title_activity_checkout">Checkout Activity</string>
+    <string name="suggested_items_title">Suggested items</string>
 
 </resources>

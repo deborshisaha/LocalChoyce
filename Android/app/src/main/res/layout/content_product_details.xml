@@ -286,22 +286,73 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="60dp"
-                android:paddingBottom="16dp"
                 android:background="@color/white">
 
+                <TextView
+                    android:id="@+id/tvReviews"
+                    style="@style/BigRegular"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_profile_my_reviews"
+                    android:textColor="@color/colorPrimaryText"/>
+
+                <include layout="@layout/item_review"
+                    android:id="@+id/pr1"
+                    android:layout_below="@+id/tvReviews"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"/>
+
+                <include layout="@layout/item_review"
+                    android:id="@+id/pr2"
+                    android:layout_below="@+id/pr1"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"/>
+
+                <include layout="@layout/item_review"
+                    android:id="@+id/pr3"
+                    android:layout_below="@+id/pr2"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"/>
 
                 <TextView
-                    android:padding="16dp"
+                    android:layout_below="@+id/pr3"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                    android:padding="8dp"
                     android:gravity="center"
                     android:id="@+id/tvViewMore"
                     android:layout_centerHorizontal="true"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Show reviews"
                     android:background="@drawable/show_reviews_btn_bg"
                     android:textColor="@color/white"
                     style="@style/RegularLight"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="60dp">
+
+                <TextView
+                    android:id="@+id/tvSuggestedItems"
+                    style="@style/RegularRegular"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/suggested_items_title"
+                    android:textColor="@color/colorSecondaryText"/>
+
+                <android.support.v4.view.ViewPager
+                    android:layout_below="@id/tvSuggestedItems"
+                    android:id="@+id/vpSuggestedItems"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"/>
 
             </RelativeLayout>
 
