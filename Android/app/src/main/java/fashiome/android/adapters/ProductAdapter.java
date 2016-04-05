@@ -282,8 +282,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 case R.id.rivProductPrimaryImage:
                     intent = new Intent(mContext, ProductDetailsActivity.class);
                     intent.putExtra("product", mProducts.get(getLayoutPosition()));
-                    mContext.startActivity(intent);
-                    ((Activity)mContext).overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation((Activity) mContext, (View)rivProductPrimaryImage, "rivProductPrimaryImage");
+
+                    // mContext.startActivity(intent);
+                    mContext.startActivity(intent, options.toBundle());
 
                 default:
                     break;

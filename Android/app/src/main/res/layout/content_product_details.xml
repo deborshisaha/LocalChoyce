@@ -13,13 +13,13 @@
         android:enabled="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF">
+        android:background="@color/white">
 
         <LinearLayout
+            android:id="@+id/llProductDetails"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layoutAnimation="@anim/layout_animation"
             android:background="@color/product_detail_gray_bg">
 
             <RelativeLayout
@@ -269,7 +269,6 @@
                     android:layout_height="32dp"
                     android:id="@+id/iBtnMessage"
                     android:layout_marginRight="64dp"
-                    android:stateListAnimator="@anim/lift_on_touch"
                     android:src="@drawable/ic_chat"
                     android:layout_toLeftOf="@+id/iBtnCall" />
 
