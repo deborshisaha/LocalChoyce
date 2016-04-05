@@ -43,6 +43,7 @@ public class PanacheHomeActivity extends AppCompatActivity implements DiscoverPr
     private SearchCriteria searchCriteria;
     private PanacheTabsAdapter panacheTabsAdapter;
     private boolean searchEnabled = false;
+    private boolean hidden = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,16 +91,48 @@ public class PanacheHomeActivity extends AppCompatActivity implements DiscoverPr
 
             @Override
             public void onPageSelected(int position) {
-                if ( searchEnabled == false) {
-                    deActivateSearch();
-                } else if (position == 0 && searchEnabled == true) {
-                    activateSearch();
+
+                if (position != 0) {
+                    panacheTabsAdapter.notifyOfSearchDeactivation();
+                    hideSearchFab();
+                } else if (position == 0) {
+
+                    if (searchEnabled) {
+                        panacheTabsAdapter.notifyOfSearchActivation();
+                        hideSearchFab();
+                    } else {
+                        showSearchFab();
+                    }
                 }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
+    }
+
+    private void showSearchFab() {
+        if (hidden == false) {return;}
+
+        searchFab.animate().translationYBy(-200).setInterpolator(new AccelerateInterpolator(2)).setDuration(200).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                hidden = false;
+            }
+        }).setStartDelay(50).start();
+    }
+
+    private void hideSearchFab() {
+        if (hidden == true) {return;}
+
+        searchFab.animate().translationYBy(200).setInterpolator(new AccelerateInterpolator(2)).setDuration(200).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                hidden = true;
+            }
+        }).setStartDelay(50).start();
     }
 
     @Override
@@ -132,28 +165,15 @@ public class PanacheHomeActivity extends AppCompatActivity implements DiscoverPr
 
     private void activateSearch () {
 
-        if (searchEnabled) return;
-
         panacheTabsAdapter.notifyOfSearchActivation();
+        hideSearchFab();
+        searchEnabled = true;
 
-        searchFab.animate().translationYBy(200).setInterpolator(new AccelerateInterpolator(2)).setDuration(200).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                searchEnabled = true;
-            }
-        }).setStartDelay(50).start();
     }
 
     private void deActivateSearch () {
         if (!searchEnabled) return;
-
-        searchFab.animate().translationYBy(-200).setInterpolator(new DecelerateInterpolator(2)).setDuration(200).setStartDelay(50).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                searchEnabled = false;
-            }
-        }).start();
+        showSearchFab();
+        searchEnabled = false;
     }
 }

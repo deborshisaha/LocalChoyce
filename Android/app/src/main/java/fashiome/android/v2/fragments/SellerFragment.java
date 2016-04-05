@@ -7,30 +7,60 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.TextView;
 
+import com.astuetz.PagerSlidingTabStrip;
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
+import java.util.HashMap;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.v2.activities.IntroAndLoginActivity;
 import fashiome.android.activities.MainActivity;
 import fashiome.android.v2.activities.ProductFormActivity;
+import fashiome.android.v2.adapters.SellerInventoryTabsAdapter;
 
 /**
  * Created by dsaha on 3/29/16.
  */
 public class SellerFragment extends Fragment {
 
+    @Bind(R.id.pstsSellerInventoryTab)
+    PagerSlidingTabStrip pstsSellerInventoryTab;
+
+    @Bind(R.id.vpSellerInventory)
+    ViewPager vpSellerInventory;
+
+    @Bind(R.id.fabAddProduct)
     FloatingActionButton fabAddProduct;
 
-    final int FROM_FAB_TO_LOGIN = 300;
-    private boolean fabInExplodedState = false;
+    @Bind(R.id.tvItemsRentedAmount)
+    TextView tvItemsRentedAmount;
 
-    public SellerFragment() {}
+    @Bind(R.id.tvCurrency)
+    TextView tvCurrency;
+
+    @Bind(R.id.tvYearlyEarningsAmount)
+    TextView tvYearlyEarningsAmount;
+
+
+    final int FROM_FAB_TO_LOGIN = 300;
+
+    private boolean fabInExplodedState = false;
+    private SellerInventoryTabsAdapter mSellerInventoryTabsAdapter = null;
+
+    public SellerFragment() {super();}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +75,7 @@ public class SellerFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_seller_v2, container, false);
 
-        fabAddProduct = (FloatingActionButton) view.findViewById(R.id.fabAddProduct);
+        ButterKnife.bind(this, view);
 
         fabAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +83,7 @@ public class SellerFragment extends Fragment {
                 fabAddProduct.animate().scaleX(100).scaleY(100).setInterpolator(new AccelerateInterpolator()).setDuration(200).setStartDelay(300).setListener(new AnimatorListenerAdapter() {
 
                     @Override
-                    public void onAnimationStart(Animator animation){
+                    public void onAnimationStart(Animator animation) {
                         fabAddProduct.setImageDrawable(null);
                     }
 
@@ -73,7 +103,46 @@ public class SellerFragment extends Fragment {
             }
         });
 
+        if (mSellerInventoryTabsAdapter == null) {
+            mSellerInventoryTabsAdapter = new SellerInventoryTabsAdapter(getActivity().getSupportFragmentManager());
+        }
+
+        if (vpSellerInventory.getAdapter() == null) {
+            vpSellerInventory.setAdapter(mSellerInventoryTabsAdapter);
+        }
+
+        pstsSellerInventoryTab.setViewPager(vpSellerInventory);
+
+        loadSellerStats();
+
         return view;
+    }
+
+    private void loadSellerStats() {
+
+        HashMap<String, Object> params = new HashMap<String,Object>();
+
+        if (ParseUser.getCurrentUser() != null) {
+            params.put("user", ParseUser.getCurrentUser().getObjectId());
+        }
+
+        ParseCloud.callFunctionInBackground("seller_stats", params, new FunctionCallback<HashMap>() {
+
+            @Override
+            public void done(HashMap hm, ParseException e) {
+                if (e == null) {
+                    processSellerStats(hm);
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void processSellerStats(HashMap hm) {
+        tvYearlyEarningsAmount.setText(hm.get("earnings_this_year")+"");
+        tvItemsRentedAmount.setText(hm.get("items_rented")+"");
+        tvCurrency.setText((String)hm.get("currency"));
     }
 
     @Override
@@ -103,7 +172,7 @@ public class SellerFragment extends Fragment {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     fabInExplodedState = false;
-                    fabAddProduct.setImageResource(R.drawable.ic_add_tag);
+                    fabAddProduct.setImageResource(R.drawable.ic_plus);
                 }
 
             }).start();

@@ -308,7 +308,7 @@ public class DiscoverProductFragment extends Fragment {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 //etSearch.requestFocus();
-                final InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
+                final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(etSearch, InputMethodManager.SHOW_FORCED);
                 tvCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -321,7 +321,7 @@ public class DiscoverProductFragment extends Fragment {
 
     }
 
-    private void deActivateSearch() {
+    public void deActivateSearch() {
 
         llFragmentToggleContainer.animate().alpha(1).setDuration(200).translationYBy(Utils.dpToPx(48)).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(50).setListener(new AnimatorListenerAdapter() {
             @Override
@@ -335,9 +335,7 @@ public class DiscoverProductFragment extends Fragment {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
 
-                final InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
-                etSearch.clearFocus();
-                imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
+                closeKeyboard();
 
                 tvCancel.setOnClickListener(null);
                 if (onSearchDeactivationListener!= null) {
@@ -347,6 +345,12 @@ public class DiscoverProductFragment extends Fragment {
             }
         });
 
+    }
+
+    public void closeKeyboard () {
+        final InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
+        etSearch.clearFocus();
+        imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
     }
 
     public static interface OnSearchDeactivationListener {

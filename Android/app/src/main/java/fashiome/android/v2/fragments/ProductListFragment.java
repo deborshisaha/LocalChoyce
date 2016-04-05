@@ -29,8 +29,10 @@ public class ProductListFragment extends Fragment {
     RecyclerView productRecyclerView;
 
     KProgressHUD hud = null;
+    int mId = -1;
 
     public ProductListFragment() {}
+    public ProductListFragment(int id) {super(); mId = id;}
 
     public void setProductParseQuery(ParseQuery<Product> productParseQuery) {
         this.productParseQuery = productParseQuery;
@@ -63,7 +65,7 @@ public class ProductListFragment extends Fragment {
             productParseQuery.findInBackground(new FindCallback<Product>() {
                 @Override
                 public void done(List<Product> products, ParseException e) {
-                    productAdapter.updateItems(Constants.REFRESH_OPERATION, products);
+                    newData(products);
                 }
             });
         }
