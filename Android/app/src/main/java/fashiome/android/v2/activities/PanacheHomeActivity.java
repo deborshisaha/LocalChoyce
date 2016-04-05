@@ -117,7 +117,12 @@ public class PanacheHomeActivity extends AppCompatActivity implements DiscoverPr
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+
+        if(panacheTabsAdapter != null) {
+            panacheTabsAdapter.notifyDataSetChanged();
+            vpPanacheTabs.setCurrentItem(3, true);
+            tabStripPanacheTabs.notifyDataSetChanged();
+        }
     }
 
     @Override

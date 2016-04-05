@@ -3,6 +3,7 @@ package fashiome.android.v2.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.View;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -20,7 +21,7 @@ import fashiome.android.v2.fragments.ProductListFragment;
 import fashiome.android.v2.fragments.SellerFragment;
 import fashiome.android.v2.fragments.UserProfileFragment;
 
-public class PanacheTabsAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
+public class PanacheTabsAdapter extends FragmentStatePagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
 
     private SearchCriteria sc;
 
