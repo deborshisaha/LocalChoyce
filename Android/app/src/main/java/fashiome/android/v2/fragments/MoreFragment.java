@@ -134,7 +134,7 @@ public class MoreFragment extends Fragment {
                             // Go to log in screen
                             Intent launchIntent = new Intent(getActivity(), IntroAndLoginActivity.class);
                             launchIntent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, true);
-                            startActivity(launchIntent);
+                            startActivityForResult(launchIntent, 100);
                         } else if (key.equals(LOG_OUT)) {
                             // Log out
                             ParseUser.logOutInBackground(mLogOutCallback);
@@ -202,4 +202,11 @@ public class MoreFragment extends Fragment {
             return loggedInMoreOptionsIcon;
         }
     }
+
+/*
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+*/
 }

@@ -69,6 +69,8 @@ public class ProductMapFragment extends Fragment implements
         GoogleMap.OnMapLongClickListener{
 
 
+    public ProductMapFragment() {}
+
     private SupportMapFragment mapFragment;
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
