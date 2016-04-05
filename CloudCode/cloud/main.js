@@ -3,6 +3,17 @@ var Product = Parse.Object.extend("Product");
 var UserProduct = Parse.Object.extend("UserProduct");
 var User = Parse.Object.extend("_User");
 
+Parse.Cloud.define("seller_stats", function(request, response) {
+
+	var jsonObject = {
+		"earnings_this_year": 32000,
+		"items_rented": 21,
+		"currency": "USD"
+	};
+			
+	response.success(jsonObject);
+});
+
 Parse.Cloud.define("product", function(request, response) {
 
 	var promises = [];

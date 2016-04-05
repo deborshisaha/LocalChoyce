@@ -16,7 +16,74 @@
             android:layout_weight="0.75"
             android:background="@color/white"
             android:elevation="4dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_marginTop="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:paddingBottom="2dp"
+                    android:textColor="@color/colorSecondaryText"
+                    style="@style/BigLight"
+                    android:text="@string/earningsTillDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvYearlyEarnings"/>
+
+                <TextView
+                    android:paddingBottom="4dp"
+                    android:id="@+id/tvCurrency"
+                    android:layout_alignBottom="@+id/tvYearlyEarningsAmount"
+                    android:textColor="@color/colorSecondaryText"
+                    android:layout_toLeftOf="@+id/tvYearlyEarningsAmount"
+                    style="@style/SmallLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""/>
+
+                <TextView
+                    android:layout_marginLeft="4dp"
+                    android:paddingBottom="2dp"
+                    android:textColor="@color/colorPrimaryText"
+                    style="@style/HeaderRegular"
+                    android:text="25"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvYearlyEarningsAmount"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textColor="@color/colorSecondaryText"
+                    style="@style/BigLight"
+                    android:text="@string/itemsRentedOut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvItemsRented"/>
+
+                <TextView
+                    android:textColor="@color/colorPrimaryText"
+                    style="@style/HeaderRegular"
+                    android:text="25"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvItemsRentedAmount"/>
+
+            </RelativeLayout>
 
         </LinearLayout>
 

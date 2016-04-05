@@ -87,5 +87,7 @@
     <string name="title_activity_checkout">Checkout Activity</string>
     <string name="suggested_items_title">Suggested items</string>
     <string name="showMoreReviews">Show more reviews</string>
+    <string name="earningsTillDate">Earnings till date</string>
+    <string name="itemsRentedOut">Items rented out</string>
 
 </resources>

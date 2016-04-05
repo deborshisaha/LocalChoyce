@@ -13,9 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,9 +45,20 @@ public class SellerFragment extends Fragment {
     @Bind(R.id.fabAddProduct)
     FloatingActionButton fabAddProduct;
 
+    @Bind(R.id.tvItemsRentedAmount)
+    TextView tvItemsRentedAmount;
+
+    @Bind(R.id.tvCurrency)
+    TextView tvCurrency;
+
+    @Bind(R.id.tvYearlyEarningsAmount)
+    TextView tvYearlyEarningsAmount;
+
+
     final int FROM_FAB_TO_LOGIN = 300;
 
     private boolean fabInExplodedState = false;
+    private SellerInventoryTabsAdapter mSellerInventoryTabsAdapter = null;
 
     public SellerFragment() {super();}
 
@@ -86,10 +103,46 @@ public class SellerFragment extends Fragment {
             }
         });
 
-        vpSellerInventory.setAdapter(new SellerInventoryTabsAdapter(getActivity().getSupportFragmentManager()));
+        if (mSellerInventoryTabsAdapter == null) {
+            mSellerInventoryTabsAdapter = new SellerInventoryTabsAdapter(getActivity().getSupportFragmentManager());
+        }
+
+        if (vpSellerInventory.getAdapter() == null) {
+            vpSellerInventory.setAdapter(mSellerInventoryTabsAdapter);
+        }
+
         pstsSellerInventoryTab.setViewPager(vpSellerInventory);
 
+        loadSellerStats();
+
         return view;
+    }
+
+    private void loadSellerStats() {
+
+        HashMap<String, Object> params = new HashMap<String,Object>();
+
+        if (ParseUser.getCurrentUser() != null) {
+            params.put("user", ParseUser.getCurrentUser().getObjectId());
+        }
+
+        ParseCloud.callFunctionInBackground("seller_stats", params, new FunctionCallback<HashMap>() {
+
+            @Override
+            public void done(HashMap hm, ParseException e) {
+                if (e == null) {
+                    processSellerStats(hm);
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void processSellerStats(HashMap hm) {
+        tvYearlyEarningsAmount.setText(hm.get("earnings_this_year")+"");
+        tvItemsRentedAmount.setText(hm.get("items_rented")+"");
+        tvCurrency.setText((String)hm.get("currency"));
     }
 
     @Override
