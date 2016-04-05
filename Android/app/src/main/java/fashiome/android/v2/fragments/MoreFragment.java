@@ -104,10 +104,9 @@ public class MoreFragment extends Fragment {
 
         if (sections == null) {
             sections = new ArrayList<SectionedRecyclerViewAdapter.Section>();
+            //Sections
+            addSections(sections);
         }
-
-        //Sections
-        addSections(sections);
 
         //Add your adapter to the sectionAdapter
         SectionedRecyclerViewAdapter.Section[] dummy = new SectionedRecyclerViewAdapter.Section[sections.size()];
