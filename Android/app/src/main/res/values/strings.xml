@@ -86,5 +86,6 @@
     <string name="whatAreYouLookingFor">What are you looking for</string>
     <string name="title_activity_checkout">Checkout Activity</string>
     <string name="suggested_items_title">Suggested items</string>
+    <string name="showMoreReviews">Show more reviews</string>
 
 </resources>

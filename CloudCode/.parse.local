@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "Fashiome": {
+      "applicationId": "r2O85jyiF0QzqTVVbkbncJ8hyEsNY7AWj9oiWzlF"
+    },
+    "_default": {
+      "link": "Fashiome"
+    }
+  }
+}

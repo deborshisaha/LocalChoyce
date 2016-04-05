@@ -35,7 +35,9 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
+import com.parse.FunctionCallback;
 import com.parse.GetCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -43,9 +45,12 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -126,10 +131,19 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     TextView mRelativeTime;
 
     @Bind(R.id.tvViewMore)
-    TextView mViewMore;
+    TextView tvViewMore;
 
     @Bind(R.id.vpSuggestedItems)
     ViewPager vpSuggestedItems;
+
+    @Bind(R.id.pr1)
+    View pr1;
+
+    @Bind(R.id.pr2)
+    View pr2;
+
+    @Bind(R.id.pr3)
+    View pr3;
 
     @Override
     protected void onResume() {
@@ -163,55 +177,131 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         } else {
             populateViewWithProduct(mProduct);
         }
-        Product product1 = new Product();
-        product1.setProductName("Testing view pager 1");
-        product1.setProductDescription("Testing view pager for the first time");
-        product1.setProductPostedBy((User) ParseUser.getCurrentUser());
 
-        Product product2 = new Product();
-        product2.setProductName("Testing view pager 2");
-        product2.setProductDescription("Testing view pager for the first time");
-        product2.setProductPostedBy((User) ParseUser.getCurrentUser());
-
-        ArrayList<Product> products = new ArrayList<Product>();
-        products.add(product1);
-        products.add(product2);
-
-        mSuggestedItemAdapter  = new SuggestedItemAdapter(this, products);
+        mSuggestedItemAdapter  = new SuggestedItemAdapter(this);
         vpSuggestedItems.setAdapter(mSuggestedItemAdapter);
-        mSuggestedItemAdapter.notifyDataSetChanged();
+
+        HashMap<String, Object> params = new HashMap<String,Object>();
+        params.put("product", mProduct.getObjectId());
+        params.put("forPresentation", true);
+
+        if (ParseUser.getCurrentUser() != null) {
+            params.put("user", ParseUser.getCurrentUser().getObjectId());
+        }
+
+        ParseCloud.callFunctionInBackground("product", params, new FunctionCallback<HashMap>() {
+
+            @Override
+            public void done(HashMap hm, ParseException e) {
+                if (e == null) {
+                    processProductMetadata(hm);
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         return;
+    }
 
-//        if (StringUtils.isEmpty(mProductIDString)) {
-//            return;
-//        }
-//
-//        Log.d(TAG, "mProductIDString: " + mProductIDString);
-//
-//        Product.fetchProductWithId(mProductIDString, new FindCallback<Product>() {
-//            @Override
-//            public void done(List<Product> objects, ParseException e) {
-//                if (objects.size() == 1) {
-//                    Log.i(TAG, "Got product with Id");
-//                    mProduct = objects.get(0);
-//                    populateViewWithProduct(mProduct);
-//                }
-//            }
-//        });
+    private void processProductMetadata(HashMap hm) {
+
+        // Suggested items
+        ArrayList<Product> prods = (ArrayList<Product>)hm.get("suggested");
+        mSuggestedItemAdapter.setProducts(prods);
+        mSuggestedItemAdapter.notifyDataSetChanged();
+
+        // Product reviews
+        ArrayList<ProductReview> prs = (ArrayList<ProductReview>)hm.get("reviews");
 
 
-//        Product product = new Product();
-//        product.setProductName("Testing view pager");
-//        product.setProductDescription("Testing view pager for the first time");
-//        product.setProductPostedBy((User)ParseUser.getCurrentUser());
-//
-//        ArrayList<Product> products = new ArrayList<Product>();
-//        products.add(product);
-//
-//        mSuggestedItemAdapter  = new SuggestedItemAdapter(this, products);
-//        vpSuggestedItems.setAdapter(mSuggestedItemAdapter);
-//        mSuggestedItemAdapter.notifyDataSetChanged();
+        if (prs.size() > 3) {
+            tvViewMore.setVisibility(View.VISIBLE);
+        } else {
+            tvViewMore.setVisibility(View.GONE);
+            adjustNumberOfReviews(prs.size());
+            populateReviews(prs);
+        }
+
+        // isFavorite
+        isLiked = (boolean) hm.get("isFavorite");
+        invalidateOptionsMenu();
+    }
+
+    private void populateReviews(ArrayList<ProductReview> prs) {
+        int count = prs.size();
+        switch (count) {
+            case 1: {
+                configure(prs.get(0), pr1);
+                break;
+            }
+            case 2: {
+                configure(prs.get(0), pr1);
+                configure(prs.get(1), pr2);
+                break;
+            }
+            case 3: {
+                configure(prs.get(0), pr1);
+                configure(prs.get(1), pr2);
+                configure(prs.get(2), pr3);
+                break;
+            }
+        }
+    }
+
+    private void configure(ProductReview productReview, View prView) {
+
+        RoundedImageView rivUserProfileImage = (RoundedImageView)prView.findViewById(R.id.rivProfilePicture);
+        TextView tvTitle= (TextView)prView.findViewById(R.id.tvTitle);
+        TextView tvMoreText= (TextView)prView.findViewById(R.id.tvMoreText);
+        TextView tvTimeAgo= (TextView)prView.findViewById(R.id.tvTimeAgo);
+        LinearLayout starLinearLayout = (LinearLayout)prView.findViewById(R.id.ratingUser);
+
+
+        if (productReview == null) {
+            return;
+        }
+
+        String URLString = null;
+
+        if (productReview.getUser() != null) {
+            URLString = ImageURLGenerator.getInstance(this).URLForFBProfilePicture(productReview.getUser().getFacebookId(), Utils.getScreenWidthInDp(this));
+        }
+
+        if (URLString != null || URLString.length() > 0) {
+            Glide.with(this).load(URLString).into(rivUserProfileImage);
+        }
+
+        Utils.setRating(starLinearLayout, (int) productReview.getRating(), this);
+        tvMoreText.setMaxLines(2);
+        tvMoreText.setText(productReview.getBody());
+        tvTitle.setText(productReview.getHeader());
+        tvTimeAgo.setText("9h");
+
+    }
+
+    private void adjustNumberOfReviews(int count) {
+
+        switch (count) {
+            case 1: {
+                pr1.setVisibility(View.VISIBLE);
+                pr2.setVisibility(View.GONE);
+                pr3.setVisibility(View.GONE);
+                break;
+            }
+            case 2: {
+                pr1.setVisibility(View.VISIBLE);
+                pr2.setVisibility(View.VISIBLE);
+                pr3.setVisibility(View.GONE);
+                break;
+            }
+            case 3: {
+                pr1.setVisibility(View.VISIBLE);
+                pr2.setVisibility(View.VISIBLE);
+                pr3.setVisibility(View.VISIBLE);
+                break;
+            }
+        }
     }
 
     private void populateViewWithProduct(final Product product) {
@@ -237,21 +327,12 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             }
         });
 
-        mViewMore.setOnClickListener(new View.OnClickListener() {
+        tvViewMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProductDetailsActivity.this, ProductReviewActivity.class);
                 intent.putExtra(Product.PRODUCT_KEY, product);
                 startActivity(intent);
-            }
-        });
-
-        ProductReview.fetchProductReview(product, 4, new FindCallback<ProductReview>() {
-            @Override
-            public void done(List<ProductReview> productReviews, ParseException e) {
-                if (e == null) {
-                    //mProductReviewRecyclerViewAdapter.setProductReviews(productReviews);
-                }
             }
         });
 
@@ -277,10 +358,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         setViewPagerItemsWithAdapter(product);
 
         setUiPageViewController();
-
-        if (ParseUser.getCurrentUser() != null) {
-            parseCallForIsLiked(product);
-        }
 
         AsyncTask<String, Void, String> task = new AsyncTask<String, Void, String>() {
 
@@ -486,28 +563,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
                                 }
                             });
                         }
-                    }
-                } else {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public void parseCallForIsLiked(Product product) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserProduct");
-        query.whereEqualTo("userId", ParseUser.getCurrentUser());
-        query.whereEqualTo("productId", product);
-        Log.i("info", "user " + ParseUser.getCurrentUser().getObjectId());
-        Log.i("info", "product  " + product.getObjectId());
-
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> likeList, ParseException e) {
-                if (e == null) {
-                    Log.i("Found ", String.valueOf(likeList.size()));
-                    if (likeList.size() > 0) {
-                        isLiked = true;
-                        invalidateOptionsMenu();
                     }
                 } else {
                     e.printStackTrace();

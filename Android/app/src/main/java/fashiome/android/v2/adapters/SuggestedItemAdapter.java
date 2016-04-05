@@ -55,10 +55,8 @@ public class SuggestedItemAdapter  extends PagerAdapter {
 
         configure(itemView, product);
 
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams((int)(0.93f*Utils.getScreenWidthInDp(mContext)), Utils.dpToPx(48));
-        itemView.setLayoutParams(layoutParams);
-
         container.addView(itemView);
+
         return itemView;
     }
 
@@ -66,6 +64,22 @@ public class SuggestedItemAdapter  extends PagerAdapter {
         super();
         mContext = context;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        if (mArrayOfProducts != null) {
+            mArrayOfProducts.addAll(products);
+        } else {
+            mArrayOfProducts = new ArrayList<Product>();
+            mArrayOfProducts.addAll(products);
+        }
+    }
+
+    public SuggestedItemAdapter(Context context) {
+        super();
+        mContext = context;
+        mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public void setProducts (ArrayList<Product> products) {
 
         if (mArrayOfProducts != null) {
             mArrayOfProducts.addAll(products);
@@ -125,6 +139,6 @@ public class SuggestedItemAdapter  extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((LinearLayout) object);
+        container.removeView((View) object);
     }
 }
