@@ -2,7 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:id="@+id/rlFooter"
-    android:layout_height="wrap_content"
+    android:layout_height="150dp"
     android:background="#ffffff">
 
     <ImageView
@@ -11,50 +11,45 @@
         android:layout_width="150dp"
         android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvItemName"
-        android:layout_toRightOf="@+id/ivItemPhoto"
+        android:layout_marginLeft="10dp"
         android:layout_toEndOf="@+id/ivItemPhoto"
-        android:layout_alignTop="@+id/ivItemPhoto"
-        android:layout_alignRight="@+id/tvPrice"
-        android:layout_alignEnd="@+id/tvPrice"
-        android:gravity="center_vertical"
         android:textColor="@color/colorPrimaryText"
         android:textAppearance="?android:attr/textAppearanceSmall"/>
 
-    <TextView android:id="@+id/tvDesc"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvDesc"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvItemName"
-        android:layout_toRightOf="@+id/ivItemPhoto"
         android:layout_toEndOf="@+id/ivItemPhoto"
         android:ellipsize="end"
-        android:maxLines="3"/>
+        android:maxLines="2"/>
 
     <TextView
         style="@style/BigRegular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvPrice"
-        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:layout_below="@id/tvDesc"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:textColor="@android:color/secondary_text_light_nodisable"/>
+        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_toRightOf="@id/ivItemPhoto"
-        android:layout_toEndOf="@+id/ivItemPhoto"
         android:layout_below="@+id/tvDesc"
-        android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
         <LinearLayout
