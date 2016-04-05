@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -145,6 +146,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     @Bind(R.id.pr3)
     View pr3;
 
+    @Bind(R.id.llProductDetails)
+    LinearLayout llProductDetails;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -164,13 +168,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         getSupportActionBar().setTitle("");
 
         mProduct = getIntent().getExtras().getParcelable("product");
-        Log.i(TAG, "Product Rating : " + mProduct.getProductRating());
-        Log.i(TAG, "Product favorties : " + mProduct.getNumberOfFavorites());
-        Log.i(TAG, "Product reviews : " + mProduct.getNumberOfReviews());
-        Log.i(TAG, "Product views : " + mProduct.getNumberOfViews());
-        Log.i(TAG, "Price : " + mProduct.getPrice());
-        Log.i(TAG, "User Rating : " + mProduct.getProductPostedBy().getRating());
-        Log.i(TAG, "Product Rentals : " + mProduct.getNumberOfRentals());
 
         if (mProduct == null) {
             mProductIDString = getIntent().getExtras().getString(Product.PRODUCT_ID);
@@ -201,7 +198,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             }
         });
 
-        return;
+        llProductDetails.setTranslationY(500);
+        llProductDetails.animate().translationY(0).setDuration(500).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(400).start();
     }
 
     private void processProductMetadata(HashMap hm) {

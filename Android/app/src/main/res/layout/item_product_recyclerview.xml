@@ -14,7 +14,7 @@
         android:layout_height="300dp"
         android:scaleType="centerCrop"
         android:id="@+id/rivProductPrimaryImage"
-        android:transitionName="profile"
+        android:transitionName="rivProductPrimaryImage"
         app:riv_corner_radius="4dp"
         app:riv_mutate_background="false"
         android:layout_centerHorizontal="true"/>
