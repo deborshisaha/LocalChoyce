@@ -107,4 +107,10 @@ public class PanacheTabsAdapter extends FragmentStatePagerAdapter implements Pag
             discoverProductFragment.activateSearch();
         }
     }
+
+    public void notifyOfSearchDeactivation() {
+        if (discoverProductFragment != null) {
+            discoverProductFragment.closeKeyboard();
+        }
+    }
 }

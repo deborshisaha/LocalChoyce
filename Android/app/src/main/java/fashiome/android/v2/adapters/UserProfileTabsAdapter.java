@@ -63,7 +63,6 @@ public class UserProfileTabsAdapter extends FragmentPagerAdapter {
             } else {
                 // return my
                 productListFragment.setProductParseQuery(getParseQueryForUsersProductsInMarketPlace());
-                return productListFragment;
             }
             return productListFragment;
         }

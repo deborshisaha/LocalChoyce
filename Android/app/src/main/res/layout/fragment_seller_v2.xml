@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout android:layout_width="match_parent"
+        android:id="@+id/llSellerAccountInfoContainer"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -24,22 +25,43 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
+            android:elevation="4dp"
             android:background="@color/material_design_gray_background"
             android:orientation="horizontal">
+
+            <com.astuetz.PagerSlidingTabStrip style="@style/SmallLight"
+                android:id="@+id/pstsSellerInventoryTab"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:textColor = "@color/colorPrimary"
+                android:elevation="4dp"
+                app:pstsUnderlineColor="@color/white"
+                app:pstsIndicatorColor="@color/colorPrimary"
+                app:pstsIndicatorHeight="4dp"
+                app:pstsDividerColor="@color/white"
+                app:pstsShouldExpand="true" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vpSellerInventory"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#f4f5f7" />
 
         </LinearLayout>
 
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:id="@+id/fabAddProduct"
         android:elevation="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
-        android:src="@drawable/ic_add_tag"
-        app:layout_anchor="@id/sellerAccountSummaryContainer"
+        android:src="@drawable/ic_plus"
+        app:layout_anchor="@id/pstsSellerInventoryTab"
         app:layout_anchorGravity="bottom|right|end"/>
 
 </android.support.design.widget.CoordinatorLayout>
