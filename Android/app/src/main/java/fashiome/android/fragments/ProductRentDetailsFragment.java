@@ -189,24 +189,26 @@ public class ProductRentDetailsFragment extends DialogFragment implements View.O
 
         //Glide.with(getActivity()).load(URLString).into(mRentImage);
 
+/*
         final ProgressDialog pd = new ProgressDialog(getContext());
         pd.isIndeterminate();
         pd.setMessage("Get ready to  show off your panache");
         pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         pd.show();
+*/
 
         Glide.with(getActivity())
                 .load(URLString)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        pd.dismiss();
+                        //pd.dismiss();
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        pd.dismiss();
+                        //pd.dismiss();
                         return false;
                     }
                 })

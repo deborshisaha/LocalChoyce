@@ -141,6 +141,11 @@ public class ProductMapFragment extends Fragment implements
         Log.i("info", "onViewCreated called");
     }
 
+    public void truncateData(){
+        bannerAdapter.removeAll();
+        bannerAdapter.notifyDataSetChanged();
+    }
+
     public void newData(List<Product> products){
         bannerAdapter.addAll(products);
         bannerAdapter.notifyDataSetChanged();

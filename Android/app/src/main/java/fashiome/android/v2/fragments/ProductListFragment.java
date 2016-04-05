@@ -70,6 +70,11 @@ public class ProductListFragment extends Fragment {
         return view;
     }
 
+    public void truncateData(){
+        productAdapter.removeAll();
+        productAdapter.notifyDataSetChanged();
+    }
+
     public void newData(List<Product> products){
         productAdapter.updateItems(Constants.NEW_SEARCH_OPERATION, products);
         productAdapter.notifyDataSetChanged();

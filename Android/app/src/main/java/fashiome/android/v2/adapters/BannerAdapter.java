@@ -83,6 +83,10 @@ public class BannerAdapter extends PagerAdapter {
         }
     }
 
+    public void removeAll(){
+        mProducts.clear();
+    }
+
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;

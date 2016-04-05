@@ -2,14 +2,19 @@ package fashiome.android.v2.fragments;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.ProgressDialog;
+import android.app.Service;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -30,6 +35,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.activities.MainActivity;
 import fashiome.android.models.Product;
 import fashiome.android.utils.Utils;
 import fashiome.android.v2.classes.SearchCriteria;
@@ -98,21 +104,45 @@ public class DiscoverProductFragment extends Fragment {
 
                 hud.dismiss();
                 Log.i(TAG, "Parse query got products " + products.size());
-                currentProducts.addAll(products);
-                if(productListFragment != null && currentProducts.size() > 0){
-                    productListFragment.newData(currentProducts);
-                }
-
-                if(productMapFragment != null && currentProducts.size() > 0){
-                    productMapFragment.newData(currentProducts);
-                }
+                broadcastResultsToFragments(products);
             }
         });
 
         btnMap.setOnClickListener(onClickListenerForMapButton());
         btnList.setOnClickListener(onClickListenerForListButton());
 
+        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    performSearch();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         return view;
+    }
+
+    private void broadcastResultsToFragments(List <Product> products){
+        currentProducts.clear();
+        currentProducts.addAll(products);
+
+        if (productListFragment != null && currentProducts.size() > 0) {
+            productListFragment.newData(currentProducts);
+        }
+
+        if (productMapFragment != null && currentProducts.size() > 0) {
+            productMapFragment.newData(currentProducts);
+        }
+    }
+
+    private void performSearch() {
+
+        String searchString = etSearch.getText().toString();
+        getProductsWithSearchTerm(searchString);
+
     }
 
     private View.OnClickListener onClickListenerForListButton (){
@@ -131,6 +161,56 @@ public class DiscoverProductFragment extends Fragment {
                 insertProductMapFragment();
             }
         };
+    }
+    public void getProductsWithSearchTerm(final String term){
+
+        Product.fetchProductWithSearchTerm(term, new FindCallback<Product>() {
+
+            @Override
+            public void done(List<Product> products, ParseException e) {
+                //pd.dismiss();
+                //isAllProducts = false;
+                //swipeContainer.setRefreshing(false);
+                if (e == null && products.size() > 0) {
+                    //searchView.setQueryHint(String.valueOf(products.size())+ " results found");
+                    Log.d("DEBUG", "Retrieved searched products " + products.size() + " products");
+                    //lastSeen = products.get(0).getCreatedAt();
+                    //Log.i("Last seen date: ", lastSeen.toString());
+                    for (Product p : products) {
+                        Log.i(TAG, "Productname: " + p.getProductName());
+                        Log.i(TAG, "username : " + String.valueOf(p.getProductPostedBy().getUsername()));
+                        Log.i(TAG, "Latitude : " + p.getAddress().getLatitude());
+                        Log.i(TAG, "Longitude : " + p.getAddress().getLongitude());
+                    }
+                    clearResults();
+                    broadcastResultsToFragments(products);
+                    deActivateSearch();
+                    //mProductsFragment.addNewProductsToList((ArrayList<Product>) products);
+                    //mProductsAdapter.updateItems(operation, products);
+
+                } else {
+                    if (e == null) {
+                        Log.i(TAG, "no results found");
+                        //searchView.setQueryHint("No results");
+                        //showNoResultsDialog(term);
+                    } else {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void clearResults() {
+        if (productListFragment != null) {
+            productListFragment.truncateData();
+        }
+
+        if (productMapFragment != null) {
+            productMapFragment.truncateData();
+        }
+
     }
 
     private void insertProductListFragment() {
@@ -184,7 +264,7 @@ public class DiscoverProductFragment extends Fragment {
 
             List<ParseQuery<Product>> queries = new ArrayList<ParseQuery<Product>>();
 
-            for (String term:valuesList) {
+            for (String term : valuesList) {
                 queries.add(getParseQueryForTermInName(term, this.sc.getGenderString()));
             }
 
@@ -198,6 +278,7 @@ public class DiscoverProductFragment extends Fragment {
         mainQuery.include("productPostedBy");
         mainQuery.include("productBoughtBy");
         mainQuery.include("address");
+        mainQuery.setLimit(30);
 
         return mainQuery;
     }
@@ -219,18 +300,19 @@ public class DiscoverProductFragment extends Fragment {
                 rlSearchBoxContainer.setFocusable(false);
                 rlSearchBoxContainer.setFocusableInTouchMode(false);
 
-                flListAndMapContainer.animate().alpha(0).setDuration(200).setInterpolator(new AccelerateDecelerateInterpolator());
+                flListAndMapContainer.animate().alpha(0.5f).setDuration(200).setInterpolator(new AccelerateDecelerateInterpolator());
                 rlSearchBoxContainer.animate().alpha(1).setDuration(200).translationYBy(-Utils.dpToPx(48)).setInterpolator(new AccelerateDecelerateInterpolator());
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-
+                //etSearch.requestFocus();
+                final InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(etSearch, InputMethodManager.SHOW_FORCED);
                 tvCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        etSearch.clearFocus();
                         deActivateSearch();
                     }
                 });
@@ -252,6 +334,11 @@ public class DiscoverProductFragment extends Fragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+
+                final InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
+                etSearch.clearFocus();
+                imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
+
                 tvCancel.setOnClickListener(null);
                 if (onSearchDeactivationListener!= null) {
                     flListAndMapContainer.animate().alpha(1).setDuration(200).setInterpolator(new AccelerateDecelerateInterpolator());
