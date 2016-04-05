@@ -39,6 +39,7 @@
 
                 <EditText style="@style/RegularRegular"
                     android:id="@+id/etProductName"
+                    android:inputType="textCapWords"
                     android:hint="@string/product_name_hint"
                     android:layout_toRightOf="@+id/tvProductName"
                     android:background="@null"
