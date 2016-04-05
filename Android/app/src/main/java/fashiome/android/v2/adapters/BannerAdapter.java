@@ -33,28 +33,6 @@ import fashiome.android.models.Product;
 import fashiome.android.utils.ImageURLGenerator;
 import fashiome.android.utils.Utils;
 
-/*
-public class BannerAdapter extends FragmentPagerAdapter {
-
-    private List<Fragment> fragments;
-
-    public BannerAdapter(FragmentManager fm, List<Fragment> fragments) {
-        super(fm);
-        this.fragments = fragments;
-    }
-
-    @Override
-    public Fragment getItem(int position) {
-        return this.fragments.get(position);
-    }
-
-    @Override
-    public int getCount() {
-        return this.fragments.size();
-    }
-
-}*/
-
 
 public class BannerAdapter extends PagerAdapter {
 
@@ -104,6 +82,9 @@ public class BannerAdapter extends PagerAdapter {
         TextView title = (TextView) itemView.findViewById(R.id.tvItemName);
         TextView desc = (TextView) itemView.findViewById(R.id.tvDesc);
         TextView price = (TextView) itemView.findViewById(R.id.tvPrice);
+        TextView rentals = (TextView) itemView.findViewById(R.id.tvNumberOfTimesRented);
+        TextView likes = (TextView) itemView.findViewById(R.id.tvNumberOfTimesFavorited);
+
         ImageView imageView = (ImageView) itemView.findViewById(R.id.ivItemPhoto);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +100,8 @@ public class BannerAdapter extends PagerAdapter {
         title.setText(p.getProductName());
         desc.setText(p.getProductDescription());
         price.setText(String.valueOf(p.getPrice()));
+        rentals.setText(String.valueOf(p.getNumberOfRentals()));
+        likes.setText(String.valueOf(p.getNumberOfFavorites()));
 
         String URLString = ImageURLGenerator.getInstance(mContext)
                 .URLForImageWithCloudinaryPublicId(p.getImageCloudinaryPublicId(0), Utils.getScreenWidthInDp(mContext));

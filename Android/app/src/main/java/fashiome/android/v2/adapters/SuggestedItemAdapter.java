@@ -41,7 +41,7 @@ public class SuggestedItemAdapter  extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return true;
+        return view == object;
     }
 
     @Override
@@ -104,6 +104,7 @@ public class SuggestedItemAdapter  extends PagerAdapter {
         final TextView tvProductByUserName= (TextView)view.findViewById(R.id.tvProductByUserName);
 
         rivProductPrimaryImage.setImageResource(0);
+        rivProfilePicture.setImageResource(0);
         if (productImageURLString != null || productImageURLString.length() > 0) {
 
             Glide.with(this.mContext)
