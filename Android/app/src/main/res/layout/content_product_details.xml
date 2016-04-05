@@ -326,15 +326,15 @@
                     android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Show reviews"
-                    android:background="@drawable/show_reviews_btn_bg"
-                    android:textColor="@color/white"
-                    style="@style/RegularLight"/>
+                    android:text="@string/showMoreReviews"
+                    android:textColor="@color/colorSecondaryText"
+                    style="@style/RegularMedium"/>
 
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="60dp">
 
@@ -352,7 +352,7 @@
                     android:layout_below="@id/tvSuggestedItems"
                     android:id="@+id/vpSuggestedItems"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"/>
+                    android:layout_height="300dp"/>
 
             </RelativeLayout>
 
