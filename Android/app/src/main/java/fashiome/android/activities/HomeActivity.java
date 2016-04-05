@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -25,14 +24,13 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import fashiome.android.R;
 import fashiome.android.fragments.ProductsRecyclerViewFragment;
 import fashiome.android.models.Product;
-import fashiome.android.models.User;
 import fashiome.android.utils.Constants;
+import fashiome.android.v2.activities.IntroAndLoginActivity;
 
 public class HomeActivity extends AppCompatActivity {
 

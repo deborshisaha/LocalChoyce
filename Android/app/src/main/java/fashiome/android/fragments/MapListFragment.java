@@ -65,7 +65,7 @@ import java.util.HashMap;
 
 import fashiome.android.R;
 import fashiome.android.activities.MapFullScreenActivity;
-import fashiome.android.activities.ProductDetailsActivity;
+import fashiome.android.v2.activities.ProductDetailsActivity;
 import fashiome.android.adapters.HeaderAdapter;
 import fashiome.android.helpers.ItemClickSupport;
 import fashiome.android.helpers.LockableRecyclerView;

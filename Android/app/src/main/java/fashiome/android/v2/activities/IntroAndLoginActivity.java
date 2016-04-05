@@ -1,4 +1,4 @@
-package fashiome.android.activities;
+package fashiome.android.v2.activities;
 
 import android.app.ActivityManager;
 import android.content.Intent;

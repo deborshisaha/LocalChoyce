@@ -93,14 +93,14 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".activities.ProductReviewActivity"
+            android:name=".v2.activities.ProductReviewActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.card.payment.CardIOActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activities.ChatRoomActivity"
+            android:name=".v2.activities.ChatRoomActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.card.payment.DataEntryActivity"
@@ -130,11 +130,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activities.ProductDetailsActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
             android:name="com.desmond.squarecamera.CameraActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
@@ -155,7 +150,7 @@
             android:name=".activities.GoogleDriveFilesListActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activities.ConversationActivity"
+            android:name=".v2.activities.ConversationActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.UserProfileActivity"
@@ -228,7 +223,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
+        <activity
+            android:name=".v2.activities.ProductDetailsActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <!-- No Activities below this -->
 
 

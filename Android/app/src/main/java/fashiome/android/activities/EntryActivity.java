@@ -10,6 +10,7 @@ import com.facebook.FacebookSdk;
 import com.parse.ParseUser;
 
 import bolts.AppLinks;
+import fashiome.android.v2.activities.IntroAndLoginActivity;
 import fashiome.android.v2.activities.PanacheHomeActivity;
 
 /**

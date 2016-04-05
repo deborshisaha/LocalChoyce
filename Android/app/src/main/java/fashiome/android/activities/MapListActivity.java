@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import fashiome.android.R;
 import fashiome.android.fragments.MapListFragment;
 import fashiome.android.models.Item;
+import fashiome.android.v2.activities.ProductDetailsActivity;
 
 
 public class MapListActivity extends AppCompatActivity implements  MapListFragment.OnMarkerClickedListener_Activity {

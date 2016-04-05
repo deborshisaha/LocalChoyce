@@ -1,11 +1,9 @@
 package fashiome.android.fragments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,12 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.OvershootInterpolator;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,17 +23,12 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
-import fashiome.android.activities.MainActivity;
-import fashiome.android.activities.ProductDetailsActivity;
 import fashiome.android.adapters.ProductAdapter;
-import fashiome.android.animators.ProductResultsAnimator;
 import fashiome.android.helpers.ItemClickSupport;
 import fashiome.android.models.Product;
 import fashiome.android.utils.Constants;
-import fashiome.android.utils.Utils;
+import fashiome.android.v2.activities.ProductDetailsActivity;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
-import jp.wasabeef.recyclerview.animators.FlipInLeftYAnimator;
-import jp.wasabeef.recyclerview.animators.FlipInRightYAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 /**

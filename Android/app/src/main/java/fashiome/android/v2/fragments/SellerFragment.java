@@ -16,7 +16,7 @@ import android.view.animation.DecelerateInterpolator;
 import com.parse.ParseUser;
 
 import fashiome.android.R;
-import fashiome.android.activities.IntroAndLoginActivity;
+import fashiome.android.v2.activities.IntroAndLoginActivity;
 import fashiome.android.activities.MainActivity;
 import fashiome.android.v2.activities.ProductFormActivity;
 

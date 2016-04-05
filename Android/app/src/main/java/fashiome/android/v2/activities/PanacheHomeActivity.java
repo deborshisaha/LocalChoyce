@@ -1,5 +1,7 @@
 package fashiome.android.v2.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -40,6 +42,7 @@ public class PanacheHomeActivity extends AppCompatActivity implements DiscoverPr
     public static FragmentManager fragmentManager;
     private SearchCriteria searchCriteria;
     private PanacheTabsAdapter panacheTabsAdapter;
+    private boolean searchEnabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +71,7 @@ public class PanacheHomeActivity extends AppCompatActivity implements DiscoverPr
         View.OnClickListener searchOnClickListener = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                panacheTabsAdapter.notifyOfSearchActivation();
-                searchFab.animate().translationYBy(200).setInterpolator(new AccelerateInterpolator(2)).setDuration(200).setStartDelay(50).start();
+                activateSearch();
             }
         };
 
@@ -88,10 +90,10 @@ public class PanacheHomeActivity extends AppCompatActivity implements DiscoverPr
 
             @Override
             public void onPageSelected(int position) {
-                if (position != 0) {
-                    searchFab.animate().translationYBy(200).setInterpolator(new AccelerateInterpolator(2)).setDuration(200).setStartDelay(50).start();
-                } else {
-                    searchFab.animate().translationYBy(-200).setInterpolator(new DecelerateInterpolator(2)).setDuration(200).setStartDelay(50).start();
+                if ( searchEnabled == false) {
+                    deActivateSearch();
+                } else if (position == 0 && searchEnabled == true) {
+                    activateSearch();
                 }
             }
 
@@ -120,6 +122,33 @@ public class PanacheHomeActivity extends AppCompatActivity implements DiscoverPr
 
     @Override
     public void onSearchDeactivation() {
-        searchFab.animate().translationYBy(-200).setInterpolator(new DecelerateInterpolator(2)).setDuration(200).setStartDelay(50).start();
+        deActivateSearch();
+    }
+
+    private void activateSearch () {
+
+        if (searchEnabled) return;
+
+        panacheTabsAdapter.notifyOfSearchActivation();
+
+        searchFab.animate().translationYBy(200).setInterpolator(new AccelerateInterpolator(2)).setDuration(200).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                searchEnabled = true;
+            }
+        }).setStartDelay(50).start();
+    }
+
+    private void deActivateSearch () {
+        if (!searchEnabled) return;
+
+        searchFab.animate().translationYBy(-200).setInterpolator(new DecelerateInterpolator(2)).setDuration(200).setStartDelay(50).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                searchEnabled = false;
+            }
+        }).start();
     }
 }

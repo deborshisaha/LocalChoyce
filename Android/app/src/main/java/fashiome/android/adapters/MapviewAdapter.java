@@ -20,7 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.activities.MapFullScreenActivity;
-import fashiome.android.activities.ProductDetailsActivity;
+import fashiome.android.v2.activities.ProductDetailsActivity;
 import fashiome.android.models.Product;
 import fashiome.android.utils.Constants;
 import fashiome.android.utils.ImageURLGenerator;
