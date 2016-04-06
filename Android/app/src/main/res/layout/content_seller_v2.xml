@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:id="@+id/llSellerAccountInfoContainer"
+                  android:layout_height="wrap_content"
+
+                  android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/sellerAccountSummaryContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75"
+            android:paddingBottom="32dp"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_marginTop="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:paddingBottom="2dp"
+                    android:textColor="@color/colorSecondaryText"
+                    style="@style/BigLight"
+                    android:text="@string/earningsTillDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvYearlyEarnings"/>
+
+                <TextView
+                    android:paddingBottom="4dp"
+                    android:id="@+id/tvCurrency"
+                    android:layout_alignBottom="@+id/tvYearlyEarningsAmount"
+                    android:textColor="@color/colorSecondaryText"
+                    android:layout_toLeftOf="@+id/tvYearlyEarningsAmount"
+                    style="@style/SmallLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""/>
+
+                <TextView
+                    android:layout_marginLeft="4dp"
+                    android:paddingBottom="2dp"
+                    android:textColor="@color/colorPrimaryText"
+                    style="@style/HeaderRegular"
+                    android:text="25"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvYearlyEarningsAmount"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textColor="@color/colorSecondaryText"
+                    style="@style/BigLight"
+                    android:text="@string/itemsRentedOut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvItemsRented"/>
+
+                <TextView
+                    android:textColor="@color/colorPrimaryText"
+                    style="@style/HeaderRegular"
+                    android:text="25"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvItemsRentedAmount"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvInventory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
