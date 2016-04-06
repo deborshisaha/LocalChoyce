@@ -18,7 +18,7 @@ public class PaymentActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(PaymentActivity.this,"Congratulations!! Payment done",Toast.LENGTH_LONG).show();
+                //Toast.makeText(PaymentActivity.this,"Congratulations!! Payment done",Toast.LENGTH_LONG).show();
                 finish();
             }
         });

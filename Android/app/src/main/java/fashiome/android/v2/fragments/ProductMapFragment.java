@@ -166,12 +166,12 @@ public class ProductMapFragment extends Fragment implements
         map = googleMap;
         if (map != null) {
             // Map is ready
-            Toast.makeText(myContext, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(myContext, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
             map.setOnMapLongClickListener(this);
 
             MapActivityPermissionDispatcher.getMyLocationWithCheck(this, myContext);
         } else {
-            Toast.makeText(myContext, "Error - Map was null!!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(myContext, "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
     }
 

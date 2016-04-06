@@ -298,6 +298,7 @@ public class DiscoverProductFragment extends Fragment {
 
             for (String term : valuesList) {
                 queries.add(getParseQueryForTermInName(term, this.sc.getGenderString()));
+                queries.add(getParseQueryForTermInDescription(term, this.sc.getGenderString()));
             }
 
             mainQuery = ParseQuery.or(queries);
@@ -315,10 +316,18 @@ public class DiscoverProductFragment extends Fragment {
         return mainQuery;
     }
 
+    public ParseQuery<Product> getParseQueryForTermInDescription (String term, String gender) {
+        ParseQuery<Product>  q = ParseQuery.getQuery(Product.class);
+        //q.whereContains("productName", term);
+        q.whereContains("productDescription", term);
+        q.whereContains("gender", gender);
+        return q;
+    }
+
     public ParseQuery<Product> getParseQueryForTermInName (String term, String gender) {
         ParseQuery<Product>  q = ParseQuery.getQuery(Product.class);
         q.whereContains("productName", term);
-        q.whereContains("productDescription", term);
+        //q.whereContains("productDescription", term);
         q.whereContains("gender", gender);
         return q;
     }
