@@ -1,6 +1,8 @@
 package fashiome.android.v2.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
@@ -25,11 +27,12 @@ import fashiome.android.models.Product;
 import fashiome.android.models.User;
 import fashiome.android.utils.ImageURLGenerator;
 import fashiome.android.utils.Utils;
+import fashiome.android.v2.activities.ProductDetailsActivity;
 
 /**
  * Created by dsaha on 4/4/16.
  */
-public class SuggestedItemAdapter  extends PagerAdapter implements View.OnClickListener {
+public class SuggestedItemAdapter  extends PagerAdapter {
 
     Context mContext;
     LayoutInflater mLayoutInflater;
@@ -90,7 +93,7 @@ public class SuggestedItemAdapter  extends PagerAdapter implements View.OnClickL
         }
     }
 
-    private void configure (View view, Product product){
+    private void configure (View view, final Product product){
 
         User user = product.getProductPostedBy();
 
@@ -106,7 +109,16 @@ public class SuggestedItemAdapter  extends PagerAdapter implements View.OnClickL
         final TextView tvPrice= (TextView)view.findViewById(R.id.tvPrice);
         final TextView tvProductByUserName= (TextView)view.findViewById(R.id.tvProductByUserName);
 
-        rivProductPrimaryImage.setOnClickListener(this);
+        rivProductPrimaryImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ProductDetailsActivity.class);
+                intent.putExtra("product", product);
+                mContext.startActivity(intent);
+                ((Activity)mContext).overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
+            }
+        });
 
         rivProductPrimaryImage.setImageResource(0);
         rivProfilePicture.setImageResource(0);
@@ -146,10 +158,5 @@ public class SuggestedItemAdapter  extends PagerAdapter implements View.OnClickL
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 }
