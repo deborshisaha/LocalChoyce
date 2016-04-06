@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -71,6 +72,9 @@ public class DiscoverProductFragment extends Fragment {
     @Bind(R.id.etSearch)
     EditText etSearch;
 
+    @Bind(R.id.ivSearchIcon)
+    ImageView ivSearchIcon;
+
 /*
     public DiscoverProductFragment(SearchCriteria sc, OnSearchDeactivationListener onSearchDeactivationListener) {
         super();
@@ -105,19 +109,11 @@ public class DiscoverProductFragment extends Fragment {
         hud.setLabel("Fetching your styles");
         hud.show();
 
-        ParseQuery<Product> query = getParseQueryForProductList();
-        query.findInBackground(new FindCallback<Product>() {
-            @Override
-            public void done(List<Product> products, ParseException e) {
-
-                hud.dismiss();
-                Log.i(TAG, "Parse query got products " + products.size());
-                broadcastResultsToFragments(products);
-            }
-        });
+        fetchAllTheProductsList();
 
         btnMap.setOnClickListener(onClickListenerForMapButton());
         btnList.setOnClickListener(onClickListenerForListButton());
+        ivSearchIcon.setOnClickListener(onClickListenerForSearchClearIcon());
 
         etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -131,6 +127,21 @@ public class DiscoverProductFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void fetchAllTheProductsList(){
+
+        ParseQuery<Product> query = getParseQueryForProductList();
+        query.findInBackground(new FindCallback<Product>() {
+            @Override
+            public void done(List<Product> products, ParseException e) {
+
+                hud.dismiss();
+                Log.i(TAG, "Parse query got products " + products.size());
+                broadcastResultsToFragments(products);
+            }
+        });
+
     }
 
     private void broadcastResultsToFragments(List <Product> products){
@@ -151,6 +162,19 @@ public class DiscoverProductFragment extends Fragment {
         String searchString = etSearch.getText().toString();
         getProductsWithSearchTerm(searchString);
 
+    }
+
+    private View.OnClickListener onClickListenerForSearchClearIcon (){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deActivateSearch();
+                hud = KProgressHUD.create(getActivity()).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setMaxProgress(101);
+                hud.setLabel("Clearing search");
+                hud.show();
+                fetchAllTheProductsList();
+            }
+        };
     }
 
     private View.OnClickListener onClickListenerForListButton (){
@@ -286,7 +310,7 @@ public class DiscoverProductFragment extends Fragment {
         mainQuery.include("productPostedBy");
         mainQuery.include("productBoughtBy");
         mainQuery.include("address");
-        mainQuery.setLimit(30);
+        mainQuery.setLimit(50);
 
         return mainQuery;
     }
@@ -316,6 +340,7 @@ public class DiscoverProductFragment extends Fragment {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 //etSearch.requestFocus();
+                ivSearchIcon.setImageResource(R.drawable.ic_back);
                 final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(etSearch, InputMethodManager.SHOW_FORCED);
                 tvCancel.setOnClickListener(new View.OnClickListener() {
@@ -342,9 +367,8 @@ public class DiscoverProductFragment extends Fragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-
+                ivSearchIcon.setImageResource(R.drawable.ic_search_red);
                 closeKeyboard();
-
                 tvCancel.setOnClickListener(null);
                 if (onSearchDeactivationListener!= null) {
                     flListAndMapContainer.animate().alpha(1).setDuration(200).setInterpolator(new AccelerateDecelerateInterpolator());
@@ -363,7 +387,6 @@ public class DiscoverProductFragment extends Fragment {
             etSearch.clearFocus();
             imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
         }
-        //final InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
     }
 
     public static interface OnSearchDeactivationListener {

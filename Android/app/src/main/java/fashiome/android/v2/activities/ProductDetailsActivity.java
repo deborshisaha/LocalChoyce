@@ -184,8 +184,13 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         vpSuggestedItems.setAdapter(mSuggestedItemAdapter);
 
         HashMap<String, Object> params = new HashMap<String,Object>();
-        params.put("product", mProduct.getObjectId());
-        params.put("forPresentation", true);
+        if(mProduct != null) {
+            params.put("product", mProduct.getObjectId());
+            params.put("forPresentation", true);
+        } else {
+            params.put("product", mProductIDString);
+            params.put("forPresentation", true);
+        }
 
         if (ParseUser.getCurrentUser() != null) {
             params.put("user", ParseUser.getCurrentUser().getObjectId());
@@ -203,7 +208,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             }
         });
 
-        if (mProduct.getProductPostedBy().isCurrentUser()) {mRent.setVisibility(View.GONE);}
+        if (mProduct != null && mProduct.getProductPostedBy().isCurrentUser()) {mRent.setVisibility(View.GONE);}
         else {mRent.setVisibility(View.VISIBLE);}
 
         llProductDetails.setTranslationY(500);

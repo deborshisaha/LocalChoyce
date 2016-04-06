@@ -94,6 +94,7 @@ public class UserProfileTabsAdapter extends FragmentPagerAdapter {
         parseQueryForUsersProductsInMarketPlace.orderByDescending("createdAt");
         parseQueryForUsersProductsInMarketPlace.whereEqualTo("productPostedBy", profileForUser);
         parseQueryForUsersProductsInMarketPlace.include("productPostedBy");
+        parseQueryForUsersProductsInMarketPlace.include("productBoughtBy");
         parseQueryForUsersProductsInMarketPlace.include("address");
 
         return parseQueryForUsersProductsInMarketPlace;
