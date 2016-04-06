@@ -54,6 +54,7 @@ public class SellerInventoryTabsAdapter extends FragmentPagerAdapter {
         parseQueryForProductsRented.orderByDescending("createdAt");
         parseQueryForProductsRented.whereEqualTo("productPostedBy", ParseUser.getCurrentUser());
         parseQueryForProductsRented.include("productPostedBy");
+        parseQueryForProductsRented.include("productBoughtBy");
         parseQueryForProductsRented.include("address");
 
         return parseQueryForProductsRented;
@@ -65,6 +66,7 @@ public class SellerInventoryTabsAdapter extends FragmentPagerAdapter {
         parseQueryForProductsRented.orderByDescending("createdAt");
         parseQueryForProductsRented.whereEqualTo("productPostedBy", ParseUser.getCurrentUser());
         parseQueryForProductsRented.include("productPostedBy");
+        parseQueryForProductsRented.include("productBoughtBy");
         parseQueryForProductsRented.include("address");
 
         return parseQueryForProductsRented;
