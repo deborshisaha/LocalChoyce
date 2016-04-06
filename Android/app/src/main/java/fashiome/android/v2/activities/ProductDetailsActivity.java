@@ -47,6 +47,7 @@ import com.parse.SaveCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -156,6 +157,12 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
     @Bind(R.id.llProductDetails)
     LinearLayout llProductDetails;
+
+    @Bind(R.id.ivGender)
+    ImageView mGenderImage;
+
+    @Bind(R.id.tvGender)
+    TextView mGenderText;
 
     @Override
     protected void onResume() {
@@ -353,6 +360,11 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         mProductTitle.setText(product.getProductName());
         mSeller.setText(product.getProductPostedBy().getUsername());
         mProductDescription.setText(String.valueOf(product.getProductDescription()));
+
+        if(mProduct.getGender().equalsIgnoreCase("M")){
+            mGenderImage.setImageResource(R.drawable.ic_male);
+            mGenderText.setText("Male");
+        }
 
         mImageViewMessage.setOnClickListener(new View.OnClickListener() {
             @Override

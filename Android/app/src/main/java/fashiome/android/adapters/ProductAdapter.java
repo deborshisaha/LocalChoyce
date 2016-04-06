@@ -292,8 +292,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     ActivityOptionsCompat options1 = ActivityOptionsCompat.
                             makeSceneTransitionAnimation((Activity) mContext, (View)rivProductPrimaryImage, "rivProductPrimaryImage");
 
-                    // mContext.startActivity(intent);
-                    mContext.startActivity(intent, options1.toBundle());
+                    mContext.startActivity(intent);
+                    //mContext.startActivity(intent, options1.toBundle());
                     break;
 
                 default:
