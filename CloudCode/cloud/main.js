@@ -24,7 +24,7 @@ Parse.Cloud.define("product", function(request, response) {
 		userObject.id = request.params.user;
 	}
 
-	var limit = Math.floor(Math.random() * 4) + 1 ;
+	var limit = 4 ;
 
 	var productObject = new Product();
 	productObject.id = request.params.product;

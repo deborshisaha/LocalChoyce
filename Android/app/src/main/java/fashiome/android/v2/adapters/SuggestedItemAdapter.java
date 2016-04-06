@@ -3,6 +3,7 @@ package fashiome.android.v2.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ import fashiome.android.utils.Utils;
 /**
  * Created by dsaha on 4/4/16.
  */
-public class SuggestedItemAdapter  extends PagerAdapter {
+public class SuggestedItemAdapter  extends PagerAdapter implements View.OnClickListener {
 
     Context mContext;
     LayoutInflater mLayoutInflater;
@@ -94,6 +95,8 @@ public class SuggestedItemAdapter  extends PagerAdapter {
         User user = product.getProductPostedBy();
 
         String productImageURLString = ImageURLGenerator.getInstance(this.mContext).URLForImageWithCloudinaryPublicId(product.getProductPrimaryImageCloudinaryPublicId(), Utils.getScreenWidthInDp(this.mContext));
+        Log.i("info", productImageURLString);
+
         String profileImageURLString = null;
 
         final RoundedImageView rivProductPrimaryImage = (RoundedImageView)view.findViewById(R.id.rivProductPrimaryImage);
@@ -102,6 +105,8 @@ public class SuggestedItemAdapter  extends PagerAdapter {
         final TextView tvProductDescription= (TextView)view.findViewById(R.id.tvProductDescription);
         final TextView tvPrice= (TextView)view.findViewById(R.id.tvPrice);
         final TextView tvProductByUserName= (TextView)view.findViewById(R.id.tvProductByUserName);
+
+        rivProductPrimaryImage.setOnClickListener(this);
 
         rivProductPrimaryImage.setImageResource(0);
         rivProfilePicture.setImageResource(0);
@@ -141,5 +146,10 @@ public class SuggestedItemAdapter  extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

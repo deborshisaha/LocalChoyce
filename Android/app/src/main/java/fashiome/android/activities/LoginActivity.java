@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
         parseUser.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                Toast.makeText(LoginActivity.this, "New user:" + user.getUsername() + " Signed up", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(LoginActivity.this, "New user:" + user.getUsername() + " Signed up", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

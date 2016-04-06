@@ -217,6 +217,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             User user = product.getProductPostedBy();
 
             String productImageURLString = ImageURLGenerator.getInstance(this.mContext).URLForImageWithCloudinaryPublicId(product.getProductPrimaryImageCloudinaryPublicId(), Utils.getScreenWidthInDp(this.mContext));
+
+            Log.i(TAG, productImageURLString);
             String profileImageURLString = null;
             rivProductPrimaryImage.setImageResource(0);
             if (productImageURLString != null || productImageURLString.length() > 0) {

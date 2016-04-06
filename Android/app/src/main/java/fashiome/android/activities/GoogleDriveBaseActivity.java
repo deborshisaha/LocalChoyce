@@ -137,7 +137,7 @@ public abstract class GoogleDriveBaseActivity extends Activity implements
      * Shows a toast message.
      */
     public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     /**

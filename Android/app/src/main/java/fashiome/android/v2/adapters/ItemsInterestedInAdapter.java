@@ -36,7 +36,7 @@ public class ItemsInterestedInAdapter extends RecyclerView.Adapter<RecyclerView.
     private final int cellSize;
 
     private static final int[] him_blur_photos = {R.drawable.blur_personalization_bag, R.drawable.blur_personalization_shoes, R.drawable.blur_personalization_coat, R.drawable.blur_personalization_wrist_watch};
-    private static final int[] him_sharp_photos = {R.drawable.personalization_shoes, R.drawable.personalization_shoes, R.drawable.personalization_coat, R.drawable.personalization_wrist_watch};
+    private static final int[] him_sharp_photos = {R.drawable.personalization_bag, R.drawable.personalization_shoes, R.drawable.personalization_coat, R.drawable.personalization_wrist_watch};
 
     private static final int[] her_blur_photos = {R.drawable.blur_personalization_bag, R.drawable.blur_personalization_shoes, R.drawable.blur_personalization_coat, R.drawable.blur_personalization_wrist_watch};
     private static final int[] her_sharp_photos = {R.drawable.personalization_shoes, R.drawable.personalization_shoes, R.drawable.personalization_coat, R.drawable.personalization_wrist_watch};

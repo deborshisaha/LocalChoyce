@@ -29,7 +29,7 @@ public class ImageURLGenerator {
             return BASE_URL + publicId + ".png";
         }
 
-        return BASE_URL+"r_4/w_"+ Integer.toString(pixels) + "/" + publicId + ".png";
+        return BASE_URL+"r_4/w_"+ Integer.toString(pixels) + "/v2" + publicId + ".png";
     }
 
     public String URLForFBProfilePicture(String facebookId, int pixels) {
