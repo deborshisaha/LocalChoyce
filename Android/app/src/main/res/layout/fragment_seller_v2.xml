@@ -3,124 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true">
 
-    <LinearLayout android:layout_width="match_parent"
-        android:id="@+id/llSellerAccountInfoContainer"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <android.support.design.widget.CollapsingToolbarLayout
+        android:id="@+id/collapsing_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed"
+        android:fitsSystemWindows="true"
+        app:contentScrim="?attr/colorPrimary"
+        app:expandedTitleMarginStart="14dp"
+        app:expandedTitleMarginEnd="32dp">
 
-        <LinearLayout
-            android:id="@+id/sellerAccountSummaryContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.75"
-            android:background="@color/white"
-            android:elevation="4dp"
-            android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_marginTop="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
+    </android.support.design.widget.CollapsingToolbarLayout>
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+    </android.support.design.widget.AppBarLayout>
 
-                <TextView
-                    android:paddingBottom="2dp"
-                    android:textColor="@color/colorSecondaryText"
-                    style="@style/BigLight"
-                    android:text="@string/earningsTillDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tvYearlyEarnings"/>
-
-                <TextView
-                    android:paddingBottom="4dp"
-                    android:id="@+id/tvCurrency"
-                    android:layout_alignBottom="@+id/tvYearlyEarningsAmount"
-                    android:textColor="@color/colorSecondaryText"
-                    android:layout_toLeftOf="@+id/tvYearlyEarningsAmount"
-                    style="@style/SmallLight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""/>
-
-                <TextView
-                    android:layout_marginLeft="4dp"
-                    android:paddingBottom="2dp"
-                    android:textColor="@color/colorPrimaryText"
-                    style="@style/HeaderRegular"
-                    android:text="25"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tvYearlyEarningsAmount"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:textColor="@color/colorSecondaryText"
-                    style="@style/BigLight"
-                    android:text="@string/itemsRentedOut"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tvItemsRented"/>
-
-                <TextView
-                    android:textColor="@color/colorPrimaryText"
-                    style="@style/HeaderRegular"
-                    android:text="25"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tvItemsRentedAmount"/>
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/sellerProductsContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:elevation="4dp"
-            android:background="@color/material_design_gray_background"
-            android:orientation="horizontal">
-
-            <com.astuetz.PagerSlidingTabStrip style="@style/SmallLight"
-                android:id="@+id/pstsSellerInventoryTab"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white"
-                android:textColor = "@color/colorPrimary"
-                android:elevation="4dp"
-                app:pstsUnderlineColor="@color/white"
-                app:pstsIndicatorColor="@color/colorPrimary"
-                app:pstsIndicatorHeight="4dp"
-                app:pstsDividerColor="@color/white"
-                app:pstsShouldExpand="true" />
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/vpSellerInventory"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#f4f5f7" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    <include
+        android:id="@+id/contentContainer"
+        layout="@layout/content_seller_v2"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:id="@+id/fabAddProduct"
         android:elevation="8dp"
         android:layout_width="wrap_content"
@@ -128,7 +37,7 @@
         android:layout_margin="16dp"
         android:clickable="true"
         android:src="@drawable/ic_plus"
-        app:layout_anchor="@id/pstsSellerInventoryTab"
+        app:layout_anchor="@id/sellerAccountSummaryContainer"
         app:layout_anchorGravity="bottom|right|end"/>
 
 </android.support.design.widget.CoordinatorLayout>

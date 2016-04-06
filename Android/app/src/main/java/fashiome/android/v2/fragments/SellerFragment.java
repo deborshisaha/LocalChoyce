@@ -3,11 +3,17 @@ package fashiome.android.v2.fragments;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,31 +22,34 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.parse.FindCallback;
 import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.adapters.UserBoughtItemsAdapter;
+import fashiome.android.models.Product;
+import fashiome.android.models.User;
 import fashiome.android.v2.activities.IntroAndLoginActivity;
 import fashiome.android.activities.MainActivity;
 import fashiome.android.v2.activities.ProductFormActivity;
 import fashiome.android.v2.adapters.SellerInventoryTabsAdapter;
+import fashiome.android.v2.adapters.UserInventoryAdapter;
 
 /**
  * Created by dsaha on 3/29/16.
  */
 public class SellerFragment extends Fragment {
-
-    @Bind(R.id.pstsSellerInventoryTab)
-    PagerSlidingTabStrip pstsSellerInventoryTab;
-
-    @Bind(R.id.vpSellerInventory)
-    ViewPager vpSellerInventory;
 
     @Bind(R.id.fabAddProduct)
     FloatingActionButton fabAddProduct;
@@ -54,11 +63,19 @@ public class SellerFragment extends Fragment {
     @Bind(R.id.tvYearlyEarningsAmount)
     TextView tvYearlyEarningsAmount;
 
+    @Bind(R.id.rvInventory)
+    RecyclerView rvIntentory;
 
     final int FROM_FAB_TO_LOGIN = 300;
 
+    LinearLayoutManager linearLayoutManager;
+
+    ArrayList<Product> fetchedProducts;
+
+
     private boolean fabInExplodedState = false;
-    private SellerInventoryTabsAdapter mSellerInventoryTabsAdapter = null;
+    //private SellerInventoryTabsAdapter mSellerInventoryTabsAdapter = null;
+    private UserInventoryAdapter mSellerInventoryTabsAdapter = null;
 
     public SellerFragment() {}
 
@@ -109,15 +126,24 @@ public class SellerFragment extends Fragment {
             }
         });
 
+
+        // Set layout manager to position the items
+        linearLayoutManager =
+                new LinearLayoutManager(getContext());
+
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        rvIntentory.setLayoutManager(linearLayoutManager);
+
+        // Attach the adapter to the recyclerview to populate items
+        // Create adapter passing in the sample user data
         if (mSellerInventoryTabsAdapter == null) {
-            mSellerInventoryTabsAdapter = new SellerInventoryTabsAdapter(getActivity().getSupportFragmentManager());
-        }
 
-        if (vpSellerInventory.getAdapter() == null) {
-            vpSellerInventory.setAdapter(mSellerInventoryTabsAdapter);
+            mSellerInventoryTabsAdapter = new UserInventoryAdapter(getContext());
         }
+        rvIntentory.setAdapter(mSellerInventoryTabsAdapter);
 
-        pstsSellerInventoryTab.setViewPager(vpSellerInventory);
+        getAllProductInventoryFromParse();
 
         loadSellerStats();
 
@@ -148,7 +174,7 @@ public class SellerFragment extends Fragment {
     private void processSellerStats(HashMap hm) {
         tvYearlyEarningsAmount.setText(hm.get("earnings_this_year")+"");
         tvItemsRentedAmount.setText(hm.get("items_rented")+"");
-        tvCurrency.setText((String)hm.get("currency"));
+        tvCurrency.setText((String) hm.get("currency"));
     }
 
     @Override
@@ -183,5 +209,35 @@ public class SellerFragment extends Fragment {
 
             }).start();
         }
+    }
+
+    public void getAllProductInventoryFromParse() {
+
+        ParseQuery<Product> query = ParseQuery.getQuery(Product.class);
+        query.setLimit(20);
+        query.orderByDescending("createdAt");
+        query.whereEqualTo("productPostedBy", (User)ParseUser.getCurrentUser());
+        query.include("productPostedBy");
+        query.include("productBoughtBy");
+        query.include("address");
+        query.findInBackground(new FindCallback<Product>() {
+            @Override
+            public void done(List<Product> objects, ParseException e) {
+                Log.i("info", "found inventory products");
+                if (e == null && objects.size() > 0) {
+                    Log.i("info", "inventory products " + objects.size());
+                    fetchedProducts = (ArrayList<Product>) objects;
+                    // Create adapter passing in the sample user data
+
+                    mSellerInventoryTabsAdapter.addAtStartList(fetchedProducts);
+                    Log.i("info", "inventory items " + mSellerInventoryTabsAdapter.mProducts.size());
+                    Log.i("info", " inventory username" + String.valueOf(fetchedProducts.get(0).getProductBoughtBy().getUsername()));
+                    //adapter.notifyItemRangeInserted(0, twts.size()-1);
+                    mSellerInventoryTabsAdapter.notifyDataSetChanged();
+
+                }
+            }
+        });
+
     }
 }
