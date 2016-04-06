@@ -722,7 +722,10 @@ instead of showing the old activity */
                 processPayment(null);
             }
 
+        } else if (requestCode == 500){
+            finish();
         }
+
         // else handle other activity results
     }
 
@@ -754,14 +757,13 @@ instead of showing the old activity */
 
                     DateFormat dateTimeInstance = SimpleDateFormat.getDateTimeInstance();
                     i.putExtra("dueDate", dateTimeInstance.format(order.getDueDate()));
-
                     try {
                         Push.userRentedProduct(mProduct);
                     } catch (JSONException e1) {
                         e1.printStackTrace();
                     }
+                    startActivityForResult(i, 500);
 
-                    startActivity(i);
                 }
             }
         });

@@ -38,13 +38,13 @@ public class SellerInventoryTabsAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        ProductListFragment productListFragment = new ProductListFragment(1);
+        ProductListFragment productListFragment = ProductListFragment.newInstance();
+
         if (position == 1) {
             productListFragment.setProductParseQuery(getParseQueryForInStockItems());
         } else {
             productListFragment.setProductParseQuery(getParseQueryForProductsRented());
         }
-
         return productListFragment;
     }
 

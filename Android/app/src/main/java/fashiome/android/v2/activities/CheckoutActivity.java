@@ -113,6 +113,17 @@ public class CheckoutActivity extends AppCompatActivity {
 //
 //        uberButtonBlack.setRideParameters(rideParameters);
 //
+
+        RequestButton uberButtonBlack = (RequestButton) findViewById(R.id.uber_button_black);
+        uberButtonBlack.setText("Request Uber");
+                RideParameters rideParameters = new RideParameters.Builder()
+                .setProductId(UBERX_PRODUCT_ID)
+                 //.setPickupLocation(PICKUP_LAT, PICKUP_LONG, PICKUP_NICK, PICKUP_ADDR)
+                .setPickupLocation((float)p.getAddress().getLatitude(), (float) p.getAddress().getLongitude(),null ,null)
+                .setDropoffLocation(DROPOFF_LAT, DROPOFF_LONG, DROPOFF_NICK, DROPOFF_ADDR)
+                .build();
+                uberButtonBlack.setRideParameters(rideParameters);
+
         mDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
