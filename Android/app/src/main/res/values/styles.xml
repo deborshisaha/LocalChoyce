@@ -60,6 +60,10 @@
         <item name="android:textSize">10sp</item>
     </style>
 
+    <style name="SmallLight.Italics">
+        <item name="android:textStyle">italic</item>
+    </style>
+
     <style name="SmallLight">
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textSize">12sp</item>
@@ -141,6 +145,10 @@
         <item name="android:textColorPrimary">#FFFFFF</item>
         <item name="textColorAlertDialogListItem">#FFFFFF</item>
         <item name="android:background">@drawable/panache_alert_dialog</item>
+    </style>
+
+    <style name="RegularLight.Italics">
+        <item name="android:textStyle">italic</item>
     </style>
 
 </resources>

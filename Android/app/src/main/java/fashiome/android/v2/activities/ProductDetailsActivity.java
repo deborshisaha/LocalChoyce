@@ -50,7 +50,11 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -64,6 +68,7 @@ import fashiome.android.adapters.ProductPagerAdapter;
 import fashiome.android.fragments.ProductRentDetailsFragment;
 import fashiome.android.managers.Push;
 import fashiome.android.models.Conversation;
+import fashiome.android.models.Order;
 import fashiome.android.models.Product;
 import fashiome.android.models.ProductReview;
 import fashiome.android.models.User;
@@ -198,6 +203,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             }
         });
 
+        if (mProduct.getProductPostedBy().isCurrentUser()) {mRent.setVisibility(View.GONE);}
+        else {mRent.setVisibility(View.VISIBLE);}
+
         llProductDetails.setTranslationY(500);
         llProductDetails.animate().translationY(0).setDuration(500).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(400).start();
     }
@@ -215,6 +223,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
         if (prs.size() > 3) {
             tvViewMore.setVisibility(View.VISIBLE);
+            populateReviews(prs);
         } else {
             tvViewMore.setVisibility(View.GONE);
             adjustNumberOfReviews(prs.size());
@@ -228,6 +237,11 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
     private void populateReviews(ArrayList<ProductReview> prs) {
         int count = prs.size();
+
+        if (count > 3) {
+            count = 3;
+        }
+
         switch (count) {
             case 1: {
                 configure(prs.get(0), pr1);
@@ -341,9 +355,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         mRelativeTime.setText(String.valueOf(new Random().nextInt(18) + 4) + "h ago");
         int numberOfUserRatings = product.getProductPostedBy().getRating();
         int numberOfProductRatings = product.getProductRating();
-        Log.i("info", " user ratings " + String.valueOf(numberOfUserRatings));
-        Log.i("info", " product ratings " + String.valueOf(numberOfProductRatings));
-
 
         LinearLayout mLL1 = (LinearLayout) findViewById(R.id.llRatingBar1);
         //Utils.setRating(mLL1, new Random().nextInt(3) + 3, this);
@@ -687,45 +698,40 @@ instead of showing the old activity */
     }
 
     public void saveBoughtProductDetailsToParse(final User user) {
+        completePurchase();
+    }
 
-        ParseQuery<Product> query = ParseQuery.getQuery("Product");
-        query.setLimit(20);
-        query.include("productPostedBy");
-        query.include("productBoughtBy");
-        query.include("address");
 
-        query.getInBackground(mProduct.getObjectId(), new GetCallback<Product>() {
-            public void done(final Product product, ParseException e) {
+    public void completePurchase () {
+
+        final Order order = new Order();
+        order.setAmount(totalAmount);
+        order.setBuyer((User) ParseUser.getCurrentUser());
+        order.setSeller((User) mProduct.getProductPostedBy());
+        order.setProduct(mProduct);
+        order.setDaysRented(numberOfDays);
+        order.setQuantity(quantity);
+        order.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                hud.dismiss();
                 if (e == null) {
+                    Intent i = new Intent(ProductDetailsActivity.this, CheckoutActivity.class);
+                    i.putExtra("product", mProduct);
+                    i.putExtra("orderAmount", totalAmount);
+                    i.putExtra("quantity", quantity);
+                    i.putExtra("numberOfDays", numberOfDays);
+                    i.putExtra("orderNumber", order.getObjectId());
 
-                    product.put("productBoughtBy", user);
-                    product.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            Log.i("info", "Successfully updated the bought item");
-                            hud.dismiss();
+                    DateFormat dateTimeInstance = SimpleDateFormat.getDateTimeInstance();
+                    i.putExtra("dueDate", dateTimeInstance.format(order.getDueDate()));
 
-                            try {
-                                Push.userRentedProduct(product);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            }
-
-                            //showPurchaseCompleteDialog();
-                            Intent i = new Intent(ProductDetailsActivity.this, CheckoutActivity.class);
-                            i.putExtra("product",product);
-                            i.putExtra("finalAmount", totalAmount);
-                            i.putExtra("quantity", quantity);
-                            i.putExtra("numberOfDays", numberOfDays);
-                            startActivity(i);
-                            finish();
-                        }
-
-                    });
+                    startActivity(i);
                 }
             }
         });
     }
+
 
     public void getProductLocationAddress(Product product) {
 

@@ -89,5 +89,15 @@
     <string name="showMoreReviews">Show more reviews</string>
     <string name="earningsTillDate">Earnings till date</string>
     <string name="itemsRentedOut">Items rented out</string>
+    <string name="continueShhopping">Continue Shopping</string>
+    <string name="thankYouForRenting">Thank you for renting!</string>
+    <string name="orderNumber">Order number :</string>
+    <string name="dueDate">Due date :</string>
+    <string name="amount">Amount :</string>
+    <string name="youRented">You rented :</string>
+    <string name="takeMeThere">Take me there</string>
+    <string name="tvUberTimeEstimateLabel">Time</string>
+    <string name="appxCost">Approximate cost</string>
+    <string name="directions">Directions</string>
 
 </resources>
