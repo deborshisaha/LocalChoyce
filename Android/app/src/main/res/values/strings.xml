@@ -61,6 +61,8 @@
 
     <!--Version-->
     <string name="product_price">Price</string>
+    <string name="product_gender">Gender</string>
+    <string name="product_size">Size</string>
     <string name="cancel">Cancel</string>
     <string name="product_name_hint">Make it short and sweet</string>
     <string name="product_description_hint">About the product</string>

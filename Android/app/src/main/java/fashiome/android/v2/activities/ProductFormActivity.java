@@ -37,11 +37,13 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AnimationUtils;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cloudinary.Cloudinary;
@@ -106,6 +108,12 @@ public class ProductFormActivity extends AppCompatActivity implements ProductFac
     @Bind(R.id.llAddImage)
     LinearLayout llAddImage;
 
+    @Bind(R.id.spinnerSize)
+    Spinner size;
+
+    @Bind(R.id.spinnerGender)
+    Spinner gender;
+
     private Handler delayHandler = null;
     private Runnable runnable = null;
     private static final int SELECT_FILE = 1;
@@ -163,6 +171,17 @@ public class ProductFormActivity extends AppCompatActivity implements ProductFac
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000L, 300.0f, mLocationListener);
 
         populateProductDefaults();
+
+
+        ArrayAdapter<CharSequence> sizeAdapter = ArrayAdapter.createFromResource(ProductFormActivity.this,
+                R.array.sizeEnum, android.R.layout.simple_spinner_dropdown_item);
+
+        size.setAdapter(sizeAdapter);
+
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(ProductFormActivity.this,
+                R.array.genderEnum, android.R.layout.simple_spinner_dropdown_item);
+
+        gender.setAdapter(genderAdapter);
 
         llAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -278,8 +297,8 @@ public class ProductFormActivity extends AppCompatActivity implements ProductFac
         product.setPrice(Double.parseDouble(etProductPrice.getText().toString()));
         product.setCurrency("USD");
         product.setProductPostedBy((User) User.getCurrentUser());
-        //product.setProductSize(size.getSelectedItem().toString());
-        //product.setGender(gender.getSelectedItem().toString());
+        product.setProductSize(size.getSelectedItem().toString());
+        product.setGender(gender.getSelectedItem().toString());
         LatLng point = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
         product.setAddress(new Address(point));
         product.setPhotos(getPhotoCloudinaryPublicIdList());

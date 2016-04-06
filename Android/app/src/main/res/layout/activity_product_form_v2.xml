@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/ivAddImage"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_camera"/>
+                    android:src="@drawable/ic_camera_v2"/>
 
             </LinearLayout>
 
