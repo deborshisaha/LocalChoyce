@@ -52,6 +52,8 @@ public class WriteReviewFragment extends DialogFragment {
         return frag;
     }
 
+    public WriteReviewFragment(){}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

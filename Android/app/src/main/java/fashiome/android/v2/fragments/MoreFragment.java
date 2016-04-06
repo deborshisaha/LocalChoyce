@@ -42,7 +42,7 @@ public class MoreFragment extends Fragment {
     @Bind(R.id.rvMoreMenu)
     RecyclerView rvMoreMenu;
 
-    private LogOutCallback mLogOutCallback = null;
+    public LogOutCallback mLogOutCallback = null;
 
     private final String LOG_IN = "Log in";
     private final String GENDER = "Gender";
@@ -66,12 +66,21 @@ public class MoreFragment extends Fragment {
 
     private List<SectionedRecyclerViewAdapter.Section> sections;
 
+/*
     public MoreFragment(LogOutCallback logoutCallback) {
         super();
         this.mLogOutCallback = logoutCallback;
     }
+*/
 
-    public MoreFragment () {super();}
+    //public MoreFragment () {super();}
+
+    public MoreFragment() {}
+
+    public static MoreFragment newInstance() {
+        MoreFragment frag = new MoreFragment();
+        return frag;
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

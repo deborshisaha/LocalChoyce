@@ -56,7 +56,7 @@ public class UserProfileTabsAdapter extends FragmentPagerAdapter {
         }
 
         if (position == 0) {
-            ProductListFragment productListFragment = new ProductListFragment();
+            ProductListFragment productListFragment = ProductListFragment.newInstance();
             if (profileForUser.isCurrentUser()) {
                 // return my likes
                 productListFragment.setProductParseQuery(getParseQueryForUsersProductsInMarketPlace());

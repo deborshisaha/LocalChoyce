@@ -65,15 +65,19 @@ public class PanacheTabsAdapter extends FragmentStatePagerAdapter implements Pag
     private Fragment getLoggedInUserFragment(int position) {
 
         if (position == 1) {
-            return new SellerFragment();
+            return SellerFragment.newInstance();
         } else if (position == 2) {
-            return new ConversationsFragment();
+            return ConversationsFragment.newInstance();
         } else if (position == 3) {
-            return new MoreFragment(this.logOutCallback);
+            MoreFragment frag = MoreFragment.newInstance();
+            frag.mLogOutCallback = this.logOutCallback;
+            return frag;
         }
 
         if (discoverProductFragment == null) {
-            discoverProductFragment = new DiscoverProductFragment(this.sc, this.onSearchDeactivationListener);
+            discoverProductFragment = DiscoverProductFragment.newInstance();
+            discoverProductFragment.sc = this.sc;
+            discoverProductFragment.onSearchDeactivationListener = this.onSearchDeactivationListener;
         }
 
         return discoverProductFragment;
@@ -82,11 +86,15 @@ public class PanacheTabsAdapter extends FragmentStatePagerAdapter implements Pag
     private Fragment getGuestUserFragment(int position) {
 
         if (position == 1) {
-            return new MoreFragment(null);
+            MoreFragment frag = MoreFragment.newInstance();
+            frag.mLogOutCallback = null;
+            return frag;
         }
 
         if (discoverProductFragment == null) {
-            discoverProductFragment = new DiscoverProductFragment(this.sc, this.onSearchDeactivationListener);
+            discoverProductFragment = DiscoverProductFragment.newInstance();
+            discoverProductFragment.sc = this.sc;
+            discoverProductFragment.onSearchDeactivationListener = this.onSearchDeactivationListener;
         }
 
         return discoverProductFragment;

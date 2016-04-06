@@ -6,11 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +34,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -52,6 +55,7 @@ import fashiome.android.R;
 import fashiome.android.adapters.CustomWindowAdapter;
 import fashiome.android.adapters.MapviewAdapter;
 import fashiome.android.adapters.ProductAdapter;
+import fashiome.android.fragments.ProductRentDetailsFragment;
 import fashiome.android.models.Address;
 import fashiome.android.models.Product;
 import fashiome.android.utils.Constants;
@@ -70,6 +74,11 @@ public class ProductMapFragment extends Fragment implements
 
 
     public ProductMapFragment() {}
+
+    public static ProductMapFragment newInstance() {
+        ProductMapFragment frag = new ProductMapFragment();
+        return frag;
+    }
 
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -101,6 +110,22 @@ public class ProductMapFragment extends Fragment implements
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        //map = mapFragment.getMap();
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap map) {
+                loadMap(map);
+                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                //map.setInfoWindowAdapter(new CustomWindowAdapter(inflater));
+                drawAllMarkers();
+            }
+        });
+
+    }
+
+    @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_product_map, container, false);
         ButterKnife.bind(this, v);
@@ -113,28 +138,12 @@ public class ProductMapFragment extends Fragment implements
             pager.setAdapter(bannerAdapter);
         }
 
-        mapFragment = new SupportMapFragment() {
-            @Override
-            public void onActivityCreated(Bundle savedInstanceState) {
-                super.onActivityCreated(savedInstanceState);
-                map = mapFragment.getMap();
-                if (map != null) {
-                    mapFragment.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(GoogleMap map) {
-                            loadMap(map);
-                            map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                            //map.setInfoWindowAdapter(new CustomWindowAdapter(inflater));
-                            drawAllMarkers();
-                        }
-                    });
-                } else {
-                    Toast.makeText(myContext, "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
+        mapFragment = SupportMapFragment.newInstance();
+
         getChildFragmentManager().beginTransaction().add(R.id.mapContainer, mapFragment).commit();
+
         return v;
+
     }
 
     @Override
