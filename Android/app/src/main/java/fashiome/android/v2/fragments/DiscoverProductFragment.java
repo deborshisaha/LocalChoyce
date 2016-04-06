@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.ProgressDialog;
 import android.app.Service;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -42,12 +43,12 @@ import fashiome.android.v2.classes.SearchCriteria;
 
 public class DiscoverProductFragment extends Fragment {
 
-    private SearchCriteria sc;
+    public SearchCriteria sc;
     private ProductMapFragment productMapFragment;
     private ProductListFragment productListFragment;
     private static final String TAG = "DiscoverProductFragment";
     private List<Product> currentProducts = new ArrayList<>();
-    private OnSearchDeactivationListener onSearchDeactivationListener = null;
+    public OnSearchDeactivationListener onSearchDeactivationListener = null;
 
     @Bind(R.id.btnList)
     Button btnList;
@@ -70,10 +71,17 @@ public class DiscoverProductFragment extends Fragment {
     @Bind(R.id.etSearch)
     EditText etSearch;
 
+/*
     public DiscoverProductFragment(SearchCriteria sc, OnSearchDeactivationListener onSearchDeactivationListener) {
         super();
         this.sc = sc;
         this.onSearchDeactivationListener = onSearchDeactivationListener;
+    }
+*/
+
+    public static DiscoverProductFragment newInstance() {
+        DiscoverProductFragment fragment = new DiscoverProductFragment();
+        return fragment;
     }
 
     public DiscoverProductFragment(){}
@@ -221,7 +229,7 @@ public class DiscoverProductFragment extends Fragment {
             return;
         } else {
             if (productListFragment == null) {
-                productListFragment = new ProductListFragment();
+                productListFragment = ProductListFragment.newInstance();
                 if (currentProducts.size() > 0) {
                     productListFragment.newData(currentProducts);
                 }
@@ -241,7 +249,7 @@ public class DiscoverProductFragment extends Fragment {
         } else {
 
             if (productMapFragment == null) {
-                productMapFragment = new ProductMapFragment();
+                productMapFragment = ProductMapFragment.newInstance();
                 if (currentProducts.size() > 0) {
                     productMapFragment.newData(currentProducts);
                 }
@@ -348,9 +356,14 @@ public class DiscoverProductFragment extends Fragment {
     }
 
     public void closeKeyboard () {
-        final InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
-        etSearch.clearFocus();
-        imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
+
+        if(getActivity() != null){
+            String service = getActivity().INPUT_METHOD_SERVICE;
+            final InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(service);
+            etSearch.clearFocus();
+            imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
+        }
+        //final InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
     }
 
     public static interface OnSearchDeactivationListener {

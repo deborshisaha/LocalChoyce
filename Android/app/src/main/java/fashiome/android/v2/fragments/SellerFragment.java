@@ -62,6 +62,12 @@ public class SellerFragment extends Fragment {
 
     public SellerFragment() {super();}
 
+    public static SellerFragment newInstance() {
+        SellerFragment fragment = new SellerFragment();
+        return fragment;
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

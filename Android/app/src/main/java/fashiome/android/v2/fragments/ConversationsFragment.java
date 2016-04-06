@@ -34,6 +34,8 @@ public class ConversationsFragment  extends Fragment {
 
     private boolean mConversationLoading = false;
 
+    public ConversationsFragment(){}
+
     public static ConversationsFragment newInstance() {
         ConversationsFragment fragment = new ConversationsFragment();
         return fragment;
