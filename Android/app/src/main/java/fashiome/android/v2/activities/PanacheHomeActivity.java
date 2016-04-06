@@ -3,18 +3,17 @@ package fashiome.android.v2.activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.parse.LogOutCallback;
@@ -23,7 +22,6 @@ import com.parse.ParseException;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
-import fashiome.android.v2.adapters.ItemsInterestedInAdapter;
 import fashiome.android.v2.adapters.PanacheTabsAdapter;
 import fashiome.android.v2.classes.SearchCriteria;
 import fashiome.android.v2.fragments.DiscoverProductFragment;
@@ -114,7 +112,7 @@ public class PanacheHomeActivity extends AppCompatActivity implements DiscoverPr
     private void showSearchFab() {
         if (hidden == false) {return;}
 
-        searchFab.animate().translationYBy(-200).setInterpolator(new AccelerateInterpolator(2)).setDuration(200).setListener(new AnimatorListenerAdapter() {
+        searchFab.animate().translationYBy(-400).setInterpolator(new AccelerateInterpolator(2)).setDuration(400).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
@@ -126,7 +124,7 @@ public class PanacheHomeActivity extends AppCompatActivity implements DiscoverPr
     private void hideSearchFab() {
         if (hidden == true) {return;}
 
-        searchFab.animate().translationYBy(200).setInterpolator(new AccelerateInterpolator(2)).setDuration(200).setListener(new AnimatorListenerAdapter() {
+        searchFab.animate().translationYBy(400).setInterpolator(new AccelerateInterpolator(2)).setDuration(400).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
@@ -176,9 +174,28 @@ public class PanacheHomeActivity extends AppCompatActivity implements DiscoverPr
         hideSearchFab();
     }
 
+    @Override
+    public void onListViewActivation() {
+        showSearchFab();
+    }
+
     private void deActivateSearch () {
         if (!searchEnabled) return;
         showSearchFab();
         searchEnabled = false;
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        panacheTabsAdapter.notifyDataSetChanged();
+        vpPanacheTabs.setCurrentItem(0, true);
+        tabStripPanacheTabs.notifyDataSetChanged();
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.nav_translucent_black));
+        }
     }
 }
