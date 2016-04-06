@@ -102,6 +102,58 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_width="match_parent"
+                android:layout_marginTop="4dp"
+                android:layout_height="wrap_content">
+
+                <TextView style="@style/RegularBold"
+                          android:id="@+id/tvGender"
+                          android:layout_centerVertical="true"
+                          android:layout_width="100dp"
+                          android:textColor="@color/colorPrimaryText"
+                          android:text="@string/product_gender"
+                          android:layout_height="wrap_content" />
+
+                <Spinner
+                    style="@style/RegularRegular"
+                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinnerGender"
+                    android:layout_toRightOf="@+id/tvGender"
+                    android:spinnerMode="dropdown"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_width="match_parent"
+                android:layout_marginTop="4dp"
+                android:layout_height="wrap_content">
+
+                <TextView style="@style/RegularBold"
+                          android:id="@+id/tvSize"
+                          android:layout_centerVertical="true"
+                          android:layout_width="100dp"
+                          android:textColor="@color/colorPrimaryText"
+                          android:text="@string/product_size"
+                          android:layout_height="wrap_content" />
+
+                <Spinner
+                    style="@style/RegularRegular"
+                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinnerSize"
+                    android:layout_toRightOf="@+id/tvSize"
+                    android:spinnerMode="dropdown"/>
+
+            </RelativeLayout>
+
+
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

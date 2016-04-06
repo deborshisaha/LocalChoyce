@@ -78,13 +78,17 @@ public class ProductListFragment extends Fragment {
     }
 
     public void truncateData(){
-        productAdapter.removeAll();
-        productAdapter.notifyDataSetChanged();
+        if(productAdapter != null) {
+            productAdapter.removeAll();
+            productAdapter.notifyDataSetChanged();
+        }
     }
 
     public void newData(List<Product> products){
-        productAdapter.updateItems(Constants.NEW_SEARCH_OPERATION, products);
-        productAdapter.notifyDataSetChanged();
+        if(productAdapter != null) {
+            productAdapter.updateItems(Constants.NEW_SEARCH_OPERATION, products);
+            productAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

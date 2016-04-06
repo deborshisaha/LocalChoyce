@@ -153,13 +153,17 @@ public class ProductMapFragment extends Fragment implements
     }
 
     public void truncateData(){
-        bannerAdapter.removeAll();
-        bannerAdapter.notifyDataSetChanged();
+        if(bannerAdapter != null) {
+            bannerAdapter.removeAll();
+            bannerAdapter.notifyDataSetChanged();
+        }
     }
 
     public void newData(List<Product> products){
-        bannerAdapter.addAll(products);
-        bannerAdapter.notifyDataSetChanged();
+        if(bannerAdapter != null) {
+            bannerAdapter.addAll(products);
+            bannerAdapter.notifyDataSetChanged();
+        }
     }
 
     protected void loadMap(GoogleMap googleMap) {
