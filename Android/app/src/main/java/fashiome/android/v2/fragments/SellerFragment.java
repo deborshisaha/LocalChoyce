@@ -60,7 +60,7 @@ public class SellerFragment extends Fragment {
     private boolean fabInExplodedState = false;
     private SellerInventoryTabsAdapter mSellerInventoryTabsAdapter = null;
 
-    public SellerFragment() {super();}
+    public SellerFragment() {}
 
     public static SellerFragment newInstance() {
         SellerFragment fragment = new SellerFragment();

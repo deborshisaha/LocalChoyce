@@ -32,7 +32,7 @@ public class ProductListFragment extends Fragment {
     int mId = -1;
 
     public ProductListFragment() {}
-    public ProductListFragment(int id) {super(); mId = id;}
+    //public ProductListFragment(int id) {super(); mId = id;}
 
     public static ProductListFragment newInstance() {
         ProductListFragment frag = new ProductListFragment();

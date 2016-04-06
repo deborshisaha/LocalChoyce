@@ -690,15 +690,17 @@ instead of showing the old activity */
 
             getUserAndSaveProduct();
 
-        }
-        if (requestCode == 300) {
+        } else if (requestCode == 300) {
             if (ParseUser.getCurrentUser() != null) {
                 //Intent intent = new Intent(ProductDetailsActivity.this, ProductFormActivity.class);
                 //startActivityForResult(intent, 100);
                 processPayment(null);
             }
 
+        } else if (requestCode == 500){
+            finish();
         }
+
         // else handle other activity results
     }
 
@@ -731,7 +733,7 @@ instead of showing the old activity */
                     DateFormat dateTimeInstance = SimpleDateFormat.getDateTimeInstance();
                     i.putExtra("dueDate", dateTimeInstance.format(order.getDueDate()));
 
-                    startActivity(i);
+                    startActivityForResult(i, 500);
                 }
             }
         });
