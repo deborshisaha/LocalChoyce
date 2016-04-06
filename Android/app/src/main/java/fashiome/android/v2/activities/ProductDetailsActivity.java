@@ -755,6 +755,12 @@ instead of showing the old activity */
                     DateFormat dateTimeInstance = SimpleDateFormat.getDateTimeInstance();
                     i.putExtra("dueDate", dateTimeInstance.format(order.getDueDate()));
 
+                    try {
+                        Push.userRentedProduct(mProduct);
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+
                     startActivity(i);
                 }
             }
