@@ -68,22 +68,20 @@ public class ProductPagerAdapter extends PagerAdapter {
         if (URLString != null || URLString.length() > 0) {
             Log.i("info", "Loading image from glide " + URLString);
 
-            final KProgressHUD hud = KProgressHUD.create(mContext).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setMaxProgress(101);
-            hud.setLabel("Loading details");
-            hud.show();
+//            final KProgressHUD hud = KProgressHUD.create(mContext).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setMaxProgress(101);
+//            hud.setLabel("Loading details");
+//            hud.show();
 
             Glide.with(this.mContext)
                     .load(URLString)
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            hud.dismiss();
                             return false;
                         }
 
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            hud.dismiss();
                             return false;
                         }
                     })
