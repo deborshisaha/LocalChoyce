@@ -1,8 +1,11 @@
 package fashiome.android.v2.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.parse.ParseUser;
 
@@ -30,5 +33,13 @@ public class UserProfileActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.flContainer, UserProfileFragment.newInstance(profileForUser));
         ft.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        supportFinishAfterTransition();
+        super.onBackPressed();
+
     }
 }

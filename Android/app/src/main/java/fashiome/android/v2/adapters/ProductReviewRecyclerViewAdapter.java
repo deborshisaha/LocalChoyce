@@ -1,6 +1,7 @@
 package fashiome.android.v2.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +17,13 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
+import fashiome.android.activities.UserDetailsActivity;
 import fashiome.android.models.Product;
 import fashiome.android.models.ProductReview;
 import fashiome.android.models.SellerReview;
 import fashiome.android.utils.ImageURLGenerator;
 import fashiome.android.utils.Utils;
+import fashiome.android.v2.activities.UserProfileActivity;
 
 public class ProductReviewRecyclerViewAdapter extends RecyclerView.Adapter<ProductReviewRecyclerViewAdapter.ProductReviewViewHolder>  {
 

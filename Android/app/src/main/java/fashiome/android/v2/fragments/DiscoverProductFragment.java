@@ -318,6 +318,7 @@ public class DiscoverProductFragment extends Fragment {
     public ParseQuery<Product> getParseQueryForTermInName (String term, String gender) {
         ParseQuery<Product>  q = ParseQuery.getQuery(Product.class);
         q.whereContains("productName", term);
+        q.whereContains("productDescription", term);
         q.whereContains("gender", gender);
         return q;
     }

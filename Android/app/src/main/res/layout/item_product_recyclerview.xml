@@ -47,6 +47,7 @@
             android:layout_marginLeft="2dp"
             android:layout_marginTop="0dp"
             android:scaleType="centerCrop"
+            android:transitionName="profile"
             android:id="@+id/rivProfilePicture"
             app:riv_corner_radius="16dp"
             app:riv_border_color="#F5F5F5"

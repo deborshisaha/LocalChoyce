@@ -259,12 +259,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         public void onClick(View v) {
 
             Log.i(TAG, "click detected");
+            Intent intent = null;
 
             switch (v.getId()) {
 
-                case R.id.rivImg:
-
-                    Intent intent = null;
+                case R.id.rivProfilePicture:
 
                     if (ParseUser.getCurrentUser() == null) {
                         intent = new Intent(mContext, IntroAndLoginActivity.class);
@@ -275,7 +274,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
                         intent = new Intent(mContext, UserProfileActivity.class);
                         intent.putExtra(User.USER_KEY, mProducts.get(getLayoutPosition()).getProductPostedBy());
-                        mContext.startActivity(intent);
+                        ActivityOptionsCompat options = ActivityOptionsCompat.
+                                makeSceneTransitionAnimation((Activity)mContext, (View)rivProfilePicture, "profile");
+                        mContext.startActivity(intent, options.toBundle());
+
                     }
 
                     break;
@@ -288,6 +290,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
                     // mContext.startActivity(intent);
                     mContext.startActivity(intent, options.toBundle());
+                    break;
 
                 default:
                     break;
