@@ -520,8 +520,12 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
                 if (ParseUser.getCurrentUser() != null) {
 
                     if (isLiked) {
+                        isLiked = false;
+                        invalidateOptionsMenu();
                         parseCallForRemoveLike(mProduct);
                     } else {
+                        isLiked = true;
+                        invalidateOptionsMenu();
                         parseCallForAddLike(mProduct);
                     }
                 } else {
@@ -540,17 +544,17 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
     public void parseCallForAddLike(final Product product) {
 
-        final KProgressHUD hud = KProgressHUD.create(ProductDetailsActivity.this).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setMaxProgress(101);
-        hud.show();
+//        final KProgressHUD hud = KProgressHUD.create(ProductDetailsActivity.this).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setMaxProgress(101);
+//        hud.show();
 
         ParseObject addLike = new ParseObject("UserProduct");
         addLike.put("userId", ParseUser.getCurrentUser());
         addLike.put("productId", product);
-        addLike.saveInBackground(new SaveCallback() {
+        addLike.saveEventually(new SaveCallback() {
             @Override
             public void done(ParseException e) {
 
-                hud.dismiss();
+//                hud.dismiss();
 
                 if (e == null) {
                     Log.i("info", "Liked successfully");
@@ -573,8 +577,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
     public void parseCallForRemoveLike(Product product) {
 
-        final KProgressHUD hud = KProgressHUD.create(ProductDetailsActivity.this).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setMaxProgress(101);
-        hud.show();
+//        final KProgressHUD hud = KProgressHUD.create(ProductDetailsActivity.this).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setMaxProgress(101);
+//        hud.show();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserProduct");
         query.whereEqualTo("userId", ParseUser.getCurrentUser());
@@ -588,10 +592,10 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
                     Log.i("Found row to delete", String.valueOf(deleteList.size()));
                     if (deleteList.size() > 0) {
                         for (ParseObject del : deleteList) {
-                            del.deleteInBackground(new DeleteCallback() {
+                            del.deleteEventually(new DeleteCallback() {
                                 @Override
                                 public void done(ParseException e) {
-                                    hud.dismiss();
+
                                     if (e == null) {
                                         Log.i("info", "Removed like successfully");
                                         isLiked = false;
