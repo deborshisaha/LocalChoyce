@@ -182,6 +182,7 @@ public class DiscoverProductFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 insertProductListFragment();
+                onSearchDeactivationListener.onListViewActivation();
             }
         };
     }
@@ -191,9 +192,11 @@ public class DiscoverProductFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 insertProductMapFragment();
+                onSearchDeactivationListener.onMapViewActivation();
             }
         };
     }
+
     public void getProductsWithSearchTerm(final String term){
 
         Product.fetchProductWithSearchTerm(term, new FindCallback<Product>() {
@@ -401,5 +404,7 @@ public class DiscoverProductFragment extends Fragment {
 
     public static interface OnSearchDeactivationListener {
         public void onSearchDeactivation();
+        public void onMapViewActivation();
+        public void onListViewActivation();
     }
 }

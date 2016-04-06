@@ -1,9 +1,7 @@
 package fashiome.android.v2.adapters;
 
-import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -15,17 +13,12 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fashiome.android.R;
 import fashiome.android.utils.Utils;
 import fashiome.android.v2.classes.SearchCriteria;
 
-/**
- * Created by dsaha on 4/2/16.
- */
 public class ItemsInterestedInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int PHOTO_ANIMATION_DELAY = 300;
     private static final Interpolator INTERPOLATOR = new DecelerateInterpolator();

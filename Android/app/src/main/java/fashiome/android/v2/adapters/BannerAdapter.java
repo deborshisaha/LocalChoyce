@@ -83,25 +83,13 @@ public class BannerAdapter extends PagerAdapter {
         TextView desc = (TextView) itemView.findViewById(R.id.tvDesc);
         TextView price = (TextView) itemView.findViewById(R.id.tvPrice);
         TextView rentals = (TextView) itemView.findViewById(R.id.tvNumberOfTimesRented);
-        TextView likes = (TextView) itemView.findViewById(R.id.tvNumberOfTimesFavorited);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.ivItemPhoto);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, ProductDetailsActivity.class);
-                intent.putExtra("product", p);
-                mContext.startActivity(intent);
-                ((Activity)mContext).overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-
-            }
-        });
 
         title.setText(p.getProductName());
         desc.setText(p.getProductDescription());
-        price.setText(String.valueOf(p.getPrice()));
+        price.setText("$ "+String.valueOf((int)p.getPrice())+"/day");
         rentals.setText(String.valueOf(p.getNumberOfRentals()));
-        likes.setText(String.valueOf(p.getNumberOfFavorites()));
 
         String URLString = ImageURLGenerator.getInstance(mContext)
                 .URLForImageWithCloudinaryPublicId(p.getImageCloudinaryPublicId(0), Utils.getScreenWidthInDp(mContext));
@@ -117,6 +105,17 @@ public class BannerAdapter extends PagerAdapter {
 
             container.addView(itemView);
         }
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ProductDetailsActivity.class);
+                intent.putExtra("product", p);
+                mContext.startActivity(intent);
+                ((Activity)mContext).overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
+            }
+        });
 
         return itemView;
     }

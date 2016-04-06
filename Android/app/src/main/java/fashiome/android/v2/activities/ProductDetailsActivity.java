@@ -95,7 +95,10 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     private int totalAmount = 0;
     private int quantity = 0;
     private int numberOfDays = 0;
+
     private int MY_SCAN_REQUEST_CODE = 100; // arbitrary int
+    private int REQUEST_LOGIN_FROM_MESSAGE = 200; // arbitrary int
+
     private String URLString = null;
     private User user = null;
     private String mProductIDString = null;
@@ -187,9 +190,21 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         if(mProduct != null) {
             params.put("product", mProduct.getObjectId());
             params.put("forPresentation", true);
+            updateRentButtonVisibility();
+
         } else {
             params.put("product", mProductIDString);
             params.put("forPresentation", true);
+            Product.fetchProductWithId(mProductIDString, new FindCallback<Product>() {
+                @Override
+                public void done(List<Product> objects, ParseException e) {
+                    if (objects.size() == 1) {
+                        mProduct = objects.get(0);
+                        updateRentButtonVisibility();
+                        populateViewWithProduct(mProduct);
+                    }
+                }
+            });
         }
 
         if (ParseUser.getCurrentUser() != null) {
@@ -208,11 +223,13 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             }
         });
 
-        if (mProduct != null && mProduct.getProductPostedBy().isCurrentUser()) {mRent.setVisibility(View.GONE);}
-        else {mRent.setVisibility(View.VISIBLE);}
-
         llProductDetails.setTranslationY(500);
         llProductDetails.animate().translationY(0).setDuration(500).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(400).start();
+    }
+
+    private void updateRentButtonVisibility() {
+        if (mProduct != null && mProduct.getProductPostedBy().isCurrentUser()) {mRent.setVisibility(View.GONE);}
+        else {mRent.setVisibility(View.VISIBLE);}
     }
 
     private void processProductMetadata(HashMap hm) {
@@ -238,6 +255,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         // isFavorite
         isLiked = (boolean) hm.get("isFavorite");
         invalidateOptionsMenu();
+
     }
 
     private void populateReviews(ArrayList<ProductReview> prs) {
@@ -335,12 +353,19 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         mProductTitle.setText(product.getProductName());
         mSeller.setText(product.getProductPostedBy().getUsername());
         mProductDescription.setText(String.valueOf(product.getProductDescription()));
+
         mImageViewMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProductDetailsActivity.this, ChatRoomActivity.class);
-                intent.putExtra(Conversation.CONVERSATION_IDENTIFIER, Conversation.getIdentifierFromUserId(product.getProductPostedBy().getObjectId(), ParseUser.getCurrentUser().getObjectId()));
-                startActivity(intent);
+                if (ParseUser.getCurrentUser() != null && mProduct != null && !mProduct.getProductBoughtBy().isCurrentUser()) {
+                    Intent intent = new Intent(ProductDetailsActivity.this, ChatRoomActivity.class);
+                    intent.putExtra(Conversation.CONVERSATION_IDENTIFIER, Conversation.getIdentifierFromUserId(product.getProductPostedBy().getObjectId(), ParseUser.getCurrentUser().getObjectId()));
+                    startActivity(intent);
+                } else if (ParseUser.getCurrentUser() == null){
+                    Intent intent = new Intent(ProductDetailsActivity.this, IntroAndLoginActivity.class);
+                    intent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, true);
+                    startActivityForResult(intent, REQUEST_LOGIN_FROM_MESSAGE);
+                }
             }
         });
 
@@ -732,8 +757,13 @@ instead of showing the old activity */
 
                     DateFormat dateTimeInstance = SimpleDateFormat.getDateTimeInstance();
                     i.putExtra("dueDate", dateTimeInstance.format(order.getDueDate()));
-
+                    try {
+                        Push.userRentedProduct(mProduct);
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
                     startActivityForResult(i, 500);
+
                 }
             }
         });
