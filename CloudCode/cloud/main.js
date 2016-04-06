@@ -6,8 +6,8 @@ var User = Parse.Object.extend("_User");
 Parse.Cloud.define("seller_stats", function(request, response) {
 
 	var jsonObject = {
-		"earnings_this_year": 32000,
-		"items_rented": 21,
+		"earnings_this_year": 56,
+		"items_rented": 1,
 		"currency": "USD"
 	};
 			

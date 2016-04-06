@@ -174,7 +174,7 @@ public class SellerFragment extends Fragment {
     private void processSellerStats(HashMap hm) {
         tvYearlyEarningsAmount.setText(hm.get("earnings_this_year")+"");
         tvItemsRentedAmount.setText(hm.get("items_rented")+"");
-        tvCurrency.setText((String) hm.get("currency"));
+        tvCurrency.setText("$");
     }
 
     @Override
