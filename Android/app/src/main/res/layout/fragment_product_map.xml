@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:id="@+id/mapContainer"
         android:orientation="vertical"
-        android:layout_weight="0.22">
+        android:layout_weight="0.30">
     </LinearLayout>
 
     <LinearLayout
@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:id="@+id/bannerContainer"
         android:orientation="vertical"
-        android:layout_weight="0.78">
+        android:layout_weight="0.70">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
