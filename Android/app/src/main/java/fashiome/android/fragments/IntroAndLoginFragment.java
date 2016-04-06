@@ -110,7 +110,7 @@ public class IntroAndLoginFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        removeBitmap();
+        //removeBitmap();
     }
 
     private void removeBitmap() {
@@ -125,7 +125,7 @@ public class IntroAndLoginFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        removeBitmap();
+        //removeBitmap();
     }
 
     @Override

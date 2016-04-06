@@ -171,6 +171,11 @@ public class PanacheHomeActivity extends AppCompatActivity implements DiscoverPr
 
     }
 
+    @Override
+    public void onMapViewActivation() {
+        hideSearchFab();
+    }
+
     private void deActivateSearch () {
         if (!searchEnabled) return;
         showSearchFab();
