@@ -19,6 +19,7 @@ import android.view.animation.DecelerateInterpolator;
 import com.astuetz.PagerSlidingTabStrip;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -180,5 +181,14 @@ public class PanacheHomeActivity extends AppCompatActivity implements DiscoverPr
         if (!searchEnabled) return;
         showSearchFab();
         searchEnabled = false;
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        panacheTabsAdapter.notifyDataSetChanged();
+        vpPanacheTabs.setCurrentItem(0, true);
+        tabStripPanacheTabs.notifyDataSetChanged();
     }
 }
