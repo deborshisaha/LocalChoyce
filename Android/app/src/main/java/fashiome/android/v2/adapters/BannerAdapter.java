@@ -83,13 +83,16 @@ public class BannerAdapter extends PagerAdapter {
         TextView desc = (TextView) itemView.findViewById(R.id.tvDesc);
         TextView price = (TextView) itemView.findViewById(R.id.tvPrice);
         TextView rentals = (TextView) itemView.findViewById(R.id.tvNumberOfTimesRented);
-
+        ImageView gender = (ImageView) itemView.findViewById(R.id.ivGender);
         ImageView imageView = (ImageView) itemView.findViewById(R.id.ivItemPhoto);
 
         title.setText(p.getProductName());
         desc.setText(p.getProductDescription());
         price.setText("$ "+String.valueOf((int)p.getPrice())+"/day");
         rentals.setText(String.valueOf(p.getNumberOfRentals()));
+        if(p.getGender().equalsIgnoreCase("M")){
+            imageView.setImageResource(R.drawable.ic_male);
+        }
 
         String URLString = ImageURLGenerator.getInstance(mContext)
                 .URLForImageWithCloudinaryPublicId(p.getImageCloudinaryPublicId(0), Utils.getScreenWidthInDp(mContext));
