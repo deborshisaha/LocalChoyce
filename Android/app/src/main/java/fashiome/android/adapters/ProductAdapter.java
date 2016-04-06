@@ -267,11 +267,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
                 case R.id.rivProfilePicture:
 
+/*
                     if (ParseUser.getCurrentUser() == null) {
                         intent = new Intent(mContext, IntroAndLoginActivity.class);
                         intent.putExtra(IntroAndLoginActivity.LAUNCH_FOR_LOGIN, true);
                         mContext.startActivity(intent);
                     } else {
+*/
                         Log.i("info", "user profile image clicked");
 
                         intent = new Intent(mContext, UserProfileActivity.class);
@@ -280,18 +282,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                                 makeSceneTransitionAnimation((Activity)mContext, (View)rivProfilePicture, "profile");
                         mContext.startActivity(intent, options.toBundle());
 
-                    }
-
+                    //}
                     break;
+
                 case R.id.rivProductPrimaryImage:
                     intent = new Intent(mContext, ProductDetailsActivity.class);
                     intent.putExtra("product", mProducts.get(getLayoutPosition()));
 
-                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                    ActivityOptionsCompat options1 = ActivityOptionsCompat.
                             makeSceneTransitionAnimation((Activity) mContext, (View)rivProductPrimaryImage, "rivProductPrimaryImage");
 
                     // mContext.startActivity(intent);
-                    mContext.startActivity(intent, options.toBundle());
+                    mContext.startActivity(intent, options1.toBundle());
                     break;
 
                 default:
