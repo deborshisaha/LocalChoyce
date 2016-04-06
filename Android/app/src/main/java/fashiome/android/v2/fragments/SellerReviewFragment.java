@@ -29,6 +29,8 @@ public class SellerReviewFragment extends Fragment {
 
     private User mSeller = null;
 
+    public SellerReviewFragment(){}
+
     public static SellerReviewFragment newInstance(User seller) {
         SellerReviewFragment fragment = new SellerReviewFragment();
         Bundle args = new Bundle();

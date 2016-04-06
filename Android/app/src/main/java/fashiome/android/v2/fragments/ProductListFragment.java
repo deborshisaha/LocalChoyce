@@ -34,6 +34,11 @@ public class ProductListFragment extends Fragment {
     public ProductListFragment() {}
     public ProductListFragment(int id) {super(); mId = id;}
 
+    public static ProductListFragment newInstance() {
+        ProductListFragment frag = new ProductListFragment();
+        return frag;
+    }
+
     public void setProductParseQuery(ParseQuery<Product> productParseQuery) {
         this.productParseQuery = productParseQuery;
     }
